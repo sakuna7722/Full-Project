@@ -52,6 +52,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import AffiliateAgreement from './pages/AffiliateAgreement';
 import FAQ from './pages/FAQ';
 import UserProfile from './components/UserProfile';
+import Support from './pages/Support';
 
 function PublicLayout({ children }) {
   return (
@@ -112,6 +113,7 @@ function AppContent() {
           <Route path="/referrals" element={isLoggedIn ? <ReferralPage /> : <Navigate to="/auth/login" replace />} />
           <Route path="/admin-dashboard" element={isLoggedIn ? <AdminDashboard /> : <Navigate to="/auth/login" replace />} />
 
+          <Route path="/dashboard/support" element={<Support />} />
           <Route path="/dashboard/profile" element={<UserProfile />} />
           <Route path="/dashboard/payout-settings" element={<PayoutSettings />} />
           <Route path="/dashboard/referral-downline" element={<ReferralDownline />} />

@@ -4,6 +4,7 @@
 // import axios from '../api/axios';
 // import { useLocation } from 'react-router-dom';
 
+
 // const Dashboard = () => {
 //   const { user, setUser } = useContext(AuthContext);
 //   const navigate = useNavigate();
@@ -14,6 +15,7 @@
 //   const [error, setError] = useState(null);
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 //   const location = useLocation();
+
 
 //   // Log user data on mount
 //   console.log('📍 [Dashboard.jsx] Current location:', {
@@ -123,6 +125,7 @@
 //     return () => { isMounted = false; };
 //   }, [user]);
 
+
 //   const handleLogout = () => {
 //     try {
 //       // LocalStorage clear
@@ -138,6 +141,7 @@
 //       console.error("❌ Error in logout:", err.message);
 //     }
 //   };
+
 
 //   if (loading)
 //     return (
@@ -366,60 +370,110 @@
 //           </div>
 //         </div>
 
-//         <div className="p-4">
-//           <div className="bg-blue-600 text-white text-center py-4 text-3xl font-bold rounded-lg mb-8">
-//             Welcome to LeadsArk 3.0
+
+//         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+//           <div className="flex items-center gap-3 mb-8">
+//             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+//               <span className="text-2xl">🔗</span>
+//             </div>
+//             <div>
+//               <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+//                 Referral & Commission Tools
+//               </h2>
+//               <p className="text-gray-600 mt-1">Manage your affiliate business and track earnings</p>
+//             </div>
 //           </div>
 
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//             {/* Training Courses Card */}
+//           {/* Quick Actions Grid */}
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+//             {/* Profile Card */}
 //             <Link
-//               to="/my-courses"
-//               className="bg-blue-300 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
+//               to="/dashboard/profile"
+//               className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
 //             >
-//               <div className="text-6xl mb-4">📋</div>
-//               <h3 className="text-lg font-semibold text-gray-900 text-center">Access Your Training Courses</h3>
+//               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+//               <div className="relative z-10">
+//                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+//                   👤
+//                 </div>
+//                 <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">Profile</h3>
+//                 <p className="text-gray-600 text-sm text-center leading-relaxed">
+//                   Manage your account information and preferences
+//                 </p>
+//               </div>
 //             </Link>
 
 //             {/* Affiliate Account Card */}
 //             <Link
 //               to="/dashboard/affiliate-account"
-//               className="bg-red-500 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
+//               className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
 //             >
-//               <div className="text-6xl mb-4 text-white">👤</div>
-//               <h3 className="text-lg font-semibold text-white text-center">Access Your Affiliate Account</h3>
+//               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+//               <div className="relative z-10">
+//                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+//                   ⚙️
+//                 </div>
+//                 <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">Affiliate Account</h3>
+//                 <p className="text-gray-600 text-sm text-center leading-relaxed">
+//                   Manage affiliate settings & preferences
+//                 </p>
+//               </div>
 //             </Link>
 
-//             {/* Internal Team Live Training Card */}
+//             {/* View Downline Card */}
 //             <Link
-//               to="/dashboard/live-training"
-//               className="bg-orange-400 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
+//               to="/dashboard/referral-downline"
+//               className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
 //             >
-//               <div className="text-6xl mb-4 text-white">🤖</div>
-//               <h3 className="text-lg font-semibold text-white text-center">Internal Team Live Training</h3>
+//               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+//               <div className="relative z-10">
+//                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+//                   👥
+//                 </div>
+//                 <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">View Downline</h3>
+//                 <p className="text-gray-600 text-sm text-center leading-relaxed">
+//                   Track your referral network and performance
+//                 </p>
+//               </div>
 //             </Link>
 
-//             {/* Community Card */}
+//             {/* Request Payout Card */}
 //             <Link
-//               to="/dashboard/community"
-//               className="bg-green-500 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
+//               to="/dashboard/payout-settings"
+//               className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
 //             >
-//               <div className="text-6xl mb-4 text-white">☁️</div>
-//               <h3 className="text-lg font-semibold text-white text-center">Our Community - Learn from Peers</h3>
+//               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+//               <div className="relative z-10">
+//                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+//                   💰
+//                 </div>
+//                 <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">Request Payout</h3>
+//                 <p className="text-gray-600 text-sm text-center leading-relaxed">
+//                   Withdraw your earnings securely
+//                 </p>
+//               </div>
 //             </Link>
 
-//             {/* Upgrade Card */}
+//             {/* Leaderboard Card */}
 //             <Link
-//               to="/dashboard/upgrade"
-//               className="md:col-span-2 bg-orange-400 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
+//               to="/dashboard/leaderboard"
+//               className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
 //             >
-//               <div className="text-6xl mb-4 text-white">🖥️</div>
-//               <h3 className="text-lg font-semibold text-white text-center">Pro to Supreme Upgrade</h3>
+//               <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+//               <div className="relative z-10">
+//                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+//                   🏆
+//                 </div>
+//                 <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">Leaderboard</h3>
+//                 <p className="text-gray-600 text-sm text-center leading-relaxed">
+//                   Check rankings & performance metrics
+//                 </p>
+//               </div>
 //             </Link>
 //           </div>
 //         </div>
 
-        
+
 //       </div>
 //     </div>
 //   );
@@ -435,3 +489,4 @@
 // );
 
 // export default Dashboard;
+
