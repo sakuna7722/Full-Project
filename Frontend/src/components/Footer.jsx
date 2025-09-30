@@ -28,6 +28,7 @@ function Footer() {
               // { src: "/icons/o.jpeg", link: "#" },
               { src: "/icons/link.webp", link: "#" },
               // { src: "/icons/jr.jpeg", link: "#" },
+              // { src: "/icons/15", link: "https://wa.me/1234567890" },
             ].map((item, i) => (
               <a
                 key={i}

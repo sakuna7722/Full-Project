@@ -151,7 +151,7 @@ const AffiliateAccount = () => {
         {commissionStats ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <CommissionCard
-              title="Today"
+              title="Today's Earning"
               amount={commissionStats.todayEarnings || 0}
               color="red"
               icon={
@@ -161,7 +161,7 @@ const AffiliateAccount = () => {
               }
             />
             <CommissionCard
-              title="Last 7 Days"
+              title="Last 7 Days Earning"
               amount={commissionStats.last7DaysEarnings || 0}
               color="blue"
               icon={
@@ -171,7 +171,7 @@ const AffiliateAccount = () => {
               }
             />
             <CommissionCard
-              title="This Month"
+              title="Last 30 Days Earning"
               amount={commissionStats.last30DaysEarnings || 0}
               color="turquoise"
               icon={
@@ -179,10 +179,10 @@ const AffiliateAccount = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               }
-              description="Last 30 days"
+              // description="Last 30 days Earning"
             />
             <CommissionCard
-              title="Total Earnings"
+              title="All Time Earnings"
               amount={commissionStats.allTimeEarnings || 0}
               color="pink"
               icon={
@@ -192,7 +192,7 @@ const AffiliateAccount = () => {
               }
             />
             <CommissionCard
-              title="Total Commission"
+              title="Commission Paid"
               amount={commissionStats.allTimeEarnings || 0}
               color="green"
               icon={
@@ -210,7 +210,7 @@ const AffiliateAccount = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
               }
-              description="Available for withdrawal"
+              // description="Available for withdrawal"
             />
           </div>
         ) : (
