@@ -18,7 +18,7 @@ function ProductStandard() {
               <p className="text-2xl font-semibold text-gray-800 mb-4">
                 Price:{" "}
                 <span className="text-orange-500 font-bold">
-                  Rs. 2000 + GST
+                  Rs. 3000 + GST
                 </span>
               </p>
 
@@ -178,7 +178,7 @@ function ProductStandard() {
             </p>
             <div className="flex justify-center gap-6 flex-wrap">
               <button className="px-10 py-4 rounded-xl bg-white text-blue-600 font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl">
-                Enroll Now - Rs. 2000 + GST
+                Enroll Now - Rs. 3000 + GST
               </button>
               <Link
                 to="/courses"

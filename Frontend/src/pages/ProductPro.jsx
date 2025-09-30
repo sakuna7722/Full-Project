@@ -72,7 +72,7 @@ export default function ProductPro() {
               hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 
               shadow-lg animate-pulse"
           >
-            Enroll Now – Start Learning Today 🚀
+            Enroll Now 2000 – Start Learning Today 🚀
           </Link>
         </div>
 

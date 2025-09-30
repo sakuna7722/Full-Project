@@ -16,7 +16,7 @@ function ProductSupreme() {
             <p className="text-2xl font-bold text-gray-800 mb-3">
               Price:{" "}
               <span className="text-orange-500 font-extrabold">
-                Rs. 2000 + GST
+                Rs. 4000 + GST
               </span>
             </p>
 
@@ -168,7 +168,7 @@ function ProductSupreme() {
               ← Back to Courses
             </Link>
             <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Enroll Now - Rs. 2000 + GST
+              Enroll Now - Rs. 4000 + GST
             </button>
           </div>
 

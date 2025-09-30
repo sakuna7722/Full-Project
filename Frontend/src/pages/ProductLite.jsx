@@ -20,7 +20,7 @@ function ProductLite() {
             <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-pink-500 mx-auto mb-6 rounded-full"></div>
 
             <p className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">
-              Price: <span className="text-orange-500">Rs. 2000 + GST</span>
+              Price: <span className="text-orange-500">Rs. 1000 + GST</span>
             </p>
 
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -166,7 +166,7 @@ function ProductLite() {
             </Link>
 
             <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg animate-pulse">
-              Enroll Now - Rs. 2000 + GST
+              Enroll Now - Rs. 1000 + GST
             </button>
           </div>
 
@@ -186,7 +186,7 @@ function ProductLite() {
             </div>
           </div>
 
-          {/* Gradient Separator */}
+          {/* Gradient Separator Rohan */}
           <div className="h-1 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 rounded-full mt-12 mb-6"></div>
         </div>
       </section>
