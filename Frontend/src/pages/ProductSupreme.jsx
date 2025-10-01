@@ -1,197 +1,221 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
+import { useEffect, useState } from "react";
+import api from "../api/axios";
 
 function ProductSupreme() {
+  const [course, setCourse] = useState(null);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const res = await api.get("/courses");
+        const selectedCourse =
+          res.data.find((c) => c.slug === "supreme") || res.data[0];
+        setCourse(selectedCourse);
+      } catch (err) {
+        console.error("Error fetching course:", err);
+      }
+    };
+
+    fetchCourse();
+  }, []);
+
   return (
     <>
-      <section className="px-4 py-20 sm:px-6 lg:px-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
-        <div className="max-w-6xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-20">
-            <h1 className="text-5xl sm:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
-              Affiliate Marketing Mastery
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-indigo-50 to-blue-100 py-16 border-b">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 px-6">
+          {/* Left Content */}
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
+              {course ? course.name : "Loading..."}
             </h1>
-            <div className="w-28 h-2 bg-gradient-to-r from-orange-400 to-pink-500 mx-auto mb-8 rounded-full"></div>
-
-            <p className="text-2xl font-bold text-gray-800 mb-3">
-              Price:{" "}
-              <span className="text-orange-500 font-extrabold">
-                Rs. 4000 + GST
-              </span>
+            <p className="text-lg text-gray-700 mb-6 max-w-2xl">
+              Master Affiliate Marketing, Sales & Branding with this complete
+              course. Designed for students, professionals & entrepreneurs who
+              want to build real skills and achieve financial independence.
             </p>
-
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive affiliate marketing training package designed to
-              transform beginners into pros with advanced strategies, multiple
-              platforms, and expert mentorship.
-            </p>
-          </div>
-
-          {/* Course Details Section */}
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-                What You Will Learn
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto rounded-full"></div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-10">
-              {[
-                {
-                  title: "Affiliate Marketing Training",
-                  icon: "📈",
-                  gradient: "from-orange-400 to-red-500",
-                  points: [
-                    "Affiliate Marketing – Concept & Strategy",
-                    "Niche & Product Selection",
-                    "How to work Like a Pro",
-                    "Different Affiliate Platforms – ClickBank, JVZoo, WarriorPlus",
-                    "Finding Killer Products",
-                    "Marketing & Promotions",
-                    "Advanced Strategy of Leads Generation",
-                  ],
-                },
-                {
-                  title: "Advance Sales Strategy",
-                  icon: "💼",
-                  gradient: "from-blue-400 to-purple-500",
-                  points: [
-                    "How to Pitch your Affiliate Offers",
-                    "Objection handling techniques",
-                    "Sales Closing Strategies",
-                    "Professional Sales Scripts",
-                  ],
-                },
-                {
-                  title: "CPA Marketing",
-                  icon: "💰",
-                  gradient: "from-green-400 to-teal-500",
-                  points: [
-                    "Basic Concept of CPA Marketing",
-                    "CPA Offers from IMC Platform",
-                    "Finding Ad Copies",
-                    "Keyword Research",
-                    "Bing Ads Creation & Optimization",
-                    "DFY Landing Page / Funnel",
-                    "Bing Ads Coupons for Campaigns",
-                  ],
-                },
-                {
-                  title: "Personal Branding",
-                  icon: "🌟",
-                  gradient: "from-purple-400 to-pink-500",
-                  points: [
-                    "Build Your Personal Brand Presence",
-                    "Niche Clarity & Brand Story",
-                    "Brand Positioning & Brand Kit",
-                    "Content Strategy",
-                    "Content Hygiene Maintenance",
-                    "Copywriting Basics",
-                  ],
-                },
-                {
-                  title: "Instagram Marketing",
-                  icon: "📱",
-                  gradient: "from-pink-400 to-red-500",
-                  points: [
-                    "Organic Lead Generation",
-                    "Instagram Hacks for Quality Leads",
-                    "Content Creation Mastery",
-                    "Advanced Engagement Techniques",
-                  ],
-                },
-              ].map((course, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100"
-                >
-                  <div className="flex items-center mb-6">
-                    <div
-                      className={`w-12 h-12 bg-gradient-to-r ${course.gradient} rounded-xl flex items-center justify-center mr-4`}
-                    >
-                      <span className="text-white text-xl">{course.icon}</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
-                      {course.title}
-                    </h3>
-                  </div>
-                  <ul className="space-y-3">
-                    {course.points.map((item, i) => (
-                      <li key={i} className="flex items-start text-gray-700">
-                        <span className="text-green-500 mr-3 mt-1">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-
-              {/* Bonus Section */}
-              <div className="bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 rounded-2xl shadow-2xl p-8 text-white">
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-4">
-                    <span className="text-2xl">🎁</span>
-                  </div>
-                  <h3 className="text-2xl font-bold">Bonus Features</h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="bg-white bg-opacity-10 p-4 rounded-xl">
-                    <h4 className="font-semibold mb-1">+5 Bonus Courses</h4>
-                    <p className="text-sm text-white text-opacity-90">
-                      Worth $999 additional value
-                    </p>
-                  </div>
-                  <div className="bg-white bg-opacity-10 p-4 rounded-xl">
-                    <h4 className="font-semibold mb-1">Weekly Live Training</h4>
-                    <p className="text-sm text-white text-opacity-90">
-                      Direct expert interaction
-                    </p>
-                  </div>
-                  <div className="bg-white bg-opacity-10 p-4 rounded-xl">
-                    <h4 className="font-semibold mb-1">Lifetime Updates</h4>
-                    <p className="text-sm text-white text-opacity-90">
-                      Continuous new content
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now – ₹4000 + GST
+              </button>
+              <Link
+                to="/courses"
+                className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
+              >
+                ← Back to Courses
+              </Link>
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex justify-center gap-6 flex-wrap mt-20">
-            <Link
-              to="/courses"
-              className="px-10 py-4 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              ← Back to Courses
-            </Link>
-            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Enroll Now - Rs. 4000 + GST
-            </button>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="text-center mt-16">
-            <div className="flex justify-center gap-10 flex-wrap">
-              {[
-                "Lifetime Access",
-                "Certificate of Completion",
-                "Money Back Guarantee",
-              ].map((badge, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center text-gray-700 text-lg font-medium"
-                >
-                  <span className="text-2xl mr-2">✅</span>
-                  <span>{badge}</span>
-                </div>
-              ))}
+          {/* Right Image */}
+          <div className="flex-1">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-xl">
+              <img
+                src={course?.thumbnail || "/images/anmol-duggal.png"}
+                alt={course?.name || "Trainer"}
+                className="w-full h-auto object-cover rounded-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-white">
+        <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
+          {[
+            { icon: "/coursesImg/course_icon.png", label: "1 Course" },
+            { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
+            { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center min-w-[140px] text-gray-700"
+            >
+              <img src={stat.icon} alt={stat.label} className="w-12 h-12 mb-2" />
+              <p className="font-semibold">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      {/* What You Will Learn */}
+      <section className="px-6 py-20 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
+              What You Will Learn
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-10">
+            {[
+              {
+                title: "Affiliate Marketing Training",
+                points: [
+                  "Affiliate Marketing – Concept & Strategy",
+                  "Niche & Product Selection",
+                  "How to work Like a Pro",
+                  "Different Platforms – ClickBank, JVZoo, WarriorPlus",
+                  "Finding Killer Products",
+                  "Marketing & Promotions",
+                  "Advanced Strategy of Leads Generation",
+                ],
+              },
+              {
+                title: "Advance Sales Strategy",
+                points: [
+                  "How to Pitch Affiliate Offers",
+                  "Objection Handling",
+                  "Sales Closing Strategies",
+                  "Professional Sales Scripts",
+                ],
+              },
+              {
+                title: "CPA Marketing",
+                points: [
+                  "Basics of CPA Marketing",
+                  "CPA Offers from IMC Platform",
+                  "Finding Ad Copies",
+                  "Keyword Research",
+                  "Bing Ads Creation & Optimization",
+                  "DFY Landing Page / Funnel",
+                  "Bing Ads Coupons for Campaigns",
+                ],
+              },
+              {
+                title: "Personal Branding",
+                points: [
+                  "Build Your Personal Brand Presence",
+                  "Niche Clarity & Brand Story",
+                  "Brand Positioning & Kit",
+                  "Content Strategy",
+                  "Copywriting Basics",
+                ],
+              },
+              {
+                title: "Instagram Marketing",
+                points: [
+                  "Organic Lead Generation",
+                  "Instagram Hacks",
+                  "Content Creation Mastery",
+                  "Advanced Engagement Techniques",
+                ],
+              },
+            ].map((section, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-2xl p-8 shadow hover:shadow-lg transition"
+              >
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  {section.title}
+                </h3>
+                <ul className="space-y-3">
+                  {section.points.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start text-gray-700 leading-relaxed"
+                    >
+                      <span className="text-blue-600 mr-3 mt-1">✔</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who is this for */}
+      <section className="px-6 py-20 bg-gradient-to-br from-indigo-50 to-blue-100">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-12">
+            Who Is This Course For?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              "Students who want to build a digital career",
+              "Working professionals aiming for side-income",
+              "Entrepreneurs scaling their business with digital marketing",
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-white p-8 rounded-2xl shadow hover:shadow-md transition"
+              >
+                <p className="text-gray-700 font-medium">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="px-6 py-16 bg-white border-t">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="flex flex-wrap justify-center gap-10">
+            {[
+              "✅ Lifetime Access",
+              "✅ Certificate of Completion",
+              "✅ Money Back Guarantee",
+            ].map((badge, idx) => (
+              <div
+                key={idx}
+                className="text-lg font-semibold text-gray-700 flex items-center"
+              >
+                {badge}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </>
   );

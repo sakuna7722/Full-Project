@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import axios from "../api/axios";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Button } from "../components/ui/button";
 import { StarIcon, ClockIcon, UserIcon, PlayCircleIcon } from "@heroicons/react/24/solid";
+import { AuthContext } from "../context/AuthContext";
 
 function CoursePage() {
+  const { user } = useContext(AuthContext);
   const { slug } = useParams();
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
@@ -18,7 +20,7 @@ function CoursePage() {
         console.log(`[CoursePage] Fetching course for slug: ${slug}`);
         const token = localStorage.getItem("token");
         console.log("[CoursePage] Token:", token ? "Token present" : "No token");
-        const res = await axios.get(`http://localhost:5001/api/courses/slug/${slug}`, {
+        const res = await axios.get(`/courses/slug/${slug}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         console.log("[CoursePage] Course data received:", {

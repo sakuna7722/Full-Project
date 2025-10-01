@@ -131,10 +131,10 @@ function AppContent() {
 
           {/* courses */}
 
-          <Route path="/api/courses/full-stack-development" element={<ProductLite />} />
-          <Route path="/api/courses/digital-marketing-mastery" element={<ProductStandard />} />
-          <Route path="/api/courses/data-science-python" element={<ProductPro />} />
-          <Route path="/api/courses/mobile-app-development" element={<ProductSupreme />} />
+          <Route path="/api/courses/lite" element={<ProductLite />} />
+          <Route path="/api/courses/standard" element={<ProductStandard />} />
+          <Route path="/api/courses/pro" element={<ProductPro />} />
+          <Route path="/api/courses/supreme" element={<ProductSupreme />} />
 
 
           {/* ✅ Individual Course Pages */}
