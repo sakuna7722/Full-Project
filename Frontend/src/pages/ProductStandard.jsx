@@ -34,14 +34,13 @@ function ProductStandard() {
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master Affiliate Marketing, Sales & Branding with this complete
-              course. Designed for students, professionals & entrepreneurs who
-              want to build real skills and achieve financial independence.
+              This program gives you all-in-one digital marketing mastery — from organic lead generation and advanced group promotion to lead magnet offers and product review strategies.
+              You also get 8 bonus courses covering social media content creation, YouTube SEO, email automation, affiliate marketing success, Facebook growth, and chatbot marketing.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now – ₹4000 + GST
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -98,38 +97,28 @@ function ProductStandard() {
           <div className="grid md:grid-cols-2 gap-10">
             {[
               {
-                title: "Affiliate Marketing Training",
+                title: "Everything in LeadsArk Lite",
                 points: [
-                  "Affiliate Marketing – Concept & Strategy",
-                  "Niche & Product Selection",
-                  "How to work Like a Pro",
-                  "Different Platforms – ClickBank, JVZoo, WarriorPlus",
-                  "Finding Killer Products",
-                  "Marketing & Promotions",
-                  "Advanced Strategy of Leads Generation",
+                  "More Advanced Strategy of Organic Lead Generation",
+                  "Advanced Group Promotion strategy",
+                  "Product Review Strategy",
+                  "Lead Magnet Offer Strategy",
                 ],
               },
               {
-                title: "Advance Sales Strategy",
+                title: "8 Bonus Courses",
                 points: [
-                  "How to Pitch Affiliate Offers",
-                  "Objection Handling",
-                  "Sales Closing Strategies",
-                  "Professional Sales Scripts",
+                  "Social Media Content Creation ",
+                  "YouTube SEO",
+                  "Email Marketing Automation ",
+                  "Internet Marketing for Complete Beginners ",
+                  " YouTube Quick Start",
+                  " Affiliate Marketing Success",
+                  " Facebook Group Domination",
+                  "Facebook Messenger Marketing – Chatbot",
                 ],
               },
-              {
-                title: "CPA Marketing",
-                points: [
-                  "Basics of CPA Marketing",
-                  "CPA Offers from IMC Platform",
-                  "Finding Ad Copies",
-                  "Keyword Research",
-                  "Bing Ads Creation & Optimization",
-                  "DFY Landing Page / Funnel",
-                  "Bing Ads Coupons for Campaigns",
-                ],
-              },
+             
               {
                 title: "Personal Branding",
                 points: [

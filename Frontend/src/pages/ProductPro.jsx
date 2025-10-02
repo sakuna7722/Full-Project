@@ -34,14 +34,12 @@ function ProductPro() {
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master Affiliate Marketing, Sales & Branding with this complete
-              course. Designed for students, professionals & entrepreneurs who
-              want to build real skills and achieve financial independence.
+              Learn the core concepts & strategies of affiliate marketing, from niche and product selection to working like a professional. Get hands-on training with top platforms like ClickBank, JVZoo, and WarriorPlus.Master advanced sales strategies including pitching affiliate offers, handling objections, and closing deals with confidence using professional sales scripts.Discover how to find killer products, create effective marketing & promotion campaigns, and apply advanced lead generation strategies to consistently attract buyers.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now – ₹4000 + GST
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -99,7 +97,7 @@ function ProductPro() {
           <div className="grid md:grid-cols-2 gap-10">
             {[
               {
-                title: "Affiliate Marketing Training",
+                title: "Marketing Training",
                 points: [
                   "Affiliate Marketing – Concept & Strategy",
                   "Niche & Product Selection",
@@ -111,8 +109,9 @@ function ProductPro() {
                 ],
               },
               {
-                title: "Advance Sales Strategy",
+                title: "Sales Training",
                 points: [
+                  "Advance Sales Strategy",
                   "How to Pitch Affiliate Offers",
                   "Objection Handling",
                   "Sales Closing Strategies",
@@ -129,27 +128,23 @@ function ProductPro() {
                   "Bing Ads Creation & Optimization",
                   "DFY Landing Page / Funnel",
                   "Bing Ads Coupons for Campaigns",
+                  "How to get Bing Ads Coupons for Initial Campaigning",
                 ],
               },
               {
                 title: "Personal Branding",
                 points: [
-                  "Build Your Personal Brand Presence",
-                  "Niche Clarity & Brand Story",
-                  "Brand Positioning & Kit",
-                  "Content Strategy",
-                  "Copywriting Basics",
+                  "How to Build Your Personal Brand Presence",
+                  "How to Niche Clarity & Brand Story",
+                  "How to Brand Positioning & Kit",
+                  "How to Content Strategy",
+                  "How to Copywriting Basics",
+                  "Content Creation for Personal Branding",
+                  "How to maintain Content Hygiene",
+                  "Basics of Copywriting",
                 ],
               },
-              {
-                title: "Instagram Marketing",
-                points: [
-                  "Organic Lead Generation",
-                  "Instagram Hacks",
-                  "Content Creation Mastery",
-                  "Advanced Engagement Techniques",
-                ],
-              },
+
             ].map((section, idx) => (
               <div
                 key={idx}

@@ -34,14 +34,12 @@ function ProductLite() {
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master Affiliate Marketing, Sales & Branding with this complete
-              course. Designed for students, professionals & entrepreneurs who
-              want to build real skills and achieve financial independence.
+              Organic Lead Generation: The best way to build long-term trust, using SEO, content marketing, and community building to attract high-quality leads.Social Media Marketing: Through consistent posting, reels, ads, and engagement, you increase visibility and create a direct connection with your audience.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now – ₹4000 + GST
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -66,25 +64,25 @@ function ProductLite() {
       </section>
 
 
- {/* Stats Section */}
-<section className="py-12 bg-white">
-  <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
-    {[
-      { icon: "/coursesImg/course_icon.png", label: "1 Course" },
-      { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
-      { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
-      { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
-    ].map((stat, i) => (
-      <div
-        key={i}
-        className="flex flex-col items-center min-w-[140px] text-gray-700"
-      >
-        <img src={stat.icon} alt={stat.label} className="w-12 h-12 mb-2" />
-        <p className="font-semibold">{stat.label}</p>
-      </div>
-    ))}
-  </div>
-</section>
+      {/* Stats Section */}
+      <section className="py-12 bg-white">
+        <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
+          {[
+            { icon: "/coursesImg/course_icon.png", label: "1 Course" },
+            { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
+            { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center min-w-[140px] text-gray-700"
+            >
+              <img src={stat.icon} alt={stat.label} className="w-12 h-12 mb-2" />
+              <p className="font-semibold">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
 
       {/* What You Will Learn */}
@@ -100,15 +98,11 @@ function ProductLite() {
           <div className="grid md:grid-cols-2 gap-10">
             {[
               {
-                title: "Affiliate Marketing Training",
+                title: "",
                 points: [
-                  "Affiliate Marketing – Concept & Strategy",
-                  "Niche & Product Selection",
-                  "How to work Like a Pro",
-                  "Different Platforms – ClickBank, JVZoo, WarriorPlus",
-                  "Finding Killer Products",
-                  "Marketing & Promotions",
-                  "Advanced Strategy of Leads Generation",
+                  "Organic Lead Generation",
+                  "Social Media marketing",
+                  "Personal Branding",
                 ],
               },
             ].map((section, idx) => (

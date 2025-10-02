@@ -32,14 +32,16 @@ function ProductSupreme() {
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master Affiliate Marketing, Sales & Branding with this complete
-              course. Designed for students, professionals & entrepreneurs who
-              want to build real skills and achieve financial independence.
+              Learn the basic concepts of affiliate marketing and understand the unique advantages of LeadsArk.
+              Discover why most people fail in affiliate marketing and how you can avoid those mistakes.
+              Master the art of presenting LeadsArk to prospects in a way that builds trust and drives conversions.
+              Use organic lead generation techniques to attract the right audience.
+              Apply Instagram hacks for quality leads and create content that builds authority and engagement.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now – ₹4000 + GST
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -96,6 +98,42 @@ function ProductSupreme() {
 
           <div className="grid md:grid-cols-2 gap-10">
             {[
+
+
+              {
+                title: "Instagram Marketing Strategy",
+                points: [
+                  "Introduction of Instagram Marketing",
+                  "3 Most Important Things in Instagram",
+                  "Business Accounts and Highlights",
+                  "Personal Branding with Feed",
+                  "Instagram Stories Guide",
+                  "Instagram Hashtags & Caption",
+                  "How to Grow with Reels",
+                  "Hacks to Jump Start from the Scratch in Instagram",
+                ],
+              },
+              {
+                title: " Affiliate Marketing Strategy ",
+                points: [
+                  "Basic Concept of Affiliate Marketing",
+                  "Advantages of LeadsArk and Why",
+                  "Why People Fail in Affiliate Marketing",
+                  "How to Present LeadsArk to the prospects",
+                  "Organic Lead Generation",
+                  "Instagram hacks to attract Quality Leads",
+                  "Content Creatio",
+                ],
+              },
+              {
+                title: "Instagram Marketing",
+                points: [
+                  "Organic Lead Generation",
+                  "Instagram Hacks",
+                  "Content Creation Mastery",
+                  "Advanced Engagement Techniques",
+                ],
+              },
               {
                 title: "Affiliate Marketing Training",
                 points: [
@@ -118,34 +156,11 @@ function ProductSupreme() {
                 ],
               },
               {
-                title: "CPA Marketing",
+                title: "Continuous Upgrade and New Course Addition",
                 points: [
-                  "Basics of CPA Marketing",
-                  "CPA Offers from IMC Platform",
-                  "Finding Ad Copies",
-                  "Keyword Research",
-                  "Bing Ads Creation & Optimization",
-                  "DFY Landing Page / Funnel",
-                  "Bing Ads Coupons for Campaigns",
-                ],
-              },
-              {
-                title: "Personal Branding",
-                points: [
-                  "Build Your Personal Brand Presence",
-                  "Niche Clarity & Brand Story",
-                  "Brand Positioning & Kit",
-                  "Content Strategy",
-                  "Copywriting Basics",
-                ],
-              },
-              {
-                title: "Instagram Marketing",
-                points: [
-                  "Organic Lead Generation",
-                  "Instagram Hacks",
-                  "Content Creation Mastery",
-                  "Advanced Engagement Techniques",
+                  "Weekly Live Training",
+                  "(Recordings of all the Important Sessions will be uploaded in the Course)",
+
                 ],
               },
             ].map((section, idx) => (

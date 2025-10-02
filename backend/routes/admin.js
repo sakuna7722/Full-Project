@@ -159,7 +159,7 @@ router.get('/courses', authAdmin, async (req, res) => {
       }
     ]);
 
-    console.log('Courses data fetched, count:', courses.length);
+    // console.log('Courses data fetched, count:', courses.length);
     res.json(courses);
 
   } catch (err) {

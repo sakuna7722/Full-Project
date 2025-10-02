@@ -329,14 +329,14 @@ router.post("/purchase/verify", protect, async (req, res) => {
         reason: `60% of original price ₹${originalPrice}`,
       };
 
-      console.log(`💰 NEW COMMISSION SYSTEM APPLIED:`);
-      console.log(`   - Course: ${course.name}`);
-      console.log(`   - Original Price: ₹${originalPrice}`);
-      console.log(`   - Customer Discount: ${course.discount || 0}%`);
-      console.log(`   - Customer Pays: ₹${commissionDetails.discountedPrice}`);
-      console.log(`   - Commission Rate: ${COMMISSION_RATE}% (of original price)`);
-      console.log(`   - Commission Amount: ₹${commission}`);
-      console.log(`   - Referrer: ${referrer.email}`);
+      // console.log(`💰 NEW COMMISSION SYSTEM APPLIED:`);
+      // console.log(`   - Course: ${course.name}`);
+      // console.log(`   - Original Price: ₹${originalPrice}`);
+      // console.log(`   - Customer Discount: ${course.discount || 0}%`);
+      // console.log(`   - Customer Pays: ₹${commissionDetails.discountedPrice}`);
+      // console.log(`   - Commission Rate: ${COMMISSION_RATE}% (of original price)`);
+      // console.log(`   - Commission Amount: ₹${commission}`);
+      // console.log(`   - Referrer: ${referrer.email}`);
     }
 
     // ✅ Save purchase with commission details
