@@ -1,5 +1,6 @@
 // Frontend/src/components/ChatComponent.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { AuthContext } from '../context/AuthContext'; // ← Import add karo (user name ke liye)
 import socket from "./socket";
 import {
   Card,
@@ -23,18 +24,22 @@ import {
 import { RefreshCw, Download } from "lucide-react";
 
 const ChatComponent = () => {
+  const { user } = useContext(AuthContext); // ← AuthContext se user get karo
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(""); // Auto set from user
   const room = "general";
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    if (!userName) {
-      const name = prompt("Apna name enter karo:");
-      if (name) setUserName(name);
+    // ← Auto user name set karo (manual prompt nahi)
+    if (user && !userName) {
+      const name = user.firstName || user.email || 'User'; // FirstName prefer, fallback email
+      setUserName(name);
     }
+  }, [user, userName]);
 
+  useEffect(() => {
     if (userName) {
       socket.emit("joinRoom", { room, userName });
 
@@ -42,11 +47,22 @@ const ChatComponent = () => {
       socket.emit('addUser', { userName, id: socket.id });
 
       socket.on("receiveMessage", (data) => {
+        // ← Fix: Sirf dusron ke messages add karo, apne mat (duplicate avoid)
+        if (data.userName !== userName) {
+          setMessages((prev) => [...prev, data]);
+        }
+      });
+
+      // ← Naya: Admin broadcast listen karo (general room ke liye)
+      socket.on("adminMessage", (data) => {
         setMessages((prev) => [...prev, data]);
       });
     }
 
-    return () => socket.off("receiveMessage");
+    return () => {
+      socket.off("receiveMessage");
+      socket.off("adminMessage"); // ← Cleanup add karo
+    };
   }, [userName]);
 
   useEffect(() => {
@@ -55,24 +71,23 @@ const ChatComponent = () => {
 
   const sendMessage = () => {
     if (message.trim() && userName) {
-      socket.emit("sendMessage", {
-        room,
-        message,
-        userName,
-        timestamp: Date.now(),
-      });
+      const newMsg = { room, message, userName, timestamp: Date.now() };
+      // ← Fix: Local state mein add karo (server broadcast se pehle)
+      setMessages((prev) => [...prev, newMsg]);
+      socket.emit("sendMessage", newMsg);
       setMessage("");
     } else {
-      alert("Pehle name enter karo!");
+      alert("Login karo chat karne ke liye!");
     }
   };
 
-  if (!userName)
+  if (!user) { // ← Login check add karo
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 text-gray-800 text-lg font-semibold">
-        Name enter karo chat start karne ke liye!
+        Please login to chat!
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white p-6">

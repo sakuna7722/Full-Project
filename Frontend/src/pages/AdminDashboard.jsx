@@ -18,12 +18,11 @@ export default function AdminDashboard() {
   const [contacts, setContacts] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  // ← Naye states for Chat
-  const [activeUsers, setActiveUsers] = useState([]); // Online users list
-  const [selectedUser, setSelectedUser] = useState(null); // Selected for private chat
+  const [activeUsers, setActiveUsers] = useState([]); 
+  const [selectedUser, setSelectedUser] = useState(null); 
   const [chatMessages, setChatMessages] = useState([]);
-  const [replyMessage, setReplyMessage] = useState(''); // Reply input
-  const [broadcastMessage, setBroadcastMessage] = useState(''); // Broadcast input
+  const [replyMessage, setReplyMessage] = useState(''); 
+  const [broadcastMessage, setBroadcastMessage] = useState(''); 
   const [adminName, setAdminName] = useState('Admin');
   const adminRoom = 'general';
 
@@ -33,20 +32,17 @@ export default function AdminDashboard() {
     setVideos([...videos, video]);
   };
 
-  // ← Fixed useEffect (old messages load add kiya)
   useEffect(() => {
     console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
     fetchDashboard();
 
-    // ← Load old messages on mount (DB se general room ke liye)
-    axios.get(`/api/chat/messages?room=${adminRoom}&limit=50`)
+    axios.get(`/chat/messages?room=${adminRoom}&limit=50`) 
       .then(res => {
         setChatMessages(res.data.messages || []);
         console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
       })
       .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
 
-    // ← Existing Chat Socket Setup
     socket.emit('joinRoom', { room: adminRoom, userName: adminName });
     socket.emit('addUser', { userName: adminName, id: 'admin' });
 
@@ -63,7 +59,7 @@ export default function AdminDashboard() {
     });
 
     socket.on('activeUsers', (users) => {
-      setActiveUsers(users.filter(u => u.id !== 'admin')); // Admin ko exclude
+      setActiveUsers(users.filter(u => u.id !== 'admin')); 
     });
 
     return () => {
@@ -132,7 +128,6 @@ export default function AdminDashboard() {
     console.log("[AdminDashboard] CSV exported successfully");
   };
 
-  // ← Broadcast function (group)
   const handleBroadcast = () => {
     if (broadcastMessage.trim()) {
       socket.emit('adminBroadcast', {
@@ -159,13 +154,11 @@ export default function AdminDashboard() {
     }
   };
 
-  // Select user for private chat
   const selectUser = (user) => {
     setSelectedUser(user);
     const privateRoom = `private_${user.id}`;
     socket.emit('joinRoom', { room: privateRoom, userName: adminName });
-    // Load private messages
-    axios.get(`/api/chat/messages?room=${privateRoom}&limit=50`)
+    axios.get(`/chat/messages?room=${privateRoom}&limit=50`) // /api hataya
       .then(res => setChatMessages(res.data.messages || []))
       .catch(err => console.error('Private messages error:', err));
   };
@@ -370,7 +363,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Right: Chat Window */}
           <div className="w-2/3 space-y-4">
             {selectedUser ? (
               <>
@@ -405,8 +397,6 @@ export default function AdminDashboard() {
             )}
           </div>
         </TabsContent>
-
-
       </Tabs>
     </div>
   );
