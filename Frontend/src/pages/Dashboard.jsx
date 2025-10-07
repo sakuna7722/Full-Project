@@ -122,18 +122,17 @@ const Dashboard = () => {
     }
     return () => { isMounted = false; };
   }, [user]);
-
   const handleLogout = () => {
     try {
-      // LocalStorage clear
+      // Clear local storage
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      // Context reset
+      // Reset user in context
       setUser(null);
 
-      // Hard redirect to login page (navigate kabhi async lag karta hai)
-      window.location.href = "/auth/login";
+      // ✅ Redirect using React Router to login page
+      navigate("/auth/login");
     } catch (err) {
       console.error("❌ Error in logout:", err.message);
     }
@@ -185,13 +184,14 @@ const Dashboard = () => {
             { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
             { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' },
             // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
+            { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
             { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
-            // { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
+            { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
           ].map((item, index) => (
             item.isLogout ? (
               <button
                 key={index}
-                onClick={handleLogout}
+                onClick={handleLogout} // 🔹 Call logout function
                 className="menu-item p-3 mx-2 mb-1 flex items-center gap-3 cursor-pointer transition-all duration-200 border-l-4 rounded-r-lg border-transparent hover:bg-white/5 hover:border-white/30"
               >
                 <i className={`${item.icon} w-5 text-center text-sm`}></i>
@@ -213,12 +213,13 @@ const Dashboard = () => {
             )
           ))}
         </div>
-
+{/* https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp */}
+{/* https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp */}
         {/* User section in sidebar */}
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
             <img
-              src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/n9ie1ojb4l3zgw8tq08h.webp"}
+              src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp"}
               alt={user?.firstName || "User"}
               className="w-8 h-8 rounded-full object-cover border-2 border-white"
             />
@@ -228,12 +229,13 @@ const Dashboard = () => {
               <div className="user-role text-white/70 text-xs">Premium Affiliate</div>
             </div>
             <button
-              onClick={handleLogout}
+              onClick={handleLogout} // 🔹 Use handleLogout
               className="p-1 rounded hover:bg-white/10 transition-colors"
               title="Logout"
             >
               <i className="fas fa-sign-out-alt text-sm"></i>
             </button>
+
           </div>
         </div>
       </div>
@@ -274,14 +276,15 @@ const Dashboard = () => {
                 { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
                 { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' }, // Matches your example path
                 // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
+                { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
                 { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
-                // { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
+                { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
 
               ].map((item, index) => (
                 item.isLogout ? (
                   <button
                     key={index}
-                    onClick={handleLogout}
+                    onClick={handleLogout} // 🔹 Call logout function
                     className="menu-item p-3 mx-2 mb-1 flex items-center gap-3 cursor-pointer transition-all duration-200 border-l-4 rounded-r-lg border-transparent hover:bg-white/5 hover:border-white/30"
                   >
                     <i className={`${item.icon} w-5 text-center text-sm`}></i>
@@ -308,7 +311,7 @@ const Dashboard = () => {
             <div className="p-4 border-t border-white/10">
               <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
                 <img
-                  src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/n9ie1ojb4l3zgw8tq08h.webp"}
+                  src={user?.profilePicture ||  "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
                   alt={user?.firstName || "User"}
                   className="w-8 h-8 rounded-full object-cover border-2 border-white"
                 />
@@ -318,12 +321,13 @@ const Dashboard = () => {
                   <div className="user-role text-white/70 text-xs">Premium Affiliate</div>
                 </div>
                 <button
-                  onClick={handleLogout}
+                  onClick={handleLogout} // 🔹 Use handleLogout
                   className="p-1 rounded hover:bg-white/10 transition-colors"
                   title="Logout"
                 >
                   <i className="fas fa-sign-out-alt text-sm"></i>
                 </button>
+
               </div>
             </div>
           </div>
@@ -421,7 +425,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        
+
       </div>
     </div>
   );

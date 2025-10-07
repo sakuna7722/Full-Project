@@ -105,7 +105,7 @@ const AffiliateAccount = () => {
         <div className="flex items-center justify-between mb-8 p-4 bg-white rounded-lg shadow-sm">
           <div className="flex items-center space-x-4">
             <img
-              src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/n9ie1ojb4l3zgw8tq08h.webp"}
+              src={user?.profilePicture ||  "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
               alt={user?.firstName || "User"}
               className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
             />

@@ -9,6 +9,10 @@ const morgan = require('morgan');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const http = require('http'); 
+const socketIo = require('socket.io'); // Socket.io ke liye
+const Chat = require('./models/Chat'); // ← Yeh add karo
+const { initSocket } = require('./controllers/chatController');
 
 // Load .env variables
 dotenv.config();
@@ -107,7 +111,8 @@ const resetPasswordRoutes = require("./routes/resetPassword");
 const uploadRoute = require("./routes/uploadRoute");
 const videoRoutes = require("./routes/video");
 const cookieParser = require('cookie-parser');
-const Contact = require('./models/Contact'); // Keep for model usage if needed
+const Contact = require('./models/Contact');
+const chatRoutes = require('./routes/chat'); 
 
 const contactRoutes = require('./routes/contact');
 // Add this at the top, after the imports
@@ -128,6 +133,9 @@ app.use('/api/payment', paymentRoutes);
 app.use("/api/auth", resetPasswordRoutes);
 app.use("/api/videos", uploadRoute);
 app.use('/api/videos', videoRoutes);
+app.use('/api/chat', chatRoutes); // ← Yeh add karo
+
+
 app.use(cookieParser());
 // Serve uploads folder as static
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -154,6 +162,10 @@ mongoose.connect(fullMongoURI)
     const Referral = require('./models/Referral');
     await Referral.syncIndexes();
     console.log("✅ Referral indexes synced");
+      // ← Yeh naya add karo (Chat sync)
+    const Chat = require('./models/Chat');
+    await Chat.syncIndexes();
+    console.log("✅ Chat indexes synced");
   })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err);
@@ -167,14 +179,75 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-// ✅ Start server
-// Replace existing app.listen block
+// ✅ Start server with Socket.io
 const PORT = process.env.PORT || 5001;
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+const httpServer = http.createServer(app);
+const io = socketIo(httpServer, {
+  cors: {
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+initSocket(io);
+
+io.on('connection', (socket) => {
+  console.log('👤 User connected:', socket.id);
+
+  socket.on('joinRoom', (data) => {
+    socket.join(data.room);
+    socket.to(data.room).emit('userJoined', { user: data.userName });
+    console.log(`User ${data.userName} joined room: ${data.room}`);
+  });
+
+  socket.on('sendMessage', async (data) => { // ← Async banao
+    try {
+      // ← Saving logic add karo
+      const newMessage = new Chat({
+        room: data.room,
+        message: data.message,
+        userName: data.userName,
+        timestamp: new Date(data.timestamp)
+      });
+      await newMessage.save();
+      console.log(`💾 Saved: ${data.userName}: ${data.message}`);
+
+      // Broadcast karo
+      io.to(data.room).emit('receiveMessage', { ...data });
+    } catch (err) {
+      console.error('❌ Save error:', err);
+    }
+  });
+
+  // ← Yeh naya add karo (adminBroadcast handler)
+  socket.on('adminBroadcast', async (data) => {
+    try {
+      const newMessage = new Chat({
+        room: data.room,
+        message: data.message,
+        userName: data.userName,
+        timestamp: new Date(data.timestamp)
+      });
+      await newMessage.save();
+      console.log(`💾 Admin message saved: ${data.message}`);
+
+      io.to(data.room).emit('adminMessage', { ...data });
+    } catch (err) {
+      console.error('❌ Admin save error:', err);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('👤 User disconnected:', socket.id);
+  });
+});
+const server = httpServer.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT} with Socket.io`);
 });
 
 const gracefulShutdown = () => {
+  io.close(); // Socket.io close
   server.close(() => {
     mongoose.connection.close(false, () => {
       console.log('✅ MongoDB connection closed due to application termination');

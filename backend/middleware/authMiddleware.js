@@ -4,83 +4,6 @@ const User = require("../models/User");
 const rateLimit = require("express-rate-limit");
 const Purchase = require("../models/Purchase");
 
-// exports.protect = async (req, res, next) => {
-//   console.time("protectMiddleware");
-//   let token;
-
-//   if (
-//     req.headers.authorization &&
-//     req.headers.authorization.startsWith("Bearer ")
-//   ) {
-//     token = req.headers.authorization.split(" ")[1];
-//     console.log("🔍 [authMiddleware.js] Token received:", {
-//       token: !!token,
-//       timestamp: new Date().toISOString(),
-//     });
-//   }
-
-//   if (!token) {
-//     console.log("🚫 [authMiddleware.js] No token provided", {
-//       timestamp: new Date().toISOString(),
-//     });
-//     return res.status(401).json({
-//       success: false,
-//       message: "Not authorized to access this route",
-//     });
-//   }
-
-//   try {
-//     console.time("jwtVerify");
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     console.timeEnd("jwtVerify");
-//     console.log("✅ [authMiddleware.js] JWT decoded:", {
-//       // userId: decoded.id,
-//       timestamp: new Date().toISOString(),
-//     });
-
-//     // console.time("userQuery");
-//     const user = await User.findById(decoded.id).select(
-//       "firstName email affiliateId profilePicture isAdmin referralCode"
-//     );
-//     // console.timeEnd("userQuery");
-
-//     if (!user) {
-//       console.log("🚫 [authMiddleware.js] User not found:", {
-//         userId: decoded.id,
-//         timestamp: new Date().toISOString(),
-//       });
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "User not found" });
-//     }
-
-//     req.user = user;
-//     req.user.id = decoded.id;
-//     console.log("✅ [authMiddleware.js] User fetched:", {
-//       id: user._id,
-//       email: user.email,
-//       firstName: user.firstName,
-//       affiliateId: user.affiliateId,
-//       timestamp: new Date().toISOString(),
-//     });
-//     console.timeEnd("protectMiddleware");
-//     next();
-//   } catch (error) {
-//     console.error("❌ [authMiddleware.js] Authentication error:", {
-//       message: error.message,
-//       timestamp: new Date().toISOString(),
-//     });
-//     return res
-//       .status(401)
-//       .json({
-//         success: false,
-//         message: "Not authorized, token failed",
-//         error: error.message,
-//       });
-//   }
-// };
-
-// Admin middleware
 
 exports.protect = async (req, res, next) => {
   console.time("protectMiddleware");
@@ -253,4 +176,43 @@ exports.checkEnrolledCourses = async (req, res, next) => {
     });
   }
 };
+
+// New Middleware: Check if user has enrolled courses
+exports.checkEnrolledCourses = async (req, res, next) => {
+  try {
+    // ← Yeh naya add karo (admin skip)
+    if (req.user.isAdmin) {
+      console.log(`👑 [authMiddleware.js] Admin skip enrolled check: { userId: ${req.user._id} }`);
+      return next(); // Admin ke liye skip
+    }
+
+    const purchaseCount = await Purchase.countDocuments({ user: req.user._id });
+    if (purchaseCount === 0) {
+      console.log("🚫 [authMiddleware.js] No enrolled courses for user:", {
+        userId: req.user._id,
+        timestamp: new Date().toISOString(),
+      });
+      return res.status(403).json({
+        success: false,
+        message: "No enrolled courses. Access denied to dashboard features.",
+      });
+    }
+    console.log("✅ [authMiddleware.js] User has enrolled courses:", {
+      userId: req.user._id,
+      count: purchaseCount,
+      timestamp: new Date().toISOString(),
+    });
+    next();
+  } catch (err) {
+    console.error("❌ [authMiddleware.js] Error checking enrolled courses:", {
+      message: err.message,
+      timestamp: new Date().toISOString(),
+    });
+    return res.status(500).json({
+      success: false,
+      message: "Server error while checking enrolled courses.",
+    });
+  }
+};
+
 exports.adminRateLimit = adminRateLimit;

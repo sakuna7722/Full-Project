@@ -1,197 +1,409 @@
 // import { useEffect, useState } from "react";
-// import { Link, useNavigate, useLocation } from "react-router-dom"; // useLocation add for referral
-// import Footer from "../components/Footer";
-// import api from "../api/axios";
-// import { useAuth } from "../contexts/AuthContext"; // Previous se
+// import axios from "../api/axios";
+// import { Card, CardContent } from "../components/ui/card";
+// import { Button } from "../components/ui/button";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+// import { RefreshCw, Download, Send, MessageCircle, Users } from "lucide-react";
 
-// function ProductLite() {
-//   const [course, setCourse] = useState(null);
-//   const [isEnrolled, setIsEnrolled] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const { user, loading: authLoading } = useAuth(); // user from context (assume has enrolledCourses or fallback to localStorage)
-//   const navigate = useNavigate();
-//   const location = useLocation();
+// import CourseVideos from "../components/CourseVideos";
+// import socket from "../components/socket";
 
-//   // Referral handling (same as Purchase.jsx)
+// export default function AdminDashboard() {
+//   const [loading, setLoading] = useState({ stats: true, sales: true, affiliates: true, courses: true, contacts: true });
+//   const [error, setError] = useState(null);
+//   const [stats, setStats] = useState({});
+//   const [sales, setSales] = useState([]);
+//   const [affiliates, setAffiliates] = useState([]);
+//   const [contacts, setContacts] = useState([]);
+//   const [courses, setCourses] = useState([]);
+
+//   // ← Naye states for Chat
+//   const [activeUsers, setActiveUsers] = useState([]); // Online users list
+//   const [selectedUser, setSelectedUser] = useState(null); // Selected for private chat
+//   const [chatMessages, setChatMessages] = useState([]);
+//   const [replyMessage, setReplyMessage] = useState(''); // Reply input
+//   const [broadcastMessage, setBroadcastMessage] = useState(''); // Broadcast input
+//   const [adminName, setAdminName] = useState('Admin');
+//   const adminRoom = 'general';
+
+//   const [videos, setVideos] = useState([]);
+//   const handleAddVideo = (video) => {
+//     setVideos([...videos, video]);
+//   };
+
+//   // ← Fixed useEffect (bahar laaya, old messages load add kiya)
 //   useEffect(() => {
-//     const searchParams = new URLSearchParams(location.search);
-//     const ref = searchParams.get("ref");
-//     if (ref) {
-//       localStorage.setItem("ref", ref);
-//       localStorage.setItem("referralCode", ref);
-//     }
-//   }, [location.search]);
+//     console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
+//     fetchDashboard();
 
-//   useEffect(() => {
-//     const fetchCourseAndEnrollments = async () => {
-//       setLoading(true);
-//       try {
-//         // Fetch course (same as before, but use /courses/slug/${slug} like Purchase.jsx)
-//         const res = await api.get(`/courses/slug/${course.slug}`); // Wait, course.slug nahi mila? Wait, params se lo
-//         // Correction: useParams add karo for slug
-//         const { slug } = useParams(); // Add this import: import { useParams } from "react-router-dom";
-//         const courseRes = await api.get(`/courses/slug/${slug}`);
-//         const selectedCourse = courseRes.data;
-//         setCourse(selectedCourse);
+//     // ← Load old messages on mount (DB se general room ke liye)
+//     axios.get(`/api/chat/messages?room=${adminRoom}&limit=50`)
+//       .then(res => {
+//         setChatMessages(res.data.messages || []);
+//         console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
+//       })
+//       .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
 
-//         // Enrolled check
-//         if (user) {
-//           // Prefer from AuthContext user if available
-//           if (user.enrolledCourses && user.enrolledCourses.some(c => c.slug === selectedCourse.slug)) {
-//             setIsEnrolled(true);
-//           } else {
-//             // Fallback to localStorage like Courses.jsx
-//             const localUser = JSON.parse(localStorage.getItem('user'));
-//             if (localUser && localUser.enrolledCourses) {
-//               setIsEnrolled(localUser.enrolledCourses.some(c => c.slug === selectedCourse.slug));
-//             }
-//           }
-//         }
-//       } catch (err) {
-//         console.error("Error fetching data:", err);
-//         // Error handling like Purchase.jsx
-//         if (err.response?.status === 404) {
-//           // Handle not found
-//         }
-//       } finally {
-//         setLoading(false);
+//     // ← Existing Chat Socket Setup
+//     socket.emit('joinRoom', { room: adminRoom, userName: adminName });
+//     socket.emit('addUser', { userName: adminName, id: 'admin' });
+
+//     socket.on('receiveMessage', (data) => {
+//       if (data.room === adminRoom) {
+//         setChatMessages(prev => [...prev, data]);
+//       } else if (selectedUser && data.room === `private_${selectedUser.id}`) {
+//         setChatMessages(prev => [...prev, data]);
 //       }
+//     });
+
+//     socket.on('adminMessage', (data) => {
+//       setChatMessages(prev => [...prev, { ...data, userName: 'Admin Broadcast' }]);
+//     });
+
+//     socket.on('activeUsers', (users) => {
+//       setActiveUsers(users.filter(u => u.id !== 'admin')); // Admin ko exclude
+//     });
+
+//     return () => {
+//       socket.off('receiveMessage');
+//       socket.off('adminMessage');
+//       socket.off('activeUsers');
 //     };
+//   }, [selectedUser]);
 
-//     if (!authLoading && course) { // Wait, slug from params
-//       fetchCourseAndEnrollments();
+//   const fetchDashboard = async () => {
+//     console.log("[AdminDashboard] Fetching dashboard data...");
+//     try {
+//       setLoading({ stats: true, sales: true, affiliates: true, courses: true, contacts: true });
+//       console.log("[AdminDashboard] Making API requests...");
+//       const [statsRes, salesRes, affiliatesRes, coursesRes, contactsRes] = await Promise.all([
+//         axios.get("/admin/dashboard"),
+//         axios.get("/admin/sales"),
+//         axios.get("/admin/affiliates"),
+//         axios.get("/admin/courses"),
+//         axios.get("/admin/contacts"),
+//       ]);
+
+//       console.log("[AdminDashboard] API responses:", {
+//         stats: statsRes.data,
+//         salesCount: salesRes.data.length,
+//         affiliatesCount: affiliatesRes.data.length,
+//         coursesCount: coursesRes.data.length,
+//         contactsCount: contactsRes.data.length,
+//         courses: coursesRes.data.map((c) => ({ id: c._id, name: c.title })),
+//       });
+//       setStats(statsRes.data || {});
+//       setSales(salesRes.data || []);
+//       setAffiliates(affiliatesRes.data || []);
+//       setCourses(coursesRes.data || []);
+//       setContacts(contactsRes.data || []);
+//     } catch (err) {
+//       console.error("[AdminDashboard] Error loading dashboard data:", err.response?.data || err.message);
+//       setError(err.response?.data?.message || "Failed to load dashboard data");
+//     } finally {
+//       setLoading({ stats: false, sales: false, affiliates: false, courses: false, contacts: false });
+//       console.log("[AdminDashboard] Data fetching completed, loading states updated.");
 //     }
-//   }, [user, authLoading, location.search]); // Dependencies
-
-//   const handleBuyNow = () => { // Renamed from handleEnroll
-//     if (authLoading || loading) return;
-
-//     if (!user) {
-//       // Not logged in, set intended and redirect like Courses.jsx
-//       localStorage.setItem('intendedCourse', course.slug);
-//       navigate('/auth/signup'); // Or /signup
-//       return;
-//     }
-
-//     if (isEnrolled) {
-//       // Already enrolled, go to dashboard/course
-//       navigate(`/course/${course.slug}` || '/dashboard'); // Adjust route as per your app
-//       return;
-//     }
-
-//     // Go to purchase page
-//     navigate(`/purchase/${course.slug}`);
 //   };
 
-//   // Button render (updated texts)
-//   const renderButton = () => {
-//     if (authLoading || loading) {
-//       return (
-//         <button className="px-8 py-4 rounded-xl bg-gray-400 text-white font-bold shadow-lg" disabled>
-//           Loading...
-//         </button>
-//       );
-//     }
+//   const handleExportCSV = () => {
+//     console.log("[AdminDashboard] Exporting CSV...");
 
-//     if (!user) {
-//       return (
-//         <button
-//           onClick={handleBuyNow}
-//           className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition cursor-pointer"
-//         >
-//           Sign Up to Buy
-//         </button>
-//       );
-//     }
+//     const formatNumber = (num) => Number(num || 0).toFixed(2);
 
-//     if (isEnrolled) {
-//       return (
-//         <button
-//           onClick={handleBuyNow}
-//           className="px-8 py-4 rounded-xl bg-green-500 text-white font-bold shadow-lg cursor-pointer hover:bg-green-600 transition"
-//         >
-//           Go to Course →
-//         </button>
-//       );
-//     }
+//     const csv = [
+//       "Data,Value",
+//       `Total Sales,${formatNumber(stats.totalSales)}`,
+//       `Commission Paid,${formatNumber(stats.totalCommission)}`,
+//       `Platform Earnings,${formatNumber((stats.totalSales || 0) - (stats.totalCommission || 0))}`,
+//       `Total Affiliates,${stats.totalAffiliates || 0}`,
+//     ].join("\n");
 
-//     return (
-//       <button
-//         onClick={handleBuyNow}
-//         className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition cursor-pointer"
-//       >
-//         Buy Now
-//       </button>
-//     );
+//     const blob = new Blob([csv], { type: "text/csv" });
+//     const url = window.URL.createObjectURL(blob);
+//     const a = document.createElement("a");
+//     a.href = url;
+//     a.download = "admin_dashboard_stats.csv";
+//     a.click();
+//     window.URL.revokeObjectURL(url);
+
+//     console.log("[AdminDashboard] CSV exported successfully");
 //   };
 
-//   // Add useParams import at top
-//   const { slug } = useParams(); // For fetching by slug
+//   // ← Broadcast function (group)
+//   const handleBroadcast = () => {
+//     if (broadcastMessage.trim()) {
+//       socket.emit('adminBroadcast', {
+//         room: adminRoom,
+//         message: broadcastMessage,
+//         userName: adminName,
+//         timestamp: Date.now()
+//       });
+//       setBroadcastMessage('');
+//       console.log(`[AdminDashboard] Broadcast sent: ${broadcastMessage}`);
+//     }
+//   };
 
-//   if (loading || !course) {
-//     return <div className="text-center py-10">Loading...</div>;
-//   }
+//   const handleReply = () => {
+//     if (replyMessage.trim() && selectedUser) {
+//       const privateRoom = `private_${selectedUser.id}`;
+//       socket.emit('adminReply', {
+//         room: privateRoom,
+//         message: replyMessage,
+//         userName: adminName,
+//         timestamp: Date.now()
+//       });
+//       setReplyMessage('');
+//     }
+//   };
+
+//   // ← Fixed selectUser (sirf private load)
+//   const selectUser = (user) => {
+//     setSelectedUser(user);
+//     const privateRoom = `private_${user.id}`;
+//     socket.emit('joinRoom', { room: privateRoom, userName: adminName });
+//     // Load private messages
+//     axios.get(`/api/chat/messages?room=${privateRoom}&limit=50`)
+//       .then(res => setChatMessages(res.data.messages || []))
+//       .catch(err => console.error('Private messages error:', err));
+//   };
+
+//   console.log("[AdminDashboard] Rendering dashboard");
 
 //   return (
-//     <>
-//       {/* Hero Section */}
-//       <section className="bg-gradient-to-r from-indigo-50 to-blue-100 py-16 border-b">
-//         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 px-6">
-//           <div className="flex-1 text-center lg:text-left">
-//             <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
-//               {course.name}
-//             </h1>
-//             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-//               {/* Your description */}
-//               Organic Lead Generation: The best way to build long-term trust, using SEO, content marketing, and community building to attract high-quality leads.Social Media Marketing: Through consistent posting, reels, ads, and engagement, you increase visibility and create a direct connection with your audience.
-//             </p>
-//             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-//               {renderButton()}
-//               <Link
-//                 to="/courses"
-//                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
-//               >
-//                 ← Back to Courses
-//               </Link>
-//             </div>
-//           </div>
-
-//           <div className="flex-1">
-//             <div className="relative w-full rounded-2xl overflow-hidden shadow-xl">
-//               <img
-//                 src={course.thumbnail || "/images/anmol-duggal.png"}
-//                 alt={course.name}
-//                 className="w-full h-auto object-cover rounded-2xl"
-//               />
-//               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-//             </div>
-//           </div>
+//     <div className="p-6 space-y-6">
+//       <div className="flex items-center justify-between">
+//         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+//         <div className="flex gap-2">
+//           <Button variant="outline" onClick={fetchDashboard} disabled={Object.values(loading).some(Boolean)}>
+//             <RefreshCw className="h-4 w-4 mr-2" /> Refresh
+//           </Button>
+//           <Button variant="outline" onClick={handleExportCSV}>
+//             <Download className="h-4 w-4 mr-2" /> Export CSV
+//           </Button>
 //         </div>
-//       </section>
-
-//       {/* Price Display (Added like in Purchase/Courses - optional, hero mein) */}
-//       <div className="px-6 py-4 bg-white text-center">
-//         <p className="text-lg">
-//           Price:{' '}
-//           {course.discount ? (
-//             <>
-//               <span className="line-through text-red-500 mr-2">₹{Math.round(course.price).toLocaleString('en-IN')}</span>
-//               <span className="text-green-600 font-semibold text-xl">
-//                 ₹{Math.round(course.price * (1 - parseFloat(course.discount) / 100)).toLocaleString('en-IN')}
-//               </span>
-//             </>
-//           ) : (
-//             <span className="text-green-600 font-semibold text-xl">₹{Math.round(course.price).toLocaleString('en-IN')}</span>
-//           )}
-//         </p>
 //       </div>
 
-//       {/* Rest sections same - Stats, What You Will Learn, Who Is This For, Trust Badges */}
-//       {/* ... (copy from your original) ... */}
+//       {error && <div className="text-red-500 bg-red-100 p-2 rounded">{error}</div>}
 
-//       <Footer />
-//     </>
+//       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+//         <Card>
+//           <CardContent className="p-4">
+//             <p className="text-sm">Total Sales</p>
+//             <p className="text-xl font-bold">₹{stats.totalSales || 0}</p>
+//           </CardContent>
+//         </Card>
+//         <Card>
+//           <CardContent className="p-4">
+//             <p className="text-sm">Commission Paid</p>
+//             <p className="text-xl font-bold">₹{stats.totalCommission || 0}</p>
+//           </CardContent>
+//         </Card>
+//         <Card>
+//           <CardContent className="p-4">
+//             <p className="text-sm">Platform Earnings</p>
+//             <p className="text-xl font-bold">₹{(stats.totalSales || 0) - (stats.totalCommission || 0)}</p>
+//           </CardContent>
+//         </Card>
+//         <Card>
+//           <CardContent className="p-4">
+//             <p className="text-sm">Affiliates</p>
+//             <p className="text-xl font-bold">{stats.totalAffiliates || 0}</p>
+//           </CardContent>
+//         </Card>
+//       </div>
+
+//       <Tabs defaultValue="sales">
+//         <TabsList>
+//           <TabsTrigger value="sales">Sales</TabsTrigger>
+//           <TabsTrigger value="affiliates">Affiliates</TabsTrigger>
+//           <TabsTrigger value="courses">Courses</TabsTrigger>
+//           <TabsTrigger value="videos">Videos</TabsTrigger>
+//           <TabsTrigger value="contacts">Contact Messages</TabsTrigger>
+//           <TabsTrigger value="chat">Chat</TabsTrigger>
+//         </TabsList>
+//         <TabsContent value="videos">
+//           <CourseVideos videos={videos} onAddVideo={handleAddVideo} />
+//         </TabsContent>
+
+//         <TabsContent value="sales">
+//           {loading.sales ? (
+//             <div className="text-center">Loading sales...</div>
+//           ) : (
+//             <Table>
+//               <TableHeader>
+//                 <TableRow>
+//                   <TableHead>Date</TableHead>
+//                   <TableHead>Buyer</TableHead>
+//                   <TableHead>Course</TableHead>
+//                   <TableHead>Price</TableHead>
+//                   <TableHead>Commission</TableHead>
+//                   <TableHead>Affiliate</TableHead>
+//                   <TableHead>Status</TableHead>
+//                 </TableRow>
+//               </TableHeader>
+//               <TableBody>
+//                 {sales.map((s) => (
+//                   <TableRow key={s._id}>
+//                     <TableCell>{new Date(s.createdAt).toLocaleDateString()}</TableCell>
+//                     <TableCell>{s.user?.firstName || 'N/A'} ({s.user?.email || 'N/A'})</TableCell>
+//                     <TableCell>{s.course?.title || 'N/A'}</TableCell>
+//                     <TableCell>₹{s.amount || 0}</TableCell>
+//                     <TableCell>₹{s.commissionEarned || 0}</TableCell>
+//                     <TableCell>{s.referredBy?.firstName || 'N/A'}</TableCell>
+//                     <TableCell>{s.status || 'N/A'}</TableCell>
+//                   </TableRow>
+//                 ))}
+//               </TableBody>
+//             </Table>
+//           )}
+//         </TabsContent>
+
+//         <TabsContent value="affiliates">
+//           {loading.affiliates ? (
+//             <div className="text-center">Loading affiliates...</div>
+//           ) : (
+//             <Table>
+//               <TableHeader>
+//                 <TableRow>
+//                   <TableHead>Name</TableHead>
+//                   <TableHead>Email</TableHead>
+//                   <TableHead>Sales</TableHead>
+//                   <TableHead>Total Commission</TableHead>
+//                   <TableHead>Last Sale</TableHead>
+//                 </TableRow>
+//               </TableHeader>
+//               <TableBody>
+//                 {affiliates.map((a) => (
+//                   <TableRow key={a._id}>
+//                     <TableCell>{`${a.firstName || 'N/A'} ${a.lastName || ''}`}</TableCell>
+//                     <TableCell>{a.email || 'N/A'}</TableCell>
+//                     <TableCell>{a.salesCount || 0}</TableCell>
+//                     <TableCell>₹{a.totalCommission || 0}</TableCell>
+//                     <TableCell>{a.lastSaleAt ? new Date(a.lastSaleAt).toLocaleDateString() : 'N/A'}</TableCell>
+//                   </TableRow>
+//                 ))}
+//               </TableBody>
+//             </Table>
+//           )}
+//         </TabsContent>
+
+//         <TabsContent value="courses">
+//           {loading.courses ? (
+//             <div className="text-center">Loading courses...</div>
+//           ) : (
+//             <Table>
+//               <TableHeader>
+//                 <TableRow>
+//                   <TableHead>Course</TableHead>
+//                   <TableHead>Sales</TableHead>
+//                   <TableHead>Revenue</TableHead>
+//                   <TableHead>Commission</TableHead>
+//                 </TableRow>
+//               </TableHeader>
+//               <TableBody>
+//                 {courses.map((c) => (
+//                   <TableRow key={c._id}>
+//                     <TableCell>{c.title || 'N/A'}</TableCell>
+//                     <TableCell>{c.salesCount || 0}</TableCell>
+//                     <TableCell>₹{c.totalRevenue || 0}</TableCell>
+//                     <TableCell>₹{c.totalCommission || 0}</TableCell>
+//                   </TableRow>
+//                 ))}
+//               </TableBody>
+//             </Table>
+//           )}
+//         </TabsContent>
+//         <TabsContent value="contacts">
+//           {loading.contacts ? (
+//             <div className="text-center">Loading contact messages...</div>
+//           ) : (
+//             <Table>
+//               <TableHeader>
+//                 <TableRow>
+//                   <TableHead>Date</TableHead>
+//                   <TableHead>Name</TableHead>
+//                   <TableHead>Email</TableHead>
+//                   <TableHead>Subject</TableHead>
+//                   <TableHead>Message</TableHead>
+//                 </TableRow>
+//               </TableHeader>
+//               <TableBody>
+//                 {contacts.map((c) => (
+//                   <TableRow key={c._id}>
+//                     <TableCell>{new Date(c.createdAt).toLocaleDateString()}</TableCell>
+//                     <TableCell>{c.name || 'N/A'}</TableCell>
+//                     <TableCell>{c.email || 'N/A'}</TableCell>
+//                     <TableCell>{c.subject || 'N/A'}</TableCell>
+//                     <TableCell>{c.message || 'N/A'}</TableCell>
+//                   </TableRow>
+//                 ))}
+//               </TableBody>
+//             </Table>
+//           )}
+//         </TabsContent>
+//         {/* ← WhatsApp-like Chat Tab */}
+//         <TabsContent value="chat" className="flex gap-4">
+//           {/* Left: User List */}
+//           <div className="w-1/3 bg-gray-50 p-4 rounded border">
+//             <h3 className="font-semibold mb-4 flex items-center gap-2">
+//               <Users className="h-4 w-4" /> Online Users ({activeUsers.length})
+//             </h3>
+//             <div className="space-y-2 max-h-96 overflow-y-auto">
+//               {activeUsers.map((user, i) => (
+//                 <Button
+//                   key={i}
+//                   variant={selectedUser?.id === user.id ? "default" : "outline"}
+//                   className="w-full justify-start"
+//                   onClick={() => selectUser(user)}
+//                 >
+//                   <MessageCircle className="h-4 w-4 mr-2" />
+//                   {user.userName}
+//                 </Button>
+//               ))}
+//               {activeUsers.length === 0 && <p className="text-gray-500 text-sm">No online users</p>}
+//             </div>
+//           </div>
+
+//           {/* Right: Chat Window */}
+//           <div className="w-2/3 space-y-4">
+//             {selectedUser ? (
+//               <>
+//                 <h3 className="font-semibold">Chat with {selectedUser.userName}</h3>
+//                 <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
+//                   {chatMessages.map((msg, i) => (
+//                     <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName ? 'bg-blue-100 ml-auto' : 'bg-gray-100'}`}>
+//                       <strong>{msg.userName}:</strong> {msg.message}
+//                       <small className="block text-xs text-gray-500 mt-1">
+//                         {new Date(msg.timestamp).toLocaleTimeString()}
+//                       </small>
+//                     </div>
+//                   ))}
+//                 </div>
+//                 <div className="flex gap-2">
+//                   <input
+//                     value={replyMessage}
+//                     onChange={(e) => setReplyMessage(e.target.value)}
+//                     placeholder="Reply to user..."
+//                     className="flex-1 p-2 border rounded"
+//                     onKeyPress={(e) => e.key === 'Enter' && handleReply()}
+//                   />
+//                   <Button onClick={handleReply} disabled={!replyMessage.trim()}>
+//                     <Send className="h-4 w-4 mr-2" /> Reply
+//                   </Button>
+//                 </div>
+//               </>
+//             ) : (
+//               <div className="text-center py-8 text-gray-500">
+//                 Select a user to start chatting
+//               </div>
+//             )}
+//           </div>
+//         </TabsContent>
+//       </Tabs>
+//     </div>
 //   );
 // }
 
-// export default ProductLite;
+// export { AdminDashboard };

@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setChatIndex((prev) => (prev + 1) % chatData.length);
-    }, 1200); // rotates every 1.5 seconds
+    }, 1200);
 
     return () => clearInterval(interval);
   }, []);
@@ -54,15 +54,27 @@ function Home() {
 
           {/* Wrapper to control image and floating cards */}
           <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
+
+
             <img
               src="/Girl-1.jpg"
               alt="Freelancer"
-              className="w-full h-auto object-contain rounded-xl shadow-xl scale-100 md:scale-110"
-              style={{ transformOrigin: 'bottom center' }}
+              className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
             />
-            {/* Rotating Chat Bubble */}
-            <div className="absolute -top-4 left-4 sm:left-[-100px] bg-white p-4 rounded-lg shadow-lg w-64 flex gap-3 items-start z-20 transition-all duration-500">
 
+            {/* Rotating Chat Bubble */}
+
+            <div
+              className="
+    absolute 
+    bottom-[-30px] sm:bottom-8 
+    left-1/2 sm:left-6 
+    -translate-x-1/2 sm:translate-x-0
+    bg-white p-4 rounded-xl shadow-lg w-64 
+    flex gap-3 items-start 
+    z-20 transition-all duration-500
+  "
+            >
               <div className="text-orange-500 text-2xl">💬</div>
               <div>
                 <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
@@ -70,44 +82,7 @@ function Home() {
               </div>
             </div>
 
-            {/* Feedback Box */}
-            {/* <div className="absolute -bottom-8 right-0 sm:right-0 md:right-0 lg:right-0 bg-white p-5 rounded-lg shadow-lg w-72 text-sm z-20
-              opacity-100 visible sm:opacity-0 sm:invisible sm:group-hover:opacity-100 sm:group-hover:visible transition-all duration-300
-              left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0">
 
-              <h3 className="font-bold text-gray-800 mb-3">Client Feedback</h3>
-              <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-4">
-                <span className="bg-gray-100 px-2 py-1 rounded">Work</span>
-                <span className="bg-gray-100 px-2 py-1 rounded">Project</span>
-                <span className="bg-gray-100 px-2 py-1 rounded">Behaviour</span>
-                <span className="bg-gray-100 px-2 py-1 rounded">Punctuality</span>
-                <span className="bg-gray-100 px-2 py-1 rounded">+5</span>
-              </div>
-
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-xl font-bold text-gray-800">4.5</span>
-                <div className="text-orange-400 text-lg">★★★★☆</div>
-              </div>
-
-              <h4 className="font-semibold text-gray-800 mb-2">Rate and Review</h4>
-              <div className="flex gap-1 mb-3 text-xl text-gray-300 cursor-pointer">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="hover:text-orange-400 transition-colors duration-200">☆</span>
-                ))}
-              </div>
-
-              <ul className="space-y-2 text-xs text-gray-600">
-                <li className="flex items-start gap-2">
-                  <span>🧑</span> Hey! I'm looking for a freelancer to design a website banner.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>👩</span> Thanks for the quick turnaround. Quality exceeded expectations.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>👨</span> Very professional and creative work. Loved the attention to detail.
-                </li>
-              </ul>
-            </div> */}
           </div>
 
         </div>

@@ -5,7 +5,10 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
+      extend: {
+      fontFamily: {
+        sans: ['Open Sans', 'sans-serif'], 
+      },
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0)' },

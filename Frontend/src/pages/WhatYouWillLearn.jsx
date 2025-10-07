@@ -31,43 +31,67 @@ const WhatYouWillLearn = () => {
       {/* Content Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-7xl w-full items-center">
         {/* Left Image */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: -80 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           className="flex justify-center"
-        >
-          <motion.img
+        > */}
+          {/* <motion.img
             src="beautiful.jpg"
             alt="Learning"
             className="rounded-3xl shadow-2xl border-4 border-yellow-400 hover:shadow-[0_0_25px_rgba(250,204,21,0.6)] hover:scale-105 transition duration-500"
             animate={{ y: [0, -12, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           />
-        </motion.div>
+        </motion.div> */}
 
-        {/* Right Points */}
-        <motion.div
-          initial={{ opacity: 0, x: 80 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-          className="flex flex-col justify-center"
-        >
-          <ul className="space-y-6 text-gray-800 text-lg">
-            {points.map((point, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 40 : -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.12 }}
-                className="flex items-start gap-4 bg-gradient-to-r from-white to-yellow-50 shadow-md rounded-2xl p-5 hover:shadow-[0_0_20px_rgba(250,204,21,0.5)] transition"
-              >
-                <CheckCircle className="text-yellow-500 w-7 h-7 flex-shrink-0 mt-1" />
-                <span>{point}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
+          <motion.img
+            src="beautiful.jpg"
+            alt="Learning"
+            className="
+    rounded-3xl 
+    shadow-2xl 
+    border-4 border-yellow-400 
+    hover:shadow-[0_0_25px_rgba(250,204,21,0.6)] 
+    hover:scale-105 
+    transition 
+    duration-500
+    w-full 
+    max-w-[280px]   /* mobile */
+    sm:max-w-[350px]  /* tablet */
+    md:max-w-[450px]  /* desktop */
+    lg:max-w-[550px]  /* large desktop */
+    h-auto 
+    mx-auto
+  "
+            animate={{ y: [0, -12, 0] }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          />
+
+
+          {/* Right Points */}
+          <motion.div
+            initial={{ opacity: 0, x: 80 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col justify-center"
+          >
+            <ul className="space-y-6 text-gray-800 text-lg">
+              {points.map((point, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? 40 : -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.12 }}
+                  className="flex items-start gap-4 bg-gradient-to-r from-white to-yellow-50 shadow-md rounded-2xl p-5 hover:shadow-[0_0_20px_rgba(250,204,21,0.5)] transition"
+                >
+                  <CheckCircle className="text-yellow-500 w-7 h-7 flex-shrink-0 mt-1" />
+                  <span>{point}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
       </div>
     </div>
   );

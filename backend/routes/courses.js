@@ -18,28 +18,48 @@ const razorpayInstance = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// ✅ Get all courses
-// router.get("/", async (req, res) => {
-//   try {
-//     // const courses = await Course.find();
-//     // const courses = await Course.find().select('thumbnail -_id name slug');
-//     const courses = await Course.find().select('thumbnail name slug price discount'); // Ensure price and discount
-//     console.log("Courses fetched with prices:", courses.length, courses);
-//     console.log("Courses fetched:", courses.length);
-//     res.json(courses);
-//   } catch (err) {
-//     console.error("Error fetching courses:", err);
-//     res
-//       .status(500)
-//       .json({ success: false, message: "Failed to fetch courses" });
-//   }
-// });
 
 
 // ✅ Get all courses (Updated with discount sanitization)
+// router.get("/", async (req, res) => {
+//   try {
+//     const courses = await Course.find().select('thumbnail name slug price discount');
+    
+//     // 🆕 ADD ये: Sanitize discount to number for all courses
+//     const sanitizedCourses = courses.map(course => {
+//       let safeDiscount = 0;
+//       if (course.discount) {
+//         if (typeof course.discount === 'object' && course.discount.$numberDecimal) {
+//           // Raw Decimal128 case
+//           safeDiscount = parseFloat(course.discount.$numberDecimal);
+//         } else {
+//           // String or number case (from toJSON)
+//           safeDiscount = parseFloat(course.discount.toString() || '0');
+//         }
+//       }
+//       console.log(`Sanitized ${course.name} discount: ${safeDiscount} (was: ${course.discount})`);  // Log for debug
+      
+//       return {
+//         ...course.toObject(),  // Plain object
+//         discount: safeDiscount  // Override with number
+//       };
+//     });
+    
+//     console.log("Courses fetched with sanitized prices:", sanitizedCourses.length);
+//     res.json(sanitizedCourses);  // Send sanitized data
+//   } catch (err) {
+//     console.error("Error fetching courses:", err);
+//     res.status(500).json({ success: false, message: "Failed to fetch courses" });
+//   }
+// });
+
+// 06/10/25
 router.get("/", async (req, res) => {
   try {
-    const courses = await Course.find().select('thumbnail name slug price discount');
+    // 🆕 CHANGE: Sort by price ascending add किया
+    const courses = await Course.find()
+      .sort({ price: 1 })  // कम price से ज्यादा: Lite (6999) पहले, Supreme (16999) आखिर
+      .select('thumbnail name slug price discount isActive');  // isActive add optional, inactive hide करने के लिए
     
     // 🆕 ADD ये: Sanitize discount to number for all courses
     const sanitizedCourses = courses.map(course => {
@@ -68,58 +88,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch courses" });
   }
 });
-// ✅ Get course by slug
-
-// router.get("/slug/:slug", protect, async (req, res) => {
-//   try {
-//     console.log(`[GET /slug/:slug] Fetching course for slug: ${req.params.slug}, User ID: ${req.user?._id || 'anonymous'}`);
-//     const course = await Course.findOne({ slug: req.params.slug }).lean();
-//     if (!course) {
-//       console.log(`[GET /slug/:slug] Course not found for slug: ${req.params.slug}`);
-//       return res.status(404).json({ success: false, message: "Course not found" });
-//     }
-
-//     // Check if the user has purchased the course
-//     const purchase = await Purchase.findOne({
-//       user: req.user?._id,
-//       course: course._id,
-//       status: "completed",
-//     });
-//     console.log(`[GET /slug/:slug] Purchase check for user ${req.user?._id || 'anonymous'}: ${purchase ? 'Purchased' : 'Not purchased'}`);
-
-//     // Fix: Ensure videos is always an array (handle undefined or non-array cases)
-//     course.videos = Array.isArray(course.videos) ? course.videos : [];
-
-//     // Filter videos: Only include URLs for freePreview videos or if user has purchased
-//     const videos = course.videos.map((video) => {
-//       const videoData = {
-//         ...video,
-//         url: purchase || video.freePreview ? video.url : null,
-//       };
-//       console.log(`[GET /slug/:slug] Video "${video.title || 'Untitled'}": freePreview=${video.freePreview}, hasPurchased=${!!purchase}, URL=${videoData.url ? 'Included' : 'Hidden'}`);
-//       return videoData;
-//     });
-
-//     // Add hasPurchased flag to the response
-//     const response = {
-//       ...course,
-//       videos,
-//       hasPurchased: !!purchase,
-//     };
-//     console.log(`[GET /slug/:slug] Sending response:`, {
-//       courseId: course._id,
-//       courseName: course.name,
-//       hasPurchased: response.hasPurchased,
-//       videoCount: videos.length,
-//       videos: videos.map((v) => ({ title: v.title || 'Untitled', url: v.url ? 'Included' : 'Hidden', freePreview: v.freePreview })),
-//     });
-
-//     res.json(response);
-//   } catch (err) {
-//     console.error(`[GET /slug/:slug] Error:`, err.message, err.stack);
-//     res.status(500).json({ success: false, message: "Server error", error: err.message });
-//   }
-// });
 
 // ✅ Get course by slug (Updated with discount sanitization)
 router.get("/slug/:slug", protect, async (req, res) => {

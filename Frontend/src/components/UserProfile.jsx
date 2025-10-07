@@ -147,7 +147,7 @@ const UserProfile = () => {
                     src={
                       user?.profilePicture ||
                       profileImage ||
-                      "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/n9ie1ojb4l3zgw8tq08h.webp"
+                      "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"
                     }
                     alt="Profile"
                     className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg mx-auto"

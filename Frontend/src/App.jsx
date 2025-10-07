@@ -53,6 +53,7 @@ import AffiliateAgreement from './pages/AffiliateAgreement';
 import FAQ from './pages/FAQ';
 import UserProfile from './components/UserProfile';
 import Support from './pages/Support';
+import ChatComponent from './components/ChatComponent';
 
 function PublicLayout({ children }) {
   return (
@@ -112,6 +113,8 @@ function AppContent() {
           <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/auth/login" replace />} />
           <Route path="/referrals" element={isLoggedIn ? <ReferralPage /> : <Navigate to="/auth/login" replace />} />
           <Route path="/admin-dashboard" element={isLoggedIn ? <AdminDashboard /> : <Navigate to="/auth/login" replace />} />
+
+          <Route path="/dashboard/chat" element={<ChatComponent />} />
 
           <Route path="/dashboard/support" element={<Support />} />
           <Route path="/dashboard/profile" element={<UserProfile />} />
