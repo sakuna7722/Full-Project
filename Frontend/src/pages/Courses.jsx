@@ -96,7 +96,7 @@ function Courses({ isLoggedIn, setIntendedCourse }) {
             </p>
 
             <p className="mb-4">
-              {course.discount ? (
+              {/* {course.discount ? (
                 <>
                   <span className="line-through text-red-500 mr-2 text-base">
                     ₹{Math.round(course.price || 0).toLocaleString('en-IN')}
@@ -109,7 +109,23 @@ function Courses({ isLoggedIn, setIntendedCourse }) {
                 <span className="text-green-500 font-bold text-2xl">
                   ₹{Math.round(course.price || 0).toLocaleString('en-IN')}
                 </span>
+              )} */}
+
+              {course.discount ? (
+                <>
+                  <span className="line-through text-red-500 mr-2 text-base">
+                    ₹{Math.round(course.price || 0).toLocaleString('en-IN')}
+                  </span>
+                  <span className="text-green-500 font-bold text-2xl">
+                    ₹{Math.round((course.price || 0) * (1 - parseFloat(course.discount || 0) / 100)).toLocaleString('en-IN')}
+                  </span>
+                </>
+              ) : (
+                <span className="text-green-500 font-bold text-2xl">
+                  ₹{Math.round(course.price || 0).toLocaleString('en-IN')}
+                </span>
               )}
+
             </p>
 
             <div className="flex justify-center gap-3 mt-auto">

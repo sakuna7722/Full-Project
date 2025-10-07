@@ -75,61 +75,70 @@ function Purchase() {
 
     try {
       // Get referral code from localStorage
-      const referralCode = localStorage.getItem('ref') || localStorage.getItem('referralCode') || null;
+      const referralCode =
+        localStorage.getItem("ref") ||
+        localStorage.getItem("referralCode") ||
+        null;
 
-      console.log('🔗 Referral code for purchase:', referralCode);
+      console.log("🔗 Referral code for purchase:", referralCode);
 
-      const orderRes = await api.post('/courses/purchase/create-order', {
+      // ✅ FIX: Convert discount to number before arithmetic
+      const discount = course.discount ? parseFloat(course.discount) : 0;
+      const amount = course.price * (1 - discount / 100);
+
+      const orderRes = await api.post("/courses/purchase/create-order", {
         courseId: course._id,
-        amount: course.price * (1 - (course.discount || 0) / 100),
+        amount: amount,
         affiliateId: referralCode,
       });
 
-      const { id: order_id, amount, key } = orderRes.data;
+      const { id: order_id, amount: orderAmount, key } = orderRes.data;
 
       const options = {
         key: key || process.env.RAZORPAY_KEY_ID,
-        amount: amount,
-        currency: 'INR',
-        name: 'Course Purchase',
+        amount: orderAmount,
+        currency: "INR",
+        name: "Course Purchase",
         description: course.name,
         order_id,
         handler: async function (response) {
           try {
-            const referralCode = localStorage.getItem('ref') || localStorage.getItem('referralCode') || null;
-            const verifyRes = await api.post('/courses/purchase/verify', {
+            const referralCode =
+              localStorage.getItem("ref") ||
+              localStorage.getItem("referralCode") ||
+              null;
+            const verifyRes = await api.post("/courses/purchase/verify", {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               courseId: course._id,
-              amount: amount / 100,
+              amount: orderAmount / 100,
               affiliateId: referralCode,
             });
-           // NEW DEBUG LOG: Log the verify response
-             console.log('✅ [Purchase.jsx] Verify response data:', {
+            console.log("✅ [Purchase.jsx] Verify response data:", {
               data: verifyRes.data,
               timestamp: new Date().toISOString(),
             });
 
             if (verifyRes.data.success) {
-                // NEW DEBUG LOG: Confirm if we reach here
-              console.log('🚀 [Purchase.jsx] Payment successful, navigating to dashboard', {
-                timestamp: new Date().toISOString(),
-              });
-              alert('✅ Payment successful. You are enrolled!');
-              navigate('/dashboard');
+              console.log(
+                "🚀 [Purchase.jsx] Payment successful, navigating to dashboard",
+                {
+                  timestamp: new Date().toISOString(),
+                }
+              );
+              alert("✅ Payment successful. You are enrolled!");
+              navigate("/dashboard");
             } else {
-
-               // NEW DEBUG LOG: If success false, log why
-              console.log('🚫 [Purchase.jsx] Verification failed', {
-                message: verifyRes.data.message || 'Unknown reason',
+              console.log("🚫 [Purchase.jsx] Verification failed", {
+                message: verifyRes.data.message || "Unknown reason",
                 timestamp: new Date().toISOString(),
               });
-              alert('❌ Payment verification failed');
+              alert("❌ Payment verification failed");
             }
           } catch (err) {
-            console.error('❌ Verification error:', err);
-            alert('Payment verification failed.');
+            console.error("❌ Verification error:", err);
+            alert("Payment verification failed.");
           }
         },
         prefill: {
@@ -166,8 +175,9 @@ function Purchase() {
         {course.discount ? (
           <>
             <span className="line-through text-red-500 mr-2">₹{Math.round(course.price).toLocaleString('en-IN')}</span>
+
             <span className="text-green-600 font-semibold text-xl">
-              ₹{Math.round(course.price * (1 - course.discount / 100)).toLocaleString('en-IN')}
+              ₹{Math.round(course.price * (1 - parseFloat(course.discount || 0) / 100)).toLocaleString('en-IN')}
             </span>
           </>
         ) : (
@@ -176,7 +186,7 @@ function Purchase() {
       </p>
       <button
         onClick={handlePayment}
-         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
         disabled={loading}
       >
         {loading ? 'Processing...' : 'Buy Now'}
@@ -186,3 +196,5 @@ function Purchase() {
 }
 
 export default Purchase;
+
+

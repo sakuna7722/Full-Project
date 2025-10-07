@@ -10,7 +10,7 @@ function ContactUs() {
     subject: '',
     message: '',
   });
-  const [status, setStatus] = useState(null); // For success/error messages
+  const [status, setStatus] = useState(null); 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {

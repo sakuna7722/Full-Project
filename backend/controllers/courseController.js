@@ -1,3 +1,4 @@
+// backend/controllers/courseController.js
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const Course = require('../models/Course');
@@ -18,13 +19,43 @@ const razorpay = new Razorpay({
 });
 
 // ✅ GET COURSE BY SLUG
+// exports.getCourseBySlug = async (req, res) => {
+//   try {
+//     const course = await Course.findOne({ slug: req.params.slug });
+//     if (!course) {
+//       return res.status(404).json({ message: 'Course not found' });
+//     }
+//     res.json(course);
+//   } catch (err) {
+//     console.error('Error getting course by slug:', err);
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+// ✅ GET COURSE BY SLUG (Updated with discount sanitization)
 exports.getCourseBySlug = async (req, res) => {
   try {
     const course = await Course.findOne({ slug: req.params.slug });
     if (!course) {
       return res.status(404).json({ message: 'Course not found' });
     }
-    res.json(course);
+    
+    // 🆕 ADD ये: Sanitize discount for this course
+    let safeDiscount = 0;
+    if (course.discount) {
+      if (typeof course.discount === 'object' && course.discount.$numberDecimal) {
+        safeDiscount = parseFloat(course.discount.$numberDecimal);
+      } else {
+        safeDiscount = parseFloat(course.discount.toString() || '0');
+      }
+    }
+    console.log(`Sanitized ${course.name} discount: ${safeDiscount} (was: ${course.discount})`);  // Log
+    
+    const sanitizedCourse = {
+      ...course.toObject(),
+      discount: safeDiscount  // Number
+    };
+    
+    res.json(sanitizedCourse);
   } catch (err) {
     console.error('Error getting course by slug:', err);
     res.status(500).json({ message: err.message });

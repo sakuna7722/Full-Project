@@ -38,9 +38,9 @@ function ProductStandard() {
               You also get 8 bonus courses covering social media content creation, YouTube SEO, email automation, affiliate marketing success, Facebook growth, and chatbot marketing.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
-                Enroll Now – ₹4000 + GST
-              </button> */}
+              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now 
+              </button>
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
