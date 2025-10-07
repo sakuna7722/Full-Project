@@ -148,38 +148,6 @@ const adminRateLimit = rateLimit({
 // New Middleware: Check if user has enrolled courses
 exports.checkEnrolledCourses = async (req, res, next) => {
   try {
-    const purchaseCount = await Purchase.countDocuments({ user: req.user._id });
-    if (purchaseCount === 0) {
-      console.log("🚫 [authMiddleware.js] No enrolled courses for user:", {
-        userId: req.user._id,
-        timestamp: new Date().toISOString(),
-      });
-      return res.status(403).json({
-        success: false,
-        message: "No enrolled courses. Access denied to dashboard features.",
-      });
-    }
-    console.log("✅ [authMiddleware.js] User has enrolled courses:", {
-      userId: req.user._id,
-      count: purchaseCount,
-      timestamp: new Date().toISOString(),
-    });
-    next();
-  } catch (err) {
-    console.error("❌ [authMiddleware.js] Error checking enrolled courses:", {
-      message: err.message,
-      timestamp: new Date().toISOString(),
-    });
-    return res.status(500).json({
-      success: false,
-      message: "Server error while checking enrolled courses.",
-    });
-  }
-};
-
-// New Middleware: Check if user has enrolled courses
-exports.checkEnrolledCourses = async (req, res, next) => {
-  try {
     // ← Yeh naya add karo (admin skip)
     if (req.user.isAdmin) {
       console.log(`👑 [authMiddleware.js] Admin skip enrolled check: { userId: ${req.user._id} }`);
@@ -216,3 +184,4 @@ exports.checkEnrolledCourses = async (req, res, next) => {
 };
 
 exports.adminRateLimit = adminRateLimit;
+

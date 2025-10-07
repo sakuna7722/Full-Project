@@ -32,7 +32,7 @@
 //     setVideos([...videos, video]);
 //   };
 
-//   // ← Fixed useEffect (bahar laaya, old messages load add kiya)
+//   // ← Fixed useEffect (old messages load add kiya)
 //   useEffect(() => {
 //     console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
 //     fetchDashboard();
@@ -158,7 +158,7 @@
 //     }
 //   };
 
-//   // ← Fixed selectUser (sirf private load)
+//   // Select user for private chat
 //   const selectUser = (user) => {
 //     setSelectedUser(user);
 //     const privateRoom = `private_${user.id}`;

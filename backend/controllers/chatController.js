@@ -1,3 +1,5 @@
+// backend/controllers/chatController.js
+
 const mongoose = require('mongoose');
 const Chat = require('../models/Chat'); // ← Yeh add karo (model require, definition nahi)
 

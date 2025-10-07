@@ -33,33 +33,30 @@ export default function AdminDashboard() {
     setVideos([...videos, video]);
   };
 
-    // ← Fixed useEffect (bahar laaya, old messages load add kiya)
-    useEffect(() => {
-      console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
-      fetchDashboard();
-  
-      // ← Load old messages on mount (DB se general room ke liye)
-      axios.get(`/api/chat/messages?room=${adminRoom}&limit=50`)
-        .then(res => {
-          setChatMessages(res.data.messages || []);
-          console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
-        })
-        .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
-  
-      // ← Existing Chat Socket Setup
-      socket.emit('joinRoom', { room: adminRoom, userName: adminName });
-      socket.emit('addUser', { userName: adminName, id: 'admin' });
-  
-      socket.on('receiveMessage', (data) => {
-        if (data.room === adminRoom) {
-          setChatMessages(prev => [...prev, data]);
-        } else if (selectedUser && data.room === `private_${selectedUser.id}`) {
-          setChatMessages(prev => [...prev, data]);
-        }
-      });
+  // ← Fixed useEffect (old messages load add kiya)
+  useEffect(() => {
+    console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
+    fetchDashboard();
 
+    // ← Load old messages on mount (DB se general room ke liye)
+    axios.get(`/api/chat/messages?room=${adminRoom}&limit=50`)
+      .then(res => {
+        setChatMessages(res.data.messages || []);
+        console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
+      })
+      .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
 
-  
+    // ← Existing Chat Socket Setup
+    socket.emit('joinRoom', { room: adminRoom, userName: adminName });
+    socket.emit('addUser', { userName: adminName, id: 'admin' });
+
+    socket.on('receiveMessage', (data) => {
+      if (data.room === adminRoom) {
+        setChatMessages(prev => [...prev, data]);
+      } else if (selectedUser && data.room === `private_${selectedUser.id}`) {
+        setChatMessages(prev => [...prev, data]);
+      }
+    });
 
     socket.on('adminMessage', (data) => {
       setChatMessages(prev => [...prev, { ...data, userName: 'Admin Broadcast' }]);
@@ -75,7 +72,6 @@ export default function AdminDashboard() {
       socket.off('activeUsers');
     };
   }, [selectedUser]);
-
 
   const fetchDashboard = async () => {
     console.log("[AdminDashboard] Fetching dashboard data...");
@@ -164,7 +160,7 @@ export default function AdminDashboard() {
   };
 
   // Select user for private chat
-    const selectUser = (user) => {
+  const selectUser = (user) => {
     setSelectedUser(user);
     const privateRoom = `private_${user.id}`;
     socket.emit('joinRoom', { room: privateRoom, userName: adminName });
@@ -174,184 +170,184 @@ export default function AdminDashboard() {
       .catch(err => console.error('Private messages error:', err));
   };
   console.log("[AdminDashboard] Rendering dashboard");
-  
 
-    return (
-      <div className="p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={fetchDashboard} disabled={Object.values(loading).some(Boolean)}>
-              <RefreshCw className="h-4 w-4 mr-2" /> Refresh
-            </Button>
-            <Button variant="outline" onClick={handleExportCSV}>
-              <Download className="h-4 w-4 mr-2" /> Export CSV
-            </Button>
-          </div>
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={fetchDashboard} disabled={Object.values(loading).some(Boolean)}>
+            <RefreshCw className="h-4 w-4 mr-2" /> Refresh
+          </Button>
+          <Button variant="outline" onClick={handleExportCSV}>
+            <Download className="h-4 w-4 mr-2" /> Export CSV
+          </Button>
         </div>
+      </div>
 
-        {error && <div className="text-red-500 bg-red-100 p-2 rounded">{error}</div>}
+      {error && <div className="text-red-500 bg-red-100 p-2 rounded">{error}</div>}
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm">Total Sales</p>
-              <p className="text-xl font-bold">₹{stats.totalSales || 0}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm">Commission Paid</p>
-              <p className="text-xl font-bold">₹{stats.totalCommission || 0}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm">Platform Earnings</p>
-              <p className="text-xl font-bold">₹{(stats.totalSales || 0) - (stats.totalCommission || 0)}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm">Affiliates</p>
-              <p className="text-xl font-bold">{stats.totalAffiliates || 0}</p>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm">Total Sales</p>
+            <p className="text-xl font-bold">₹{stats.totalSales || 0}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm">Commission Paid</p>
+            <p className="text-xl font-bold">₹{stats.totalCommission || 0}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm">Platform Earnings</p>
+            <p className="text-xl font-bold">₹{(stats.totalSales || 0) - (stats.totalCommission || 0)}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm">Affiliates</p>
+            <p className="text-xl font-bold">{stats.totalAffiliates || 0}</p>
+          </CardContent>
+        </Card>
+      </div>
 
-        <Tabs defaultValue="sales">
-          <TabsList>
-            <TabsTrigger value="sales">Sales</TabsTrigger>
-            <TabsTrigger value="affiliates">Affiliates</TabsTrigger>
-            <TabsTrigger value="courses">Courses</TabsTrigger>
-            <TabsTrigger value="videos">Videos</TabsTrigger>
-            <TabsTrigger value="contacts">Contact Messages</TabsTrigger>
-            <TabsTrigger value="chat">Chat</TabsTrigger>
-          </TabsList>
-          <TabsContent value="videos">
-            <CourseVideos videos={videos} onAddVideo={handleAddVideo} />
-          </TabsContent>
+      <Tabs defaultValue="sales">
+        <TabsList>
+          <TabsTrigger value="sales">Sales</TabsTrigger>
+          <TabsTrigger value="affiliates">Affiliates</TabsTrigger>
+          <TabsTrigger value="courses">Courses</TabsTrigger>
+          <TabsTrigger value="videos">Videos</TabsTrigger>
+          <TabsTrigger value="contacts">Contact Messages</TabsTrigger>
+          <TabsTrigger value="chat">Chat</TabsTrigger>
+        </TabsList>
+        <TabsContent value="videos">
+          <CourseVideos videos={videos} onAddVideo={handleAddVideo} />
+        </TabsContent>
 
-          <TabsContent value="sales">
-            {loading.sales ? (
-              <div className="text-center">Loading sales...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Buyer</TableHead>
-                    <TableHead>Course</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Commission</TableHead>
-                    <TableHead>Affiliate</TableHead>
-                    <TableHead>Status</TableHead>
+        <TabsContent value="sales">
+          {loading.sales ? (
+            <div className="text-center">Loading sales...</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Buyer</TableHead>
+                  <TableHead>Course</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Commission</TableHead>
+                  <TableHead>Affiliate</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sales.map((s) => (
+                  <TableRow key={s._id}>
+                    <TableCell>{new Date(s.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{s.user?.firstName || 'N/A'} ({s.user?.email || 'N/A'})</TableCell>
+                    <TableCell>{s.course?.title || 'N/A'}</TableCell>
+                    <TableCell>₹{s.amount || 0}</TableCell>
+                    <TableCell>₹{s.commissionEarned || 0}</TableCell>
+                    <TableCell>{s.referredBy?.firstName || 'N/A'}</TableCell>
+                    <TableCell>{s.status || 'N/A'}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sales.map((s) => (
-                    <TableRow key={s._id}>
-                      <TableCell>{new Date(s.createdAt).toLocaleDateString()}</TableCell>
-                      <TableCell>{s.user?.firstName || 'N/A'} ({s.user?.email || 'N/A'})</TableCell>
-                      <TableCell>{s.course?.title || 'N/A'}</TableCell>
-                      <TableCell>₹{s.amount || 0}</TableCell>
-                      <TableCell>₹{s.commissionEarned || 0}</TableCell>
-                      <TableCell>{s.referredBy?.firstName || 'N/A'}</TableCell>
-                      <TableCell>{s.status || 'N/A'}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </TabsContent>
 
-          <TabsContent value="affiliates">
-            {loading.affiliates ? (
-              <div className="text-center">Loading affiliates...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Sales</TableHead>
-                    <TableHead>Total Commission</TableHead>
-                    <TableHead>Last Sale</TableHead>
+        <TabsContent value="affiliates">
+          {loading.affiliates ? (
+            <div className="text-center">Loading affiliates...</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Sales</TableHead>
+                  <TableHead>Total Commission</TableHead>
+                  <TableHead>Last Sale</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {affiliates.map((a) => (
+                  <TableRow key={a._id}>
+                    <TableCell>{`${a.firstName || 'N/A'} ${a.lastName || ''}`}</TableCell>
+                    <TableCell>{a.email || 'N/A'}</TableCell>
+                    <TableCell>{a.salesCount || 0}</TableCell>
+                    <TableCell>₹{a.totalCommission || 0}</TableCell>
+                    <TableCell>{a.lastSaleAt ? new Date(a.lastSaleAt).toLocaleDateString() : 'N/A'}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {affiliates.map((a) => (
-                    <TableRow key={a._id}>
-                      <TableCell>{`${a.firstName || 'N/A'} ${a.lastName || ''}`}</TableCell>
-                      <TableCell>{a.email || 'N/A'}</TableCell>
-                      <TableCell>{a.salesCount || 0}</TableCell>
-                      <TableCell>₹{a.totalCommission || 0}</TableCell>
-                      <TableCell>{a.lastSaleAt ? new Date(a.lastSaleAt).toLocaleDateString() : 'N/A'}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </TabsContent>
 
-          <TabsContent value="courses">
-            {loading.courses ? (
-              <div className="text-center">Loading courses...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Course</TableHead>
-                    <TableHead>Sales</TableHead>
-                    <TableHead>Revenue</TableHead>
-                    <TableHead>Commission</TableHead>
+        <TabsContent value="courses">
+          {loading.courses ? (
+            <div className="text-center">Loading courses...</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Course</TableHead>
+                  <TableHead>Sales</TableHead>
+                  <TableHead>Revenue</TableHead>
+                  <TableHead>Commission</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {courses.map((c) => (
+                  <TableRow key={c._id}>
+                    <TableCell>{c.title || 'N/A'}</TableCell>
+                    <TableCell>{c.salesCount || 0}</TableCell>
+                    <TableCell>₹{c.totalRevenue || 0}</TableCell>
+                    <TableCell>₹{c.totalCommission || 0}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {courses.map((c) => (
-                    <TableRow key={c._id}>
-                      <TableCell>{c.title || 'N/A'}</TableCell>
-                      <TableCell>{c.salesCount || 0}</TableCell>
-                      <TableCell>₹{c.totalRevenue || 0}</TableCell>
-                      <TableCell>₹{c.totalCommission || 0}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
-          <TabsContent value="contacts">
-            {loading.contacts ? (
-              <div className="text-center">Loading contact messages...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Message</TableHead>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </TabsContent>
+        <TabsContent value="contacts">
+          {loading.contacts ? (
+            <div className="text-center">Loading contact messages...</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Subject</TableHead>
+                  <TableHead>Message</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {contacts.map((c) => (
+                  <TableRow key={c._id}>
+                    <TableCell>{new Date(c.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{c.name || 'N/A'}</TableCell>
+                    <TableCell>{c.email || 'N/A'}</TableCell>
+                    <TableCell>{c.subject || 'N/A'}</TableCell>
+                    <TableCell>{c.message || 'N/A'}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {contacts.map((c) => (
-                    <TableRow key={c._id}>
-                      <TableCell>{new Date(c.createdAt).toLocaleDateString()}</TableCell>
-                      <TableCell>{c.name || 'N/A'}</TableCell>
-                      <TableCell>{c.email || 'N/A'}</TableCell>
-                      <TableCell>{c.subject || 'N/A'}</TableCell>
-                      <TableCell>{c.message || 'N/A'}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </TabsContent>
 
 
 
-          {/* ← WhatsApp-like Chat Tab */}
+        {/* ← WhatsApp-like Chat Tab */}
         <TabsContent value="chat" className="flex gap-4">
           {/* Left: User List */}
           <div className="w-1/3 bg-gray-50 p-4 rounded border">
@@ -411,11 +407,9 @@ export default function AdminDashboard() {
         </TabsContent>
 
 
-        </Tabs>
+      </Tabs>
+    </div>
+  );
+}
 
-
-      </div>
-    );
-  }
-
-  export { AdminDashboard };
+export { AdminDashboard };

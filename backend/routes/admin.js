@@ -172,6 +172,42 @@ router.get('/courses', authAdmin, async (req, res) => {
   }
 });
 
+router.get('/purchased-users', authAdmin, async (req, res) => {
+  try {
+    console.log('Fetching purchased users for admin:', req.user.email);
+    const purchasedUsers = await Purchase.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $unwind: '$userDetails'
+      },
+      {
+        $group: {
+          _id: '$userDetails._id',
+          userName: { $first: '$userDetails.firstName' },
+          email: { $first: '$userDetails.email' },
+          courses: { $push: '$course' },
+          lastPurchase: { $max: '$createdAt' }
+        }
+      },
+      {
+        $sort: { lastPurchase: -1 }
+      }
+    ]);
+
+    console.log('Purchased users fetched, count:', purchasedUsers.length);
+    res.status(200).json({ success: true, users: purchasedUsers });
+  } catch (err) {
+    console.error('Purchased users error:', err);
+    res.status(500).json({ success: false, message: 'Failed to fetch purchased users' });
+  }
+});
 
 
 
