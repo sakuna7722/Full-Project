@@ -18,11 +18,11 @@ export default function AdminDashboard() {
   const [contacts, setContacts] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  const [activeUsers, setActiveUsers] = useState([]); 
-  const [selectedUser, setSelectedUser] = useState(null); 
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
-  const [replyMessage, setReplyMessage] = useState(''); 
-  const [broadcastMessage, setBroadcastMessage] = useState(''); 
+  const [replyMessage, setReplyMessage] = useState('');
+  const [broadcastMessage, setBroadcastMessage] = useState('');
   const [adminName, setAdminName] = useState('Admin');
   const adminRoom = 'general';
 
@@ -32,17 +32,27 @@ export default function AdminDashboard() {
     setVideos([...videos, video]);
   };
 
+
+
   useEffect(() => {
     console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
     fetchDashboard();
 
-    axios.get(`/chat/messages?room=${adminRoom}&limit=50`) 
+    axios.get('/admin/purchased-users')
+      .then(res => {
+        setActiveUsers(res.data.users || []);
+        console.log(`Loaded ${res.data.users?.length || 0} purchased users`);
+      })
+      .catch(err => console.error('Purchased users error:', err));
+
+    axios.get(`/chat/messages?room=${adminRoom}&limit=50`)
       .then(res => {
         setChatMessages(res.data.messages || []);
         console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
       })
       .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
 
+    // ← Existing Chat Socket Setup
     socket.emit('joinRoom', { room: adminRoom, userName: adminName });
     socket.emit('addUser', { userName: adminName, id: 'admin' });
 
@@ -59,7 +69,7 @@ export default function AdminDashboard() {
     });
 
     socket.on('activeUsers', (users) => {
-      setActiveUsers(users.filter(u => u.id !== 'admin')); 
+      setActiveUsers(users.filter(u => u.id !== 'admin')); // Admin ko exclude
     });
 
     return () => {
