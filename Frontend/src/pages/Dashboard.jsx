@@ -183,7 +183,7 @@ const Dashboard = () => {
             { icon: 'fas fa-users', label: 'Referrals', path: '/dashboard/referral-downline' },
             { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
             { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' },
-            // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
+            { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
             // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
             { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
             { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
@@ -272,8 +272,8 @@ const Dashboard = () => {
                 { icon: 'fas fa-users', label: 'Referrals', path: '/dashboard/referral-downline' },
 
                 { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
-                { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' }, // Matches your example path
-                // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
+                { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' }, 
+                { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
                 // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
                 { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
                 { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }

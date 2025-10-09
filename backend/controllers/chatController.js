@@ -1,3 +1,4 @@
+// backend/controllers/chatController.js
 const Message = require('../models/Message'); 
 
 // Get all messages

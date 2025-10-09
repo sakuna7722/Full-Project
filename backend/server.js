@@ -126,6 +126,7 @@ const videoRoutes = require("./routes/video");
 const cookieParser = require("cookie-parser");
 const Contact = require("./models/Contact");
 const Message = require("./models/Message");
+const leaderboardRoutes = require("./routes/leaderboard");
 
 const contactRoutes = require("./routes/contact");
 // Add this at the top, after the imports
@@ -146,6 +147,7 @@ app.use("/api/auth", resetPasswordRoutes);
 app.use("/api/videos", uploadRoute);
 app.use("/api/videos", videoRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 app.use(cookieParser());
 
@@ -221,52 +223,81 @@ io.on("connection", (socket) => {
     console.log(`${userName} joined room: ${room}`);
   });
 
-  // sendMessage handler
-  socket.on("sendMessage", async (data) => {
-    const { room, userName, message, timestamp } = data;
+  // 1️⃣ sendMessage (user → admin)
+  socket.on("sendMessage", async ({ room, userName, message }) => {
     const msg = {
-      user: userName, // ← userName को user में map करो
-      text: message, // ← message को text में map करो
+      user: userName,
+      text: message,
       room,
-      createdAt: new Date(timestamp), // ← timestamp को createdAt में convert करो (Date object)
+      createdAt: new Date(),
     };
+    await Message.create(msg);
 
-    await Message.create(msg); // अब सही fields save होंगे
+    // Emit to all in room (including admin if joined)
+    io.to(room).emit("receiveMessage", {
+      userName,
+      message,
+      timestamp: msg.createdAt.getTime(),
+      room,
+    });
 
-    io.to(room).emit("receiveMessage", msg); // ← Emit भी mapped msg भेजो (userName, message वापस add अगर frontend expect करता है)
-    io.to("general").emit("receiveMessage", { ...msg, userName, message }); // Admin को original fields भेजो
-    console.log(`📩 Message from ${userName} in ${room} → delivered to Admin`);
+    // ALSO emit to admin general dashboard if room is private
+    if (room.startsWith("private_")) {
+      io.to("general").emit("receiveMessage", {
+        userName,
+        message,
+        timestamp: msg.createdAt.getTime(),
+        room,
+      });
+    }
   });
 
-  // ✅ Admin reply (with debug logs)
-socket.on("adminReply", async (data) => {
-  const { room, message, userName, timestamp } = data;
-  console.log('🔍 [Server Socket] adminReply received:', { room, userName, message: message.substring(0, 20) + '...', timestamp });  // ← Debug: Input data
+  // 2️⃣ adminReply (admin → user)
+  socket.on("adminReply", async ({ room, message, userName }) => {
+    try {
+      const msg = {
+        user: userName, // Admin
+        text: message,
+        room, // must match private_${userId}
+        createdAt: new Date(),
+      };
 
-  const msg = { 
-    user: userName, 
-    text: message, 
-    room, 
-    createdAt: new Date(timestamp) 
-  };
+      await Message.create(msg);
 
-  try {
-    await Message.create(msg);
-    console.log('💾 [Server Socket] Message saved to DB for room:', room);  // ← Debug: DB save
+      // Emit to user room
+      io.to(room).emit("receiveMessage", {
+        userName,
+        message,
+        timestamp: msg.createdAt.getTime(),
+        room,
+      });
 
-    // Emit to private room (user)
-    const emitToUser = io.to(room).emit("receiveMessage", { ...msg, userName, message, timestamp });
-    console.log('📤 [Server Socket] Emitted to user room:', room, 'Emit result:', emitToUser ? 'Success' : 'Failed');  // ← Debug: Emit to user
+      // Optional: update admin dashboard
+      io.to("general").emit("receiveMessage", {
+        userName,
+        message,
+        timestamp: msg.createdAt.getTime(),
+        room,
+      });
+    } catch (err) {
+      console.error("❌ adminReply error:", err.message);
+    }
+  });
 
-    // Emit to general (admin view)
-    const emitToAdmin = io.to("general").emit("receiveMessage", { ...msg, userName, message, timestamp });
-    console.log('📤 [Server Socket] Emitted to admin general room, result:', emitToAdmin ? 'Success' : 'Failed');  // ← Debug: Emit to admin
+  // 3️⃣ ensure admin joins general room at connection
+  socket.on("joinRoom", ({ room, userName }) => {
+    socket.join(room);
+    socket.userName = userName;
+    socket.room = room;
 
-    console.log(`📩 Admin replied to ${room}:`, message.substring(0, 20) + '...');
-  } catch (err) {
-    console.error('❌ [Server Socket] adminReply error:', err.message);
-  }
-});
+    // If admin, also join 'general' room
+    if (userName === "Admin") {
+      socket.join("general");
+    }
+
+    activeUsers.set(socket.id, { id: socket.id, userName });
+    io.emit("activeUsers", Array.from(activeUsers.values()));
+  });
 
   // adminBroadcast handler (same)
   socket.on("adminBroadcast", async (data) => {
@@ -274,11 +305,11 @@ socket.on("adminReply", async (data) => {
     const msg = {
       user: userName,
       text: message,
-      room: "general", 
+      room: "general",
       createdAt: new Date(timestamp),
     };
     await Message.create(msg);
-    io.emit("receiveMessage", { ...msg, userName, message }); 
+    io.emit("receiveMessage", { ...msg, userName, message });
     console.log(`📢 Broadcast sent: ${message}`);
   });
 

@@ -1,80 +1,100 @@
-import React, { useState, useEffect } from "react";
+// frontend/src/components/ChatComponent.jsx
+import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import axios from "axios";
+import axios from "../api/axios";
 
 const ChatComponent = () => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-  const [user, setUser] = useState("ram");
-  // FIX: Real userId from token/localStorage
-  const [userId, setUserId] = useState(() => {
+  const [user, setUser] = useState("ram"); // user name
+  const messagesEndRef = useRef(null);
+
+  // Get userId from localStorage / token
+  const [userId] = useState(() => {
     const storedId = localStorage.getItem("userId");
     if (storedId) return storedId;
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decoded = JSON.parse(atob(token.split('.')[1]));
+        const decoded = JSON.parse(atob(token.split(".")[1]));
         return decoded.id;
       } catch (e) {
-        console.warn("[Chat] Token decode failed, using fallback u1");
+        console.warn("[Chat] Token decode failed, fallback u1");
       }
     }
-    return "u1";  // Fallback
+    return "u1";
   });
 
   const room = `private_${userId}`;
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:5001", {
       transports: ["websocket"],
       reconnection: true,
     });
+
     setSocket(newSocket);
 
-    newSocket.emit("joinRoom", { room, userName: user });
-    console.log(`[User] Joined room: ${room}`);
+    newSocket.on("connect", () => {
+      console.log("[✅ Socket Connected]", newSocket.id);
+      newSocket.emit("joinRoom", { room, userName: user });
+      console.log(`[User] Joined room: ${room}`);
+    });
 
-    // FIX: receiveMessage with debug logs
-    newSocket.on("receiveMessage", (message) => {
-      console.log("[🔍 User Frontend] receiveMessage event triggered:", { ...message, message: message.message?.substring(0, 20) + '...' });
-      console.log("[🔍 User Frontend] Current room:", room, "Incoming room:", message.room);
-      if (message.room === room || !message.room) {
-        console.log("[✅ User Frontend] Reply added to UI for room:", room);
-        setMessages((prev) => [...prev, message]);
-      } else {
-        console.warn("[⚠️ User Frontend] Reply ignored - room mismatch:", { current: room, incoming: message.room });
+    newSocket.on("receiveMessage", (msg) => {
+      console.log("[🟢 receiveMessage]", msg);
+      // Add only messages for this room
+      if (msg.room === room) {
+        setMessages((prev) => [...prev, msg]);
       }
     });
 
-    // FIX: Socket events debug
-    newSocket.on("connect", () => console.log("[✅ User Socket] Connected, ID:", newSocket.id));
-    newSocket.on("disconnect", (reason) => console.warn("[⚠️ User Socket] Disconnected:", reason));
-    newSocket.on("error", (err) => console.error("[❌ User Socket] Error:", err));
+    newSocket.on("disconnect", () =>
+      console.warn("[⚠️ Socket Disconnected]")
+    );
 
-    axios
-      .get(`http://localhost:5001/chat/messages?room=${room}&limit=50`)
-      .then((res) => setMessages(res.data.messages || []))
-      .catch((err) => console.error("Error fetching messages:", err.response?.data || err.message));
+    // Fetch previous messages
+   axios
+  .get(`http://localhost:5001/api/chat/messages?room=${room}&limit=50`)
+  .then((res) => {
+    if (res.data.messages) {
+      const mapped = res.data.messages.map(msg => ({
+        userName: msg.user,    
+        message: msg.text,     
+        timestamp: msg.createdAt,
+        room: msg.room
+      }));
+      setMessages(mapped);
+    }
+  })
+  .catch((err) =>
+    console.error("Error fetching messages:", err.response?.data || err.message)
+  );
 
-    return () => newSocket.close();
-  }, [userId]);  // ← Add userId dep if dynamic
 
-  const sendMessage = async (e) => {
+    return () => newSocket.disconnect();
+  }, [room, user]);
+
+  const sendMessage = (e) => {
     e.preventDefault();
     if (!text.trim()) return;
 
     const messageData = {
       room,
-      userName: user,   
-      message: text,     
+      userName: user,
+      message: text,
       timestamp: Date.now(),
     };
 
-    setMessages((prev) => [...prev, { ...messageData, userName: user, message: text }]);
+    setMessages((prev) => [...prev, messageData]);
 
-    socket.emit("sendMessage", messageData);
-
+    socket?.emit("sendMessage", messageData);
     setText("");
   };
 
@@ -92,12 +112,12 @@ const ChatComponent = () => {
             <div
               key={index}
               className={`mb-2 ${
-                msg.userName === user ? "text-right" : "text-left"  
+                msg.userName === user ? "text-right" : "text-left"
               }`}
             >
               <span
                 className={`inline-block px-3 py-2 rounded-xl ${
-                  msg.userName === user 
+                  msg.userName === user
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-800"
                 }`}
@@ -110,6 +130,7 @@ const ChatComponent = () => {
             </div>
           ))
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       <form onSubmit={sendMessage} className="flex gap-2">

@@ -396,10 +396,9 @@ export default function AdminDashboard() {
         </TabsContent>
 
 
-
         {/* ← WhatsApp-like Chat Tab */}
         <TabsContent value="chat" className="flex gap-4">
-          {/* Left: User List */}
+          {/* Left: Online/User List */}
           <div className="w-1/3 bg-gray-50 p-4 rounded border">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <Users className="h-4 w-4" /> Online Users ({onlineUsers.length})
@@ -416,20 +415,29 @@ export default function AdminDashboard() {
                   {user.userName}
                 </Button>
               ))}
-              {onlineUsers.length === 0 && <p className="text-gray-500 text-sm">No online users</p>}
+              {onlineUsers.length === 0 && (
+                <p className="text-gray-500 text-sm">No online users</p>
+              )}
             </div>
           </div>
 
+          {/* Right: Chat Window */}
           <div className="w-2/3 space-y-4">
             {selectedUser ? (
               <>
                 <h3 className="font-semibold">Chat with {selectedUser.userName}</h3>
                 <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
                   {chatMessages.map((msg, i) => (
-                    <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName ? 'bg-blue-100 ml-auto' : 'bg-gray-100'}`}>
+                    <div
+                      key={i}
+                      className={`mb-2 p-2 rounded ${msg.userName === adminName ? "bg-blue-100 ml-auto" : "bg-gray-100"
+                        }`}
+                    >
                       <strong>{msg.userName}:</strong> {msg.message}
                       <small className="block text-xs text-gray-500 mt-1">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
+                        {msg.timestamp
+                          ? new Date(msg.timestamp).toLocaleTimeString()
+                          : ""}
                       </small>
                     </div>
                   ))}
@@ -440,7 +448,7 @@ export default function AdminDashboard() {
                     onChange={(e) => setReplyMessage(e.target.value)}
                     placeholder="Reply to user..."
                     className="flex-1 p-2 border rounded"
-                    onKeyPress={(e) => e.key === 'Enter' && handleReply()}
+                    onKeyPress={(e) => e.key === "Enter" && handleReply()}
                   />
                   <Button onClick={handleReply} disabled={!replyMessage.trim()}>
                     <Send className="h-4 w-4 mr-2" /> Reply
@@ -451,14 +459,22 @@ export default function AdminDashboard() {
               <>
                 <h3 className="font-semibold">General Broadcast</h3>
                 <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
-                  {chatMessages.filter(msg => msg.room === adminRoom || !msg.room).map((msg, i) => (
-                    <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName ? 'bg-blue-100 ml-auto' : 'bg-gray-100'}`}>
-                      <strong>{msg.userName}:</strong> {msg.message}
-                      <small className="block text-xs text-gray-500 mt-1">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
-                      </small>
-                    </div>
-                  ))}
+                  {chatMessages
+                    .filter((msg) => msg.room === adminRoom || !msg.room)
+                    .map((msg, i) => (
+                      <div
+                        key={i}
+                        className={`mb-2 p-2 rounded ${msg.userName === adminName ? "bg-blue-100 ml-auto" : "bg-gray-100"
+                          }`}
+                      >
+                        <strong>{msg.userName}:</strong> {msg.message}
+                        <small className="block text-xs text-gray-500 mt-1">
+                          {msg.timestamp
+                            ? new Date(msg.timestamp).toLocaleTimeString()
+                            : ""}
+                        </small>
+                      </div>
+                    ))}
                 </div>
                 <div className="flex gap-2">
                   <input
@@ -466,7 +482,7 @@ export default function AdminDashboard() {
                     onChange={(e) => setBroadcastMessage(e.target.value)}
                     placeholder="Broadcast to all..."
                     className="flex-1 p-2 border rounded"
-                    onKeyPress={(e) => e.key === 'Enter' && handleBroadcast()}
+                    onKeyPress={(e) => e.key === "Enter" && handleBroadcast()}
                   />
                   <Button onClick={handleBroadcast} disabled={!broadcastMessage.trim()}>
                     <Send className="h-4 w-4 mr-2" /> Broadcast
@@ -475,8 +491,10 @@ export default function AdminDashboard() {
               </>
             )}
           </div>
-
         </TabsContent>
+
+
+
       </Tabs>
     </div>
   );

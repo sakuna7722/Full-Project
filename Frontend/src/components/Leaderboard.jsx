@@ -1,91 +1,95 @@
+// frontend/src/components/Leaderboard.jsx
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "../components/ui/card";
-import axios from "../api/axios"; // Ensure axios is imported
+import axios from "../api/axios";
+import { Card } from "../components/ui/card";
 
-const Leaderboard = () => {
-  const [leaderboard, setLeaderboard] = useState({
-    allTime: [],
-    monthly: [],
-    weekly: [],
-  });
+export default function Leaderboard() {
+  const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchLeaderboard = async () => {
       try {
-        // Fetch affiliate data from AdminDashboard API
-        const affiliatesRes = await axios.get("/admin/affiliates");
-        const affiliatesData = affiliatesRes.data || [];
+        const token = localStorage.getItem("token");
+        const res = await axios.get("/leaderboard", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        // Transform affiliate data for leaderboard with profile images
-        const allTime = affiliatesData
-          .map((affiliate) => ({
-            name: `${affiliate.firstName || 'N/A'} ${affiliate.lastName || ''}`,
-            amount: affiliate.totalCommission || 0,
-            img: affiliate.profilePicture || `https://via.placeholder.com/50?text=${affiliate.firstName || 'User'}`, // Use profilePicture or placeholder
-          }))
-          .sort((a, b) => b.amount - a.amount)
-          .slice(0, 10); // Top 10
-
-        const monthly = affiliatesData
-          .map((affiliate) => ({
-            name: `${affiliate.firstName || 'N/A'} ${affiliate.lastName || ''}`,
-            amount: affiliate.totalCommission || 0, // Placeholder, replace with monthly data if available
-            img: affiliate.profilePicture || `https://via.placeholder.com/50?text=${affiliate.firstName || 'User'}`,
-          }))
-          .sort((a, b) => b.amount - a.amount)
-          .slice(0, 10);
-
-        const weekly = affiliatesData
-          .map((affiliate) => ({
-            name: `${affiliate.firstName || 'N/A'} ${affiliate.lastName || ''}`,
-            amount: affiliate.totalCommission || 0, 
-            img: affiliate.profilePicture || `https://via.placeholder.com/50?text=${affiliate.firstName || 'User'}`,
-          }))
-          .sort((a, b) => b.amount - a.amount)
-          .slice(0, 10);
-
-        setLeaderboard({ allTime, monthly, weekly });
+        if (res.data.success) {
+          setLeaders(res.data.leaderboard);
+        } else {
+          setError("Failed to load leaderboard data.");
+        }
       } catch (err) {
-        console.error("Error fetching affiliate data:", err);
+        console.error("❌ Error fetching leaderboard:", err);
+        setError("Something went wrong while fetching leaderboard data.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchLeaderboard();
   }, []);
 
-  const LeaderboardTable = ({ title, data, color }) => (
-    <Card className="w-full max-w-md rounded-2xl shadow-xl">
-      <div className={`p-3 text-center text-white font-bold text-lg rounded-t-2xl ${color}`}>
-        {title}
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
-      <CardContent className="p-0">
-        <table className="w-full border-collapse">
-          <tbody>
-            {data.map((user, index) => (
-              <tr key={index} className="border-b hover:bg-gray-50">
-                <td className="text-center font-bold w-10 p-2">{index + 1}</td>
-                <td className="flex items-center gap-3 p-2">
-                  <img src={user.img} alt={user.name} className="w-10 h-10 rounded-full" />
-                  <span className="text-sm font-medium">{user.name}</span>
-                </td>
-                <td className="text-right pr-3 font-semibold text-green-600">
-                  ₹{user.amount.toLocaleString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </CardContent>
-    </Card>
-  );
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="p-6 bg-red-50 border border-red-200 text-center text-red-700">
+        {error}
+      </Card>
+    );
+  }
 
   return (
-    <div className="grid md:grid-cols-3 gap-6 p-6">
-      <LeaderboardTable title="All-Time Commission Leaders" data={leaderboard.allTime} color="bg-blue-600" />
-      <LeaderboardTable title="Monthly Commission Leaders" data={leaderboard.monthly} color="bg-red-600" />
-      <LeaderboardTable title="Weekly Commission Leaders" data={leaderboard.weekly} color="bg-green-600" />
+    <div className="min-h-screen bg-gray-50 py-10 px-6">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          🏆 Top 10 Affiliates Leaderboard
+        </h1>
+
+        <div className="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-100">
+          <table className="min-w-full text-left">
+            <thead>
+              <tr className="bg-indigo-600 text-white">
+                <th className="py-3 px-5 text-sm font-semibold">Rank</th>
+                <th className="py-3 px-5 text-sm font-semibold">Full Name</th>
+                <th className="py-3 px-5 text-sm font-semibold">Total Commission</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {leaders.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="text-center py-6 text-gray-500">
+                    No affiliates found yet.
+                  </td>
+                </tr>
+              ) : (
+                leaders.map((leader, index) => (
+                  <tr
+                    key={leader.userId}
+                    className="border-b border-gray-100 hover:bg-indigo-50 transition"
+                  >
+                    <td className="py-3 px-5 font-semibold text-gray-700">{index + 1}</td>
+                    <td className="py-3 px-5 text-gray-800 font-medium">{leader.fullName}</td>
+                    <td className="py-3 px-5 text-green-600 font-semibold">
+                      ₹{leader.totalCommission.toFixed(2)}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Leaderboard;
+}
