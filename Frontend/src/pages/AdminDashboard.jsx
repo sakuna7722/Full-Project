@@ -1,3 +1,5 @@
+//frontend/src/pages/AdminDashboard.jsx
+
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import { Card, CardContent } from "../components/ui/card";
@@ -24,6 +26,9 @@ export default function AdminDashboard() {
   const [replyMessage, setReplyMessage] = useState('');
   const [broadcastMessage, setBroadcastMessage] = useState('');
   const [adminName, setAdminName] = useState('Admin');
+  const [currentRoom, setCurrentRoom] = useState('general');
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
   const adminRoom = 'general';
 
 
@@ -33,51 +38,67 @@ export default function AdminDashboard() {
   };
 
 
-
   useEffect(() => {
-    console.log("[AdminDashboard] Component mounted, starting fetchDashboard...");
+    console.log("[AdminDashboard] Component mounted, setting up sockets...");
     fetchDashboard();
 
     axios.get('/admin/purchased-users')
       .then(res => {
-        setActiveUsers(res.data.users || []);
-        console.log(`Loaded ${res.data.users?.length || 0} purchased users`);
+        console.log("[Admin] Purchased users response:", res.data);
+        setActiveUsers((res.data.users || []).map(u => ({
+          ...u,
+          id: u._id,
+          userName: `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email
+        })));
       })
       .catch(err => console.error('Purchased users error:', err));
 
-    axios.get(`/chat/messages?room=${adminRoom}&limit=50`)
+    axios.get(`/admin/chat/messages?room=${adminRoom}&limit=50`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
       .then(res => {
         setChatMessages(res.data.messages || []);
         console.log(`[AdminDashboard] Loaded ${res.data.messages?.length || 0} old messages`);
       })
       .catch(err => console.error('[AdminDashboard] Error loading old messages:', err.response?.data || err.message));
 
-    // ← Existing Chat Socket Setup
-    socket.emit('joinRoom', { room: adminRoom, userName: adminName });
+
+
+    console.log("[AdminDashboard] Joining admin room:", adminRoom);
+    socket.emit('joinRoom', { room: adminRoom, userName: adminName }, (ack) => {
+      console.log("[AdminDashboard] joinRoom ACK:", ack);
+    });
+
     socket.emit('addUser', { userName: adminName, id: 'admin' });
 
     socket.on('receiveMessage', (data) => {
-      if (data.room === adminRoom) {
-        setChatMessages(prev => [...prev, data]);
-      } else if (selectedUser && data.room === `private_${selectedUser.id}`) {
+      console.log('[🔍 Admin Socket] receiveMessage received:', data);
+      if (data.room === currentRoom) {
         setChatMessages(prev => [...prev, data]);
       }
     });
 
     socket.on('adminMessage', (data) => {
+      console.log('[Socket Event] adminMessage:', data);
       setChatMessages(prev => [...prev, { ...data, userName: 'Admin Broadcast' }]);
     });
 
     socket.on('activeUsers', (users) => {
-      setActiveUsers(users.filter(u => u.id !== 'admin')); // Admin ko exclude
+      console.log('[Socket Event] activeUsers:', users);
+      setOnlineUsers(users.filter(u => u.userName !== 'Admin').map(u => ({
+        ...u,
+        id: u.id || u._id
+      })));
     });
 
     return () => {
+      console.log("[AdminDashboard] Cleaning up socket listeners...");
       socket.off('receiveMessage');
       socket.off('adminMessage');
       socket.off('activeUsers');
     };
   }, [selectedUser]);
+
 
   const fetchDashboard = async () => {
     console.log("[AdminDashboard] Fetching dashboard data...");
@@ -140,39 +161,65 @@ export default function AdminDashboard() {
 
   const handleBroadcast = () => {
     if (broadcastMessage.trim()) {
-      socket.emit('adminBroadcast', {
+      const payload = {
         room: adminRoom,
         message: broadcastMessage,
         userName: adminName,
         timestamp: Date.now()
-      });
+      };
+      console.log("[Admin → Server] Broadcasting message:", payload);
+      socket.emit('adminBroadcast', payload);
+      setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: broadcastMessage }]);
       setBroadcastMessage('');
-      console.log(`[AdminDashboard] Broadcast sent: ${broadcastMessage}`);
+    } else {
+      console.warn("[AdminDashboard] Empty broadcast message, not sent");
     }
   };
 
   const handleReply = () => {
-    if (replyMessage.trim() && selectedUser) {
-      const privateRoom = `private_${selectedUser.id}`;
-      socket.emit('adminReply', {
+    if (replyMessage.trim() && selectedUser && selectedUser._id) {
+      const privateRoom = `private_${selectedUser._id}`;
+      const payload = {
         room: privateRoom,
         message: replyMessage,
         userName: adminName,
         timestamp: Date.now()
+      };
+      console.log('🔍 [Admin Frontend] Reply emit payload:', payload);  // ← Payload log
+      console.log('🔍 [Admin Frontend] Current socket ID:', socket.id);  // ← Socket status
+      socket.emit('adminReply', payload, (ack) => {
+        console.log('📤 [Admin Frontend] Server ACK for reply:', ack ? 'Success' : 'No ACK');  // ← ACK log
       });
+      // Local add...
+      setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: replyMessage }]);
       setReplyMessage('');
+    } else {
+      console.warn('⚠️ [Admin Frontend] Reply invalid:', { replyMessage: !!replyMessage.trim(), selectedUser: !!selectedUser, userId: selectedUser?._id });
     }
   };
 
   const selectUser = (user) => {
+    console.log('Selecting user:', user);
+    if (!user._id) {
+      console.error('User ID missing!');
+      alert('Invalid user selected!');
+      return;
+    }
     setSelectedUser(user);
-    const privateRoom = `private_${user.id}`;
+    const privateRoom = `private_${user._id}`;
+    setCurrentRoom(privateRoom);
     socket.emit('joinRoom', { room: privateRoom, userName: adminName });
-    axios.get(`/chat/messages?room=${privateRoom}&limit=50`) // /api hataya
-      .then(res => setChatMessages(res.data.messages || []))
-      .catch(err => console.error('Private messages error:', err));
+    console.log(`Joining private room: ${privateRoom}`);
+    axios.get(`/chat/messages?room=${privateRoom}&limit=50`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then(res => {
+        setChatMessages(res.data.messages || []);
+        console.log(`Loaded private messages for ${privateRoom}`);
+      })
+      .catch(err => console.error('Private messages error:', err.response?.data || err.message));
   };
-  console.log("[AdminDashboard] Rendering dashboard");
+
 
 
   return (
@@ -355,10 +402,10 @@ export default function AdminDashboard() {
           {/* Left: User List */}
           <div className="w-1/3 bg-gray-50 p-4 rounded border">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Users className="h-4 w-4" /> Online Users ({activeUsers.length})
+              <Users className="h-4 w-4" /> Online Users ({onlineUsers.length})
             </h3>
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {activeUsers.map((user, i) => (
+              {onlineUsers.map((user, i) => (
                 <Button
                   key={i}
                   variant={selectedUser?.id === user.id ? "default" : "outline"}
@@ -369,7 +416,7 @@ export default function AdminDashboard() {
                   {user.userName}
                 </Button>
               ))}
-              {activeUsers.length === 0 && <p className="text-gray-500 text-sm">No online users</p>}
+              {onlineUsers.length === 0 && <p className="text-gray-500 text-sm">No online users</p>}
             </div>
           </div>
 
@@ -401,11 +448,34 @@ export default function AdminDashboard() {
                 </div>
               </>
             ) : (
-              <div className="text-center py-8 text-gray-500">
-                Select a user to start chatting
-              </div>
+              <>
+                <h3 className="font-semibold">General Broadcast</h3>
+                <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
+                  {chatMessages.filter(msg => msg.room === adminRoom || !msg.room).map((msg, i) => (
+                    <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName ? 'bg-blue-100 ml-auto' : 'bg-gray-100'}`}>
+                      <strong>{msg.userName}:</strong> {msg.message}
+                      <small className="block text-xs text-gray-500 mt-1">
+                        {new Date(msg.timestamp).toLocaleTimeString()}
+                      </small>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    value={broadcastMessage}
+                    onChange={(e) => setBroadcastMessage(e.target.value)}
+                    placeholder="Broadcast to all..."
+                    className="flex-1 p-2 border rounded"
+                    onKeyPress={(e) => e.key === 'Enter' && handleBroadcast()}
+                  />
+                  <Button onClick={handleBroadcast} disabled={!broadcastMessage.trim()}>
+                    <Send className="h-4 w-4 mr-2" /> Broadcast
+                  </Button>
+                </div>
+              </>
             )}
           </div>
+
         </TabsContent>
       </Tabs>
     </div>

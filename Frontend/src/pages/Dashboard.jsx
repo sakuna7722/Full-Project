@@ -18,8 +18,8 @@ const Dashboard = () => {
   // Log user data on mount
   console.log('📍 [Dashboard.jsx] Current location:', {
     pathname: location.pathname,
-    search: location.search, // Check if ?something after purchase
-    state: location.state, // If purchase passes state, log it
+    search: location.search,
+    state: location.state,
     timestamp: new Date().toISOString(),
   });
 
@@ -67,7 +67,7 @@ const Dashboard = () => {
       const enrolledCourses = courseRes.data.enrolledCourses || [];
       console.log('📚 [Dashboard.jsx] Enrolled courses details:', {
         count: enrolledCourses.length,
-        courses: enrolledCourses, // Log full array to inspect course IDs/names
+        courses: enrolledCourses, 
         timestamp: new Date().toISOString(),
       });
       setCourses(enrolledCourses);
@@ -96,7 +96,7 @@ const Dashboard = () => {
       console.error('❌ [Dashboard.jsx] fetchData error:', {
         message: err.message,
         response: err.response?.data,
-        status: err.response?.status, // e.g., 401 if auth issue after purchase
+        status: err.response?.status, 
         headers: err.response?.headers,
         timestamp: new Date().toISOString(),
       });
@@ -184,7 +184,7 @@ const Dashboard = () => {
             { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
             { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' },
             // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
-            { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
+            // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
             { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
             { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
           ].map((item, index) => (
@@ -213,13 +213,11 @@ const Dashboard = () => {
             )
           ))}
         </div>
-{/* https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp */}
-{/* https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp */}
         {/* User section in sidebar */}
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
             <img
-              src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1759759642/oqwu4pod1xfyehprywc4.webp"}
+              src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
               alt={user?.firstName || "User"}
               className="w-8 h-8 rounded-full object-cover border-2 border-white"
             />
@@ -276,7 +274,7 @@ const Dashboard = () => {
                 { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
                 { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' }, // Matches your example path
                 // { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
-                { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
+                // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
                 { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
                 { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
 

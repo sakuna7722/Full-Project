@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Purchase = require('../models/Purchase');
 const Course = require('../models/Course');
 const Contact = require('../models/Contact');
+const Message = require('../models/Message'); 
 
 // Middleware to verify JWT and admin status
 const authAdmin = async (req, res, next) => {
@@ -172,42 +173,6 @@ router.get('/courses', authAdmin, async (req, res) => {
   }
 });
 
-router.get('/purchased-users', authAdmin, async (req, res) => {
-  try {
-    console.log('Fetching purchased users for admin:', req.user.email);
-    const purchasedUsers = await Purchase.aggregate([
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'user',
-          foreignField: '_id',
-          as: 'userDetails'
-        }
-      },
-      {
-        $unwind: '$userDetails'
-      },
-      {
-        $group: {
-          _id: '$userDetails._id',
-          userName: { $first: '$userDetails.firstName' },
-          email: { $first: '$userDetails.email' },
-          courses: { $push: '$course' },
-          lastPurchase: { $max: '$createdAt' }
-        }
-      },
-      {
-        $sort: { lastPurchase: -1 }
-      }
-    ]);
-
-    console.log('Purchased users fetched, count:', purchasedUsers.length);
-    res.status(200).json({ success: true, users: purchasedUsers });
-  } catch (err) {
-    console.error('Purchased users error:', err);
-    res.status(500).json({ success: false, message: 'Failed to fetch purchased users' });
-  }
-});
 
 
 
@@ -266,5 +231,47 @@ router.get('/contacts', authAdmin, async (req, res) => {
   }
 });
 
+// FIX: GET purchased users for admin chat (add this route)
+router.get('/purchased-users', authAdmin, async (req, res) => {
+  try {
+    console.log('FIX: [Admin] Fetching purchased users for:', req.user.email);  // ← Debug log
+    const users = await User.find({ isAdmin: false })  // Exclude admins
+      .select('firstName lastName email _id affiliateId')  // Chat-relevant fields
+      .sort({ createdAt: -1 })  // Newest first
+      .lean();  // Faster
+    console.log('FIX: [Admin] Purchased users fetched, count:', users.length);  // ← Success log
+    res.json({ success: true, users });  // Match frontend expect
+  } catch (err) {
+    console.error('FIX ERROR: [Admin] Purchased users fetch failed for:', req.user?.email || 'Unknown', err.message);
+    res.status(500).json({ message: 'Failed to fetch purchased users' });
+  }
+});
+
+// FIX: GET chat messages (sort fix + logs) - Replace existing if present
+router.get('/chat/messages', authAdmin, async (req, res) => {
+  try {
+    const { room, limit = 50 } = req.query;
+    console.log('FIX: [Admin Chat] Fetching messages for room:', room, 'limit:', limit);  // ← Debug
+    if (!room) return res.status(400).json({ message: 'Room is required' });
+
+    const messages = await Message.find({ room })
+      .sort({ createdAt: 1 })  // ← timestamp को createdAt में fix (schema match)
+      .limit(parseInt(limit))
+      .lean();  // Faster
+
+    const formatted = messages.map(m => ({  // ← Format for frontend (userName, message)
+      ...m,
+      userName: m.user,
+      message: m.text,
+      timestamp: m.createdAt.getTime()
+    }));
+
+    console.log('FIX: [Admin Chat] Messages fetched for', room, 'count:', formatted.length);  // ← Success log
+    res.json({ success: true, messages: formatted });
+  } catch (err) {
+    console.error('FIX ERROR: [Admin Chat] Fetch failed for room:', room, err.message);
+    res.status(500).json({ message: 'Failed to fetch chat messages' });
+  }
+});
 
 module.exports = router;

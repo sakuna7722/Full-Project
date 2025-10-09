@@ -44,7 +44,7 @@ const CommissionCard = ({ title, amount, color, icon, description }) => {
 };
 
 const AffiliateAccount = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, loading: authLoading } = useContext(AuthContext);
   const [commissionStats, setCommissionStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,6 +52,7 @@ const AffiliateAccount = () => {
   const navigate = useNavigate();
 
   const fetchCommissionStats = async () => {
+    if (!user) return;
     setLoading(true);
     setError(null);
     try {
@@ -59,7 +60,7 @@ const AffiliateAccount = () => {
       if (res.data && res.data.success) {
         setCommissionStats(res.data);
         // Generate referral link with user's referral code
-        const referralCode = user?.referralCode || "affiliate123";
+        const referralCode = user.referralCode || "affiliate123";
         setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
       } else {
         setError("Commission data is unavailable.");
@@ -74,29 +75,46 @@ const AffiliateAccount = () => {
   };
 
 
-
   const copyToClipboard = () => {
+    if (!referralLink) { // 👈 NEW: Check if link available
+      alert("No referral link available! Please wait for data to load.");
+      return;
+    }
     navigator.clipboard.writeText(referralLink);
-    // You could add a toast notification here
     alert("Referral link copied to clipboard!");
   };
-
   useEffect(() => {
+    if (authLoading) return; // 👈 NEW: Auth loading हो तो wait
+
     if (user) {
+      // User loaded, set referral और fetch
       const referralCode = user.referralCode || "affiliate123";
       setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
       fetchCommissionStats();
+    } else {
+      // User null? Redirect to login
+      console.log("No user found, redirecting to login...");
+      navigate('/auth/login'); // 👈 NEW: Redirect if no user
     }
-  }, [user]);
+  }, [user, authLoading, navigate])
 
 
-
-  if (loading)
+  if (authLoading || loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
+  }
+
+  // 👈 NEW: अगर user null हो तो early return (safety)
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <div className="text-gray-500">Please log in to view your account.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 md:px-6">
@@ -105,16 +123,18 @@ const AffiliateAccount = () => {
         <div className="flex items-center justify-between mb-8 p-4 bg-white rounded-lg shadow-sm">
           <div className="flex items-center space-x-4">
             <img
-              src={user?.profilePicture ||  "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
-              alt={user?.firstName || "User"}
+              src={user.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"} 
+              alt={user.firstName || "User"}
               className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+              onError={(e) => { 
+                e.target.src = "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp";
+              }}
             />
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Welcome {user?.firstName
+                Welcome {user.firstName
                   ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()
-                  : ""}
-                !
+                  : "User"}! 
               </h1>
 
               <p className="text-gray-600">Let's get started with your journey</p>
@@ -179,7 +199,7 @@ const AffiliateAccount = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               }
-              // description="Last 30 days Earning"
+            // description="Last 30 days Earning"
             />
             <CommissionCard
               title="All Time Earnings"
@@ -210,7 +230,7 @@ const AffiliateAccount = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
               }
-              // description="Available for withdrawal"
+            // description="Available for withdrawal"
             />
           </div>
         ) : (
@@ -220,48 +240,39 @@ const AffiliateAccount = () => {
         )}
 
 
-        {/* User Info Section */}
+        {/* 👈 UPDATED: User Info Section - Conditional if user exists */}
         <Card className="p-6 mb-8 bg-white rounded-2xl shadow-md border border-gray-100">
           <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
             👤 User Information
           </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left column */}
             <div className="space-y-3">
               <p className="text-gray-500 text-sm">Full Name</p>
               <p className="text-gray-800 font-medium">
-                {user?.firstName
-                  ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()
-                  : ""}{" "}
-                {user?.lastName
-                  ? user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase()
-                  : ""}
+                {user.firstName
+                  ? `${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()} ${user.lastName ? user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase() : ''
+                  }`
+                  : "N/A"} {/* 👈 UPDATED: Fallback "N/A" और proper concat */}
               </p>
-
-
               <p className="text-gray-500 text-sm">Email</p>
-              <p className="text-gray-800 font-medium">{user?.email}</p>
-
+              <p className="text-gray-800 font-medium">{user.email || 'N/A'}</p> 
               <p className="text-gray-500 text-sm">Affiliate ID</p>
-              <p className="text-gray-800 font-medium">{user?.affiliateId || 'N/A'}</p>
+              <p className="text-gray-800 font-medium">{user.affiliateId || 'N/A'}</p>
             </div>
-
             {/* Right column */}
             <div className="space-y-3">
               <p className="text-gray-500 text-sm">Referral Code</p>
-              <p className="text-gray-800 font-medium">{user?.referralCode || 'N/A'}</p>
-
+              <p className="text-gray-800 font-medium">{user.referralCode || 'N/A'}</p>
               <p className="text-gray-500 text-sm">Joined</p>
-              <p className="text-gray-800 font-medium">{new Date(user?.createdAt).toLocaleDateString()}</p>
-
+              <p className="text-gray-800 font-medium">
+                {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'} 
+              </p>
               {commissionStats && (
                 <div>
                   <p className="text-gray-500 text-sm">Status</p>
                   <span
-                    className={`mt-1 inline-block px-3 py-1 rounded-full text-xs font-medium ${commissionStats.status === 'active'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
+                    className={`mt-1 inline-block px-3 py-1 rounded-full text-xs font-medium ${commissionStats.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                       }`}
                   >
                     {commissionStats.status || 'Pending'}
@@ -271,7 +282,9 @@ const AffiliateAccount = () => {
             </div>
           </div>
         </Card>
-        {/* Referral Link Section */}
+
+
+        {/* 👈 UPDATED: Referral Link Section - Conditional */}
         <Card className="p-6 mb-8 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-2xl shadow-xl backdrop-blur-md">
           <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -287,7 +300,8 @@ const AffiliateAccount = () => {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <Input
-              value={referralLink}
+              value={referralLink || `Generating... (Code: ${user.referralCode || 'N/A'})`} 
+              
               readOnly
               className="bg-white/20 border border-white/30 text-white placeholder-white/70 flex-grow rounded-xl focus:ring-2 focus:ring-indigo-300"
               placeholder="Generating referral link..."
