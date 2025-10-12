@@ -79,7 +79,13 @@ export default function Leaderboard() {
                     className="border-b border-gray-100 hover:bg-indigo-50 transition"
                   >
                     <td className="py-3 px-5 font-semibold text-gray-700">{index + 1}</td>
-                    <td className="py-3 px-5 text-gray-800 font-medium">{leader.fullName}</td>
+                    <td className="py-3 px-5 text-gray-800 font-medium">
+                      {leader.fullName
+                        .split(" ")
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ")}
+                    </td>
+
                     <td className="py-3 px-5 text-green-600 font-semibold">
                       ₹{leader.totalCommission.toFixed(2)}
                     </td>
