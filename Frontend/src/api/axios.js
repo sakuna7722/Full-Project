@@ -49,7 +49,8 @@ instance.interceptors.response.use(
     });
 
     // Only handle 401 for non-critical endpoints; let AuthContext handle /auth/me
-    if (status === 401 && error.config.url !== '/auth/me') {
+      if (status === 401 && error.config.url !== '/auth/me' && !window.location.pathname.includes("/auth")) {
+
       console.log('🔐 Authentication failed - clearing tokens');
       localStorage.removeItem('token');
       localStorage.removeItem('user');

@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 👈 UPDATED: updateAuthState - Courses check हटाया (helper में shift)
   const updateAuthState = async () => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -48,7 +47,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
         setIsAdmin(parsedUser.isAdmin === true);
 
-        // 👈 REMOVED: Courses check from here (duplicate avoid)
       } catch (error) {
         console.error('❌ [AuthContext.js] Error parsing user data:', error);
         localStorage.removeItem('token');
@@ -68,7 +66,6 @@ export const AuthProvider = ({ children }) => {
   };
 
 
-  // 👈 UPDATED: useEffect for initial auth check
   useEffect(() => {
     console.log('⏳ [AuthContext.js] Starting initial auth check at:', new Date().toISOString());
     const verifyAuth = async () => {
@@ -87,16 +84,15 @@ export const AuthProvider = ({ children }) => {
           setIsLoggedIn(true);
           setIsAdmin(userData.isAdmin === true);
 
-          // 👈 UPDATED: Courses check via helper
           await checkEnrolledCourses(token);
         } else {
           console.log('🚨 [verifyAuth] No token found');
         }
       } catch (err) {
         console.error('❌ [AuthContext.js] Auth verify failed at:', new Date().toISOString(), err.response?.data || err.message);
-        if (err.response?.status === 401) { // 👈 NEW: Token expired? Try refresh
+        if (err.response?.status === 401) {
           console.log('🔄 [AuthContext.js] Token expired, attempting refresh...');
-          await refreshToken(); // Refresh try करें
+          await refreshToken();
         } else {
           if (localStorage.getItem('token')) {
             logout();
@@ -112,34 +108,43 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-  // 👈 UPDATED: login function - await updateAuthState
   const login = async (userData, token) => {
     console.log('🔐 [AuthContext.js] Logging in with:', { userData, token });
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
 
-    // 👈 UPDATED: Courses check via helper
     await checkEnrolledCourses(token);
 
-    // 👈 NEW: Await updateAuthState for proper state sync
     await updateAuthState();
   };
 
-   const logout = () => {
+  const logout = () => {
     console.log('🚪 [AuthContext.js] Logging out at:', new Date().toISOString());
+
+    // 🧹 1️⃣ Clear localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
+    // 🚫 2️⃣ Remove Authorization header from axios
+    delete instance.defaults.headers.common['Authorization'];
+
+    // 🔄 3️⃣ Reset context states
     setUser(null);
     setIsLoggedIn(false);
     setIsAdmin(false);
     setHasEnrolledCourses(false);
+
+    // 🧭 4️⃣ Optional: redirect user (if called outside Dashboard)
+    if (window.location.pathname !== '/auth/login') {
+      window.location.href = '/auth/login';
+    }
   };
 
-  // 👈 UPDATED: refreshToken - Properly implement for expiry handling
+
   const refreshToken = async () => {
     try {
       console.log('🔄 [AuthContext.js] Attempting token refresh...');
-      const response = await instance.post('/auth/refresh', {}, { withCredentials: true }); // Backend refresh endpoint
+      const response = await instance.post('/auth/refresh', {}, { withCredentials: true });
       const { token: newToken, userData } = response.data;
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(userData));
@@ -147,23 +152,22 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setIsAdmin(userData.isAdmin === true);
 
-      // 👈 NEW: Courses check after refresh
       await checkEnrolledCourses(newToken);
 
       console.log('✅ [AuthContext.js] Token refreshed successfully');
     } catch (err) {
       console.error('❌ [AuthContext.js] Refresh failed:', err.response?.data || err.message);
-      logout(); // Fail पर logout
+      logout();
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(async () => {
       if (isLoggedIn && user) {
         console.log('⏰ [AuthContext.js] Refreshing token... at:', new Date().toISOString());
-        await refreshToken(); 
+        await refreshToken();
       }
-    }, 15 * 60 * 1000); // 15 min
+    }, 15 * 60 * 1000);
     return () => clearInterval(interval);
   }, [isLoggedIn, user]);
 
@@ -180,7 +184,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         hasEnrolledCourses,
-        refreshToken, // 👈 NEW: Expose if needed elsewhere
+        refreshToken,
       }}
     >
       {children}

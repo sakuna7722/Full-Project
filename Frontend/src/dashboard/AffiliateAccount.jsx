@@ -7,6 +7,9 @@ import AnimatedCounter from "../components/AnimatedCounter";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { faInr } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const CommissionCard = ({ title, amount, color, icon, description }) => {
   const colorClasses = {
@@ -23,12 +26,13 @@ const CommissionCard = ({ title, amount, color, icon, description }) => {
     <Card className="overflow-hidden border-0 shadow-lg rounded-xl hover:shadow-xl transition-all duration-300">
       <div className={`bg-gradient-to-r ${colorClasses[color]} text-white p-6`}>
         <div className="flex items-center justify-between mb-2">
-          <div className="text-2xl bg-white bg-opacity-20 p-3 rounded-full">
+          <div className="text-2xl ">
             {icon}
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold">
-              ₹<AnimatedCounter value={Number(amount || 0)} />
+            <div className="text-3xl font-bold ">
+              <FontAwesomeIcon icon={faInr} className="h-6 w-6" />
+              <AnimatedCounter value={Number(amount || 0)} />
             </div>
             <div className="text-sm opacity-90 font-medium">{title}</div>
           </div>
@@ -40,6 +44,8 @@ const CommissionCard = ({ title, amount, color, icon, description }) => {
         </div>
       )}
     </Card>
+
+
   );
 };
 
@@ -84,17 +90,16 @@ const AffiliateAccount = () => {
     alert("Referral link copied to clipboard!");
   };
   useEffect(() => {
-    if (authLoading) return; // 👈 NEW: Auth loading हो तो wait
+    if (authLoading) return;
 
     if (user) {
-      // User loaded, set referral और fetch
       const referralCode = user.referralCode || "affiliate123";
       setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
       fetchCommissionStats();
     } else {
       // User null? Redirect to login
       console.log("No user found, redirecting to login...");
-      navigate('/auth/login'); // 👈 NEW: Redirect if no user
+      navigate('/auth/login');
     }
   }, [user, authLoading, navigate])
 
@@ -107,7 +112,6 @@ const AffiliateAccount = () => {
     );
   }
 
-  // 👈 NEW: अगर user null हो तो early return (safety)
   if (!user) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">
@@ -123,10 +127,10 @@ const AffiliateAccount = () => {
         <div className="flex items-center justify-between mb-8 p-4 bg-white rounded-lg shadow-sm">
           <div className="flex items-center space-x-4">
             <img
-              src={user.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"} 
+              src={user.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
               alt={user.firstName || "User"}
               className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
-              onError={(e) => { 
+              onError={(e) => {
                 e.target.src = "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp";
               }}
             />
@@ -134,16 +138,12 @@ const AffiliateAccount = () => {
               <h1 className="text-2xl font-bold text-gray-900">
                 Welcome {user.firstName
                   ? user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()
-                  : "User"}! 
+                  : "User"}!
               </h1>
-
               <p className="text-gray-600">Let's get started with your journey</p>
             </div>
           </div>
-
         </div>
-
-
 
         {error && (
           <Card className="p-4 mb-6 bg-red-50 border-red-200">
@@ -154,84 +154,54 @@ const AffiliateAccount = () => {
               {error}
             </div>
           </Card>
+
+
         )}
-
-
-
-
-
-        {/* Stats Grid */}
-        {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-          Commission Overview
-        </h2> */}
 
         {commissionStats ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
             <CommissionCard
               title="Today's Earning"
               amount={commissionStats.todayEarnings || 0}
               color="red"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
+
             <CommissionCard
               title="Last 7 Days Earning"
               amount={commissionStats.last7DaysEarnings || 0}
               color="blue"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              }
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
+
             <CommissionCard
               title="Last 30 Days Earning"
               amount={commissionStats.last30DaysEarnings || 0}
               color="orange"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              }
-            // description="Last 30 days Earning"
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
             <CommissionCard
               title="All Time Earnings"
               amount={commissionStats.allTimeEarnings || 0}
               color="pink"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
+
             <CommissionCard
               title="Commission Paid"
               amount={commissionStats.allTimeEarnings || 0}
               color="green"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 8l3 5m0 0l3-5m-3 5v4m-3-5h6m-6 3h6m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
+
             <CommissionCard
               title="Account Balance"
               amount={commissionStats.accountBalance || 0}
               color="turquoise"
-              icon={
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-              }
-            // description="Available for withdrawal"
+              icon={<FontAwesomeIcon icon={faInr} className="h-6 w-6" />}
             />
+
           </div>
         ) : (
           <Card className="p-8 text-center">
@@ -253,10 +223,10 @@ const AffiliateAccount = () => {
                 {user.firstName
                   ? `${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()} ${user.lastName ? user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1).toLowerCase() : ''
                   }`
-                  : "N/A"} {/* 👈 UPDATED: Fallback "N/A" और proper concat */}
+                  : "N/A"}
               </p>
               <p className="text-gray-500 text-sm">Email</p>
-              <p className="text-gray-800 font-medium">{user.email || 'N/A'}</p> 
+              <p className="text-gray-800 font-medium">{user.email || 'N/A'}</p>
               <p className="text-gray-500 text-sm">Affiliate ID</p>
               <p className="text-gray-800 font-medium">{user.affiliateId || 'N/A'}</p>
             </div>
@@ -266,7 +236,7 @@ const AffiliateAccount = () => {
               <p className="text-gray-800 font-medium">{user.referralCode || 'N/A'}</p>
               <p className="text-gray-500 text-sm">Joined</p>
               <p className="text-gray-800 font-medium">
-                {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'} 
+                {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
               </p>
               {commissionStats && (
                 <div>
@@ -300,8 +270,8 @@ const AffiliateAccount = () => {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <Input
-              value={referralLink || `Generating... (Code: ${user.referralCode || 'N/A'})`} 
-              
+              value={referralLink || `Generating... (Code: ${user.referralCode || 'N/A'})`}
+
               readOnly
               className="bg-white/20 border border-white/30 text-white placeholder-white/70 flex-grow rounded-xl focus:ring-2 focus:ring-indigo-300"
               placeholder="Generating referral link..."
@@ -319,8 +289,6 @@ const AffiliateAccount = () => {
 
           </div>
         </Card>
-
-
 
 
 

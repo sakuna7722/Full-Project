@@ -32,7 +32,6 @@ import ReferralDownline from './dashboard/ReferralDownline';
 import MyReferral from './dashboard/MyReferral';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-// import CoursesDashboard from './components/CoursesDashboard';
 import UploadCourse from './components/UploadCourse';
 import EditProfile from './components/EditProfile';
 import CoursePlayer from './components/CoursePlayer';
@@ -109,7 +108,7 @@ function AppContent() {
 
           <Route path="/api/purchase/:courseSlug" element={<Purchase />} />
           <Route path="/purchase-all" element={isLoggedIn ? <PurchaseAll /> : <Navigate to="/auth/login" replace />} />
-          <Route path="/my-courses" element={<MyCourses />} />
+          <Route path="/dashboard/my-courses" element={<MyCourses />} />
           <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/auth/login" replace />} />
           <Route path="/referrals" element={isLoggedIn ? <ReferralPage /> : <Navigate to="/auth/login" replace />} />
           <Route path="/admin-dashboard" element={isLoggedIn ? <AdminDashboard /> : <Navigate to="/auth/login" replace />} />

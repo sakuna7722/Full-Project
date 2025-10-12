@@ -122,21 +122,32 @@ const Dashboard = () => {
     }
     return () => { isMounted = false; };
   }, [user]);
-  const handleLogout = () => {
-    try {
-      // Clear local storage
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
 
-      // Reset user in context
-      setUser(null);
 
-      // ✅ Redirect using React Router to login page
-      navigate("/auth/login");
-    } catch (err) {
-      console.error("❌ Error in logout:", err.message);
+const handleLogout = () => {
+  try {
+    console.log("🚪 Logging out user...");
+
+    // 1️⃣ Clear local storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // 2️⃣ Reset user in context
+    setUser(null);
+
+    // 3️⃣ Clear axios token header (safe method)
+    if (axios.defaults.headers.common["Authorization"]) {
+      axios.defaults.headers.common["Authorization"] = "";
     }
-  };
+
+    // 4️⃣ Redirect to login
+    navigate("/auth/login", { replace: true });
+  } catch (err) {
+    console.error("❌ Error in logout:", err.message);
+  }
+};
+
+
 
   if (loading)
     return (
@@ -178,7 +189,7 @@ const Dashboard = () => {
         <div className="sidebar-menu py-5 flex-1 overflow-y-auto">
           {[
             { icon: 'fas fa-home', label: 'Dashboard', active: true, path: '/dashboard' },
-            { icon: 'fas fa-chart-line', label: 'My Courses', path: '/my-courses' },
+            { icon: 'fas fa-chart-line', label: 'My Courses', path: '/dashboard/my-courses' },
             { icon: 'fas fa-wallet', label: 'Commissions', path: '/dashboard/affiliate-account' },
             { icon: 'fas fa-users', label: 'Referrals', path: '/dashboard/referral-downline' },
             { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
@@ -191,7 +202,7 @@ const Dashboard = () => {
             item.isLogout ? (
               <button
                 key={index}
-                onClick={handleLogout} // 🔹 Call logout function
+                onClick={handleLogout} 
                 className="menu-item p-3 mx-2 mb-1 flex items-center gap-3 cursor-pointer transition-all duration-200 border-l-4 rounded-r-lg border-transparent hover:bg-white/5 hover:border-white/30"
               >
                 <i className={`${item.icon} w-5 text-center text-sm`}></i>
@@ -265,9 +276,8 @@ const Dashboard = () => {
 
             <div className="sidebar-menu py-5 flex-1 overflow-y-auto">
               {[
-                // { icon: 'fas fa-home', label: 'Dashboard', active: true, path: 'dashboard' },
                 { icon: 'fas fa-home', label: 'Dashboard', active: true, path: '/dashboard' },
-                { icon: 'fas fa-chart-line', label: 'My Courses', path: '/my-courses' },
+                { icon: 'fas fa-chart-line', label: 'My Courses', path: '/dashboard/my-courses' },
                 { icon: 'fas fa-wallet', label: 'Commissions', path: '/dashboard/affiliate-account' },
                 { icon: 'fas fa-users', label: 'Referrals', path: '/dashboard/referral-downline' },
 
@@ -345,9 +355,6 @@ const Dashboard = () => {
               >
                 ☰
               </button>
-
-
-
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800">Dashboard</h1>
                 <p className="text-gray-600 text-sm mt-1">Welcome back, {user?.firstName || 'User'}!</p>
@@ -378,7 +385,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Training Courses Card */}
             <Link
-              to="/my-courses"
+              to="/dashboard/my-courses"
               className="bg-blue-300 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <div className="text-6xl mb-4">📋</div>
@@ -394,32 +401,15 @@ const Dashboard = () => {
               <h3 className="text-lg font-semibold text-white text-center">Access Your Affiliate Account</h3>
             </Link>
 
-            {/* Internal Team Live Training Card */}
+            
             {/* <Link
-              to="/dashboard/live-training"
-              className="bg-orange-400 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="text-6xl mb-4 text-white">🤖</div>
-              <h3 className="text-lg font-semibold text-white text-center">Internal Team Live Training</h3>
-            </Link> */}
-
-            {/* Community Card */}
-            <Link
               to="/dashboard/community"
               className="bg-green-500 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <div className="text-6xl mb-4 text-white">☁️</div>
               <h3 className="text-lg font-semibold text-white text-center">Our Community - Learn from Peers</h3>
-            </Link>
-
-            {/* Upgrade Card */}
-            {/* <Link
-              to="/dashboard/upgrade"
-              className="md:col-span-2 bg-orange-400 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="text-6xl mb-4 text-white">🖥️</div>
-              <h3 className="text-lg font-semibold text-white text-center">Pro to Supreme Upgrade</h3>
             </Link> */}
+
           </div>
         </div>
 
