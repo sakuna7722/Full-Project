@@ -72,18 +72,18 @@ router.get('/sales', authAdmin, async (req, res) => {
 
     let sales = await Purchase.find()
       .populate('user', 'firstName email')
-      .populate('course', 'title')
+      .populate('course', 'name')
       .populate('referredBy', 'firstName');
 
     console.log('Sales data fetched, count:', sales.length);
 
-    // Format kar do response bhejne se pehle
     sales = sales.map(sale => {
       const obj = sale.toObject();
 
-      // Amount aur Commission ko round karo
       obj.amount = Math.floor(obj.amount || 0);
       obj.commissionEarned = Math.floor(obj.commissionEarned || 0);
+
+      obj.courseName = obj.course?.name || 'N/A';
 
       return obj;
     });
@@ -99,12 +99,9 @@ router.get('/sales', authAdmin, async (req, res) => {
   }
 });
 
-
-
-// Affiliates data
 router.get('/affiliates', authAdmin, async (req, res) => {
   try {
-    console.log('Fetching affiliates data for user:', req.user.email); // Log user
+    console.log('Fetching affiliates data for user:', req.user.email); 
     const affiliates = await User.aggregate([
       { $match: { affiliateId: { $exists: true } } },
       {
@@ -152,7 +149,7 @@ router.get('/courses', authAdmin, async (req, res) => {
       {
         $project: {
           _id: 1,
-          name: 1, // ✅ Course name dikhayega
+          name: 1, 
           salesCount: { $size: '$sales' },
           totalRevenue: { $floor: { $sum: "$sales.amount" } },
           totalCommission: { $floor: { $sum: "$sales.commissionEarned" } }
@@ -160,7 +157,6 @@ router.get('/courses', authAdmin, async (req, res) => {
       }
     ]);
 
-    // console.log('Courses data fetched, count:', courses.length);
     res.json(courses);
 
   } catch (err) {
@@ -181,7 +177,7 @@ router.put('/users/:userId/admin', authAdmin, async (req, res) => {
   try {
     const { userId } = req.params;
     const { isAdmin } = req.body;
-    console.log('Updating admin status for user:', userId, 'to:', isAdmin); // Log request
+    console.log('Updating admin status for user:', userId, 'to:', isAdmin); 
 
     if (typeof isAdmin !== 'boolean') return res.status(400).json({ message: 'isAdmin must be a boolean' });
 
@@ -193,7 +189,7 @@ router.put('/users/:userId/admin', authAdmin, async (req, res) => {
 
     user.isAdmin = isAdmin;
     await user.save();
-    console.log('Admin status updated for:', user.email); // Log success
+    console.log('Admin status updated for:', user.email);
 
     res.json({ success: true, message: `User ${user.email} admin status updated to ${isAdmin}` });
   } catch (error) {
@@ -234,10 +230,10 @@ router.get('/contacts', authAdmin, async (req, res) => {
 // FIX: GET purchased users for admin chat (add this route)
 router.get('/purchased-users', authAdmin, async (req, res) => {
   try {
-    console.log('FIX: [Admin] Fetching purchased users for:', req.user.email);  // ← Debug log
+    console.log('FIX: [Admin] Fetching purchased users for:', req.user.email);  
     const users = await User.find({ isAdmin: false })  // Exclude admins
-      .select('firstName lastName email _id affiliateId')  // Chat-relevant fields
-      .sort({ createdAt: -1 })  // Newest first
+      .select('firstName lastName email _id affiliateId') 
+      .sort({ createdAt: -1 })  
       .lean();  // Faster
     console.log('FIX: [Admin] Purchased users fetched, count:', users.length);  // ← Success log
     res.json({ success: true, users });  // Match frontend expect
@@ -251,15 +247,15 @@ router.get('/purchased-users', authAdmin, async (req, res) => {
 router.get('/chat/messages', authAdmin, async (req, res) => {
   try {
     const { room, limit = 50 } = req.query;
-    console.log('FIX: [Admin Chat] Fetching messages for room:', room, 'limit:', limit);  // ← Debug
+    console.log('FIX: [Admin Chat] Fetching messages for room:', room, 'limit:', limit);  
     if (!room) return res.status(400).json({ message: 'Room is required' });
 
     const messages = await Message.find({ room })
-      .sort({ createdAt: 1 })  // ← timestamp को createdAt में fix (schema match)
+      .sort({ createdAt: 1 })  
       .limit(parseInt(limit))
-      .lean();  // Faster
+      .lean();  
 
-    const formatted = messages.map(m => ({  // ← Format for frontend (userName, message)
+    const formatted = messages.map(m => ({  
       ...m,
       userName: m.user,
       message: m.text,

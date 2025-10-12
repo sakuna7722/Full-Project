@@ -8,10 +8,9 @@ const {
   validateReferralCode,
 } = require("../controllers/referralLinkController");
 const Commission = require("../models/Commission");
-// ✅ Fix: Add required model imports
 const User = require("../models/User");
 const Referral = require("../models/Referral");
-const Purchase = require("../models/Purchase"); // Added missing import for Purchase
+const Purchase = require("../models/Purchase"); 
 
 // In referral.js
 router.get("/metrics", protect, async (req, res) => {
@@ -20,6 +19,8 @@ router.get("/metrics", protect, async (req, res) => {
   }
   return getReferralMetrics(req, res);
 });
+
+
 
 // GET /api/referral/downline
 router.get("/downline", protect, async (req, res) => {
@@ -31,21 +32,30 @@ router.get("/downline", protect, async (req, res) => {
         .json({ success: false, message: "User not found" });
 
     const referredUsers = await User.find({
-      referredBy: user._id, // Use _id only
+      referredBy: user._id, 
     }).select(
-      "firstName lastName email mobile plan createdAt activatedAt isActive"
+      "firstName lastName email mobile createdAt activatedAt isActive"  
     );
-    const downlineData = referredUsers.map((refUser) => ({
-      _id: refUser._id,
-      name: `${refUser.firstName} ${refUser.lastName}`,
-      email: refUser.email,
-      mobile: refUser.mobile || "N/A",
-      plan: refUser.plan || "N/A",
-      createdAt: refUser.createdAt,
-      activatedAt: refUser.activatedAt,
-      isActive: refUser.isActive,
-      status: refUser.activatedAt || refUser.isActive ? "Active" : "Pending",
-    }));
+    const downlineData = [];
+    for (const refUser of referredUsers) {
+      const latestPurchase = await Purchase.findOne({ 
+        user: refUser._id 
+      })
+        .sort({ createdAt: -1 })  
+        .populate('course', 'name'); 
+
+      downlineData.push({
+        _id: refUser._id,
+        name: `${refUser.firstName} ${refUser.lastName}`,
+        email: refUser.email,
+        mobile: refUser.mobile || "N/A",        
+        course: latestPurchase?.course || null, 
+        createdAt: refUser.createdAt,
+        activatedAt: refUser.activatedAt,
+        isActive: refUser.isActive,
+        status: refUser.activatedAt || refUser.isActive ? "Active" : "Pending",
+      });
+    }
 
     res.json({ success: true, data: downlineData, total: downlineData.length });
   } catch (error) {
@@ -57,7 +67,8 @@ router.get("/downline", protect, async (req, res) => {
   }
 });
 
-// GET /api/referral
+
+
 // In referral.js
 router.get("/", protect, async (req, res) => {
   try {
@@ -75,7 +86,9 @@ router.get("/", protect, async (req, res) => {
 
     const mappedReferrals = referrals.map((r) => ({
       referredUser: {
-        name: r.user ? `${r.user.firstName} ${r.user.lastName || ''}`.trim() : "N/A",
+        name: r.user
+          ? `${r.user.firstName} ${r.user.lastName || ""}`.trim()
+          : "N/A",
         email: r.user?.email || "N/A",
       },
       course: r.course?.name || "N/A",
@@ -112,8 +125,6 @@ router.get("/debug", protect, async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
-
-    // 🔍 Log logged-in user details
     console.log("👤 Logged-in user:", {
       id: user._id,
       email: user.email,
@@ -121,7 +132,6 @@ router.get("/debug", protect, async (req, res) => {
       affiliateId: user.affiliateId,
       affiliateEarnings: user.affiliateEarnings,
     });
-    // Get all referral-related data
     const referrals = await Referral.find({
       referredBy: req.user._id,
     }).populate("user course");
@@ -130,8 +140,6 @@ router.get("/debug", protect, async (req, res) => {
       referredBy: req.user._id,
     }).populate("user course");
     const referredUsers = await User.find({ referredBy: req.user._id });
-
-    // 🧾 Log counts for debugging
     console.log("📊 Referral count:", referrals.length);
     console.log("🛒 Purchase count:", purchases.length);
     console.log("👥 Referred user count:", referredUsers.length);
@@ -190,12 +198,9 @@ router.get("/debug", protect, async (req, res) => {
         totalCommission:
           referrals.reduce((sum, r) => sum + (r.commissionEarned || 0), 0) +
           purchases.reduce((sum, p) => sum + (p.commissionEarned || 0), 0),
-          
       },
-      
     };
-    console.log("🐞 Debug data generated:", debugData); // ✅ Add this line
-
+    console.log("🐞 Debug data generated:", debugData); 
     res.json({ success: true, data: debugData });
   } catch (error) {
     console.error("❌ Debug endpoint error:", error);
@@ -227,10 +232,10 @@ router.post("/auto-refresh", protect, async (req, res) => {
 router.get("/commissions", protect, async (req, res) => {
   try {
     const commissions = await Commission.find({
-      user: req.user._id, // Use 'user' to match Commission schema
+      user: req.user._id, 
     }).sort({ createdAt: -1 });
     const totalCommission = commissions.reduce(
-      (sum, c) => sum + (c.amount || 0), // Use 'amount' from Commission schema
+      (sum, c) => sum + (c.amount || 0), 
       0
     );
     console.log("💸 Total commission earned:", totalCommission);

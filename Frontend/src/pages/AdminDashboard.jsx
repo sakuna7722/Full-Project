@@ -299,7 +299,7 @@ export default function AdminDashboard() {
                   <TableRow key={s._id}>
                     <TableCell>{new Date(s.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>{s.user?.firstName || 'N/A'} ({s.user?.email || 'N/A'})</TableCell>
-                    <TableCell>{s.course?.title || 'N/A'}</TableCell>
+                    <TableCell>{s.courseName || 'N/A'}</TableCell>
                     <TableCell>₹{s.amount || 0}</TableCell>
                     <TableCell>₹{s.commissionEarned || 0}</TableCell>
                     <TableCell>{s.referredBy?.firstName || 'N/A'}</TableCell>
@@ -356,7 +356,7 @@ export default function AdminDashboard() {
               <TableBody>
                 {courses.map((c) => (
                   <TableRow key={c._id}>
-                    <TableCell>{c.title || 'N/A'}</TableCell>
+                    <TableCell>{c.name || 'N/A'}</TableCell>
                     <TableCell>{c.salesCount || 0}</TableCell>
                     <TableCell>₹{c.totalRevenue || 0}</TableCell>
                     <TableCell>₹{c.totalCommission || 0}</TableCell>

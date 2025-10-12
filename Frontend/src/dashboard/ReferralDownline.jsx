@@ -127,7 +127,8 @@ function ReferralDownline() {
                     </td>
                     <td className="px-4 py-3">
                       <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                        {user.plan || 'No Plan'}
+                        {/* {user.plan || 'No Plan'} */}
+                        {user.course?.name || 'No Plan'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
