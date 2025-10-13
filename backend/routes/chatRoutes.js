@@ -22,7 +22,7 @@ const authAdmin = async (req, res, next) => {
 };
 
 // GET messages for a room (admin or normal)
-router.get('/messages', async (req, res) => {  // ← authAdmin हटाओ, या optional बनाओ
+router.get('/messages', async (req, res) => { 
   try {
     const { room, limit = 50 } = req.query;
     if (!room) return res.status(400).json({ message: 'Room is required' });
