@@ -22,13 +22,13 @@ function Footer() {
           {/* Social Icons */}
           <div className="flex gap-4 mt-6 text-xl">
             {[
-              { src: "/icons/Facebook.webp", link: "#" },
-              { src: "/icons/x.webp", link: "#" },
-              // { src: "/icons/instagram.jpeg", link: "#" },
-              // { src: "/icons/o.jpeg", link: "#" },
-              { src: "/icons/link.webp", link: "#" },
-              // { src: "/icons/jr.jpeg", link: "#" },
-              // { src: "/icons/15", link: "https://wa.me/1234567890" },
+              { src: "/icons/facebook-logo.png", link: "#" },
+              { src: "/icons/x-logo.png", link: "#" },
+              { src: "/icons/instagram-logo.png", link: "#" },
+              { src: "/icons/linkedin-logo.png", link: "#" },
+              { src: "/icons/telegram-logo.png", link: "#" },
+              { src: "/icons/whatsapp-logo.png", link: "https://wa.me/7798403060" },
+
             ].map((item, i) => (
               <a
                 key={i}
