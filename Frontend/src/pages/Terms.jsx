@@ -17,7 +17,7 @@ function Terms() {
       {/* Terms Content */}
       <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-10 sm:p-14 -mt-10 mb-16 relative z-10">
         <ul className="list-disc list-inside space-y-4 text-gray-700 text-left text-lg leading-relaxed">
-          <li>You must be at least 18 years old to use our services.</li>
+          {/* <li>You must be at least 18 years old to use our services.</li> */}
           <li>You are responsible for maintaining the confidentiality of your account and password.</li>
           <li>We reserve the right to modify or terminate services at any time without prior notice.</li>
           <li>You agree not to use our platform for any illegal or unauthorized purposes.</li>

@@ -14,7 +14,7 @@ function RefundPolicy() {
         <div className="backdrop-blur-sm bg-white/80 rounded-3xl shadow-2xl p-10 leading-relaxed text-gray-700 space-y-10 transition-all duration-300 hover:shadow-purple-200">
           {/* Intro */}
           <p className="text-lg">
-            At <span className="font-semibold">LeadsGuru</span>, we’re committed to providing
+            At <span className="font-semibold">NextGenCoders</span>, we’re committed to providing
             high-quality educational resources and services. Your satisfaction matters to us.
             Please read our refund policy carefully before making any purchase.
           </p>
@@ -52,7 +52,7 @@ function RefundPolicy() {
             </h2>
             <p className="text-base">
               To request a refund, contact our support team within{" "}
-              <strong>7 days</strong> of your purchase at{" "}
+              <strong> 24 hours</strong> of your purchase at{" "}
               <a
                 href="mailto:support@leadsguru.com"
                 className="text-purple-700 font-medium hover:underline"
@@ -60,7 +60,7 @@ function RefundPolicy() {
                 support@leadsguru.com
               </a>
               . Provide your order details, and our team will review your request and respond
-              within 2–3 business days.
+              within 6–7 business days.
             </p>
           </section>
 
@@ -89,9 +89,9 @@ function RefundPolicy() {
           </section>
 
           {/* Footer Date */}
-          <p className="text-sm text-gray-500 text-right">
+          {/* <p className="text-sm text-gray-500 text-right">
             Last Updated: September 21, 2025
-          </p>
+          </p> */}
         </div>
       </div>
        <Footer />

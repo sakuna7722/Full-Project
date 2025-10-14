@@ -37,9 +37,9 @@ function ProductLite() {
               Organic Lead Generation: The best way to build long-term trust, using SEO, content marketing, and community building to attract high-quality leads.Social Media Marketing: Through consistent posting, reels, ads, and engagement, you increase visibility and create a direct connection with your audience.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -68,9 +68,9 @@ function ProductLite() {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "1 Course" },
-            { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
-            { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
+            { icon: "/coursesImg/course_icon.png", label: "3 Course" },
+            { icon: "/coursesImg/hours_icon.png", label: "50+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "15K+ Students" },
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
           ].map((stat, i) => (
             <div

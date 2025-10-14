@@ -118,11 +118,11 @@ function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-gray-200">
             {[
-              { name: "Bronze Bundle", to: "/bronze" },
-              { name: "Silver Package", to: "/silver" },
-              { name: "Gold Package", to: "/gold" },
-              { name: "Platinum Package", to: "/platinum" },
-              { name: "Diamond Package", to: "/diamond" },
+              { name: "Bronze Bundle", to: "/courses" },
+              { name: "Silver Package", to: "/courses" },
+              { name: "Gold Package", to: "/courses" },
+              { name: "Platinum Package", to: "/courses" },
+              { name: "Diamond Package", to: "/courses" },
               { name: "NextGenCoders Startup Package", to: "/#" },
             ].map((link, i) => (
               <li key={i}>

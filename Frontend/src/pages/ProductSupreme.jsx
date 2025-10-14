@@ -39,9 +39,9 @@ function ProductSupreme() {
               Apply Instagram hacks for quality leads and create content that builds authority and engagement.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
                 Enroll Now
-              </button>
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -69,9 +69,9 @@ function ProductSupreme() {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "1 Course" },
-            { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
-            { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
+            { icon: "/coursesImg/course_icon.png", label: "50+ Courses" },
+            { icon: "/coursesImg/hours_icon.png", label: "250+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "15K+ Students" }, 
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
           ].map((stat, i) => (
             <div
@@ -99,7 +99,46 @@ function ProductSupreme() {
           <div className="grid md:grid-cols-2 gap-10">
             {[
 
-
+{
+                  title: "ChatGPT Fundamentals",
+                  points: [
+                    "Understanding ChatGPT, OpenAI & Generative AI",
+                    "How Large Language Models Work",
+                    "ChatGPT Interface & Advanced Features",
+                    "Free vs Pro Version Explained",
+                    "Prompt Writing Basics with Examples",
+                  ],
+                },
+                {
+                  title: "Prompt Engineering Mastery",
+                  points: [
+                    "What is Prompt Engineering & Why It Matters",
+                    "Crafting Perfect Prompts for Any Goal",
+                    "Advanced Prompt Frameworks (CUP, ROLE, CHAIN)",
+                    "ChatGPT for Copywriting, Marketing & Research",
+                    "Building Reusable Prompt Templates",
+                  ],
+                },
+                {
+                  title: "AI Tools & Automation",
+                  points: [
+                    "Integrating ChatGPT with Google Sheets, Docs, and Notion",
+                    "Using Zapier & Make (Integromat) for Automation",
+                    "AI Image Creation with DALL·E & Midjourney",
+                    "Using ChatGPT for Email, Social Media & CRM Automation",
+                    "Creating AI Workflows for Daily Productivity",
+                  ],
+                },
+                {
+                  title: "Monetizing ChatGPT Skills",
+                  points: [
+                    "Freelancing with ChatGPT – Fiverr, Upwork & Agencies",
+                    "Creating & Selling Digital Products using AI",
+                    "Building a Personal Brand using ChatGPT & Canva",
+                    "How to Build Chatbots & AI Services",
+                    "Bonus: AI Business & Passive Income Ideas",
+                  ],
+                },
               {
                 title: "Instagram Marketing Strategy",
                 points: [

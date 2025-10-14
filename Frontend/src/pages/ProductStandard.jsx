@@ -38,9 +38,9 @@ function ProductStandard() {
               You also get 8 bonus courses covering social media content creation, YouTube SEO, email automation, affiliate marketing success, Facebook growth, and chatbot marketing.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
-                Enroll Now 
-              </button>
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -68,9 +68,9 @@ function ProductStandard() {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "1 Course" },
-            { icon: "/coursesImg/hours_icon.png", label: "15+ Hours" },
-            { icon: "/coursesImg/students_icon.png", label: "2 Lakh+ Students" },
+            { icon: "/coursesImg/course_icon.png", label: "15 Course" },
+            { icon: "/coursesImg/hours_icon.png", label: "100+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "15K+ Students" },
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
           ].map((stat, i) => (
             <div
@@ -103,32 +103,24 @@ function ProductStandard() {
                   "Advanced Group Promotion strategy",
                   "Product Review Strategy",
                   "Lead Magnet Offer Strategy",
+                  "Social Media Content Creation ",
                 ],
               },
               {
                 title: "8 Bonus Courses",
                 points: [
-                  "Social Media Content Creation ",
+
                   "YouTube SEO",
                   "Email Marketing Automation ",
                   "Internet Marketing for Complete Beginners ",
                   " YouTube Quick Start",
                   " Affiliate Marketing Success",
-                  " Facebook Group Domination",
-                  "Facebook Messenger Marketing – Chatbot",
+
+
                 ],
               },
-             
-              {
-                title: "Personal Branding",
-                points: [
-                  "Build Your Personal Brand Presence",
-                  "Niche Clarity & Brand Story",
-                  "Brand Positioning & Kit",
-                  "Content Strategy",
-                  "Copywriting Basics",
-                ],
-              },
+
+
               {
                 title: "Instagram Marketing",
                 points: [
@@ -136,6 +128,7 @@ function ProductStandard() {
                   "Instagram Hacks",
                   "Content Creation Mastery",
                   "Advanced Engagement Techniques",
+                  " Facebook Group Domination",
                 ],
               },
             ].map((section, idx) => (
