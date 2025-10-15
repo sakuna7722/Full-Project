@@ -67,7 +67,7 @@ const Dashboard = () => {
       const enrolledCourses = courseRes.data.enrolledCourses || [];
       console.log('📚 [Dashboard.jsx] Enrolled courses details:', {
         count: enrolledCourses.length,
-        courses: enrolledCourses, 
+        courses: enrolledCourses,
         timestamp: new Date().toISOString(),
       });
       setCourses(enrolledCourses);
@@ -96,7 +96,7 @@ const Dashboard = () => {
       console.error('❌ [Dashboard.jsx] fetchData error:', {
         message: err.message,
         response: err.response?.data,
-        status: err.response?.status, 
+        status: err.response?.status,
         headers: err.response?.headers,
         timestamp: new Date().toISOString(),
       });
@@ -124,28 +124,28 @@ const Dashboard = () => {
   }, [user]);
 
 
-const handleLogout = () => {
-  try {
-    console.log("🚪 Logging out user...");
+  const handleLogout = () => {
+    try {
+      console.log("🚪 Logging out user...");
 
-    // 1️⃣ Clear local storage
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+      // 1️⃣ Clear local storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
-    // 2️⃣ Reset user in context
-    setUser(null);
+      // 2️⃣ Reset user in context
+      setUser(null);
 
-    // 3️⃣ Clear axios token header (safe method)
-    if (axios.defaults.headers.common["Authorization"]) {
-      axios.defaults.headers.common["Authorization"] = "";
+      // 3️⃣ Clear axios token header (safe method)
+      if (axios.defaults.headers.common["Authorization"]) {
+        axios.defaults.headers.common["Authorization"] = "";
+      }
+
+      // 4️⃣ Redirect to login
+      navigate("/auth/login", { replace: true });
+    } catch (err) {
+      console.error("❌ Error in logout:", err.message);
     }
-
-    // 4️⃣ Redirect to login
-    navigate("/auth/login", { replace: true });
-  } catch (err) {
-    console.error("❌ Error in logout:", err.message);
-  }
-};
+  };
 
 
 
@@ -197,12 +197,12 @@ const handleLogout = () => {
             { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
             // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
             { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
-            { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
+            // { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
           ].map((item, index) => (
             item.isLogout ? (
               <button
                 key={index}
-                onClick={handleLogout} 
+                onClick={handleLogout}
                 className="menu-item p-3 mx-2 mb-1 flex items-center gap-3 cursor-pointer transition-all duration-200 border-l-4 rounded-r-lg border-transparent hover:bg-white/5 hover:border-white/30"
               >
                 <i className={`${item.icon} w-5 text-center text-sm`}></i>
@@ -227,23 +227,33 @@ const handleLogout = () => {
         {/* User section in sidebar */}
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-            <img
+            {/* <img
               src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
               alt={user?.firstName || "User"}
               className="w-8 h-8 rounded-full object-cover border-2 border-white"
+            /> */}
+
+            <img
+              src={user?.profilePicture || "https://via.placeholder.com/40x40/4361ee/ffffff?text=U"}  
+              alt={user?.firstName || "User"}
+              className="w-8 h-8 rounded-full object-cover border-2 border-white"
+              onError={(e) => {  
+                e.target.src = "https://via.placeholder.com/40x40/gray/ffffff?text=??";  
+                console.error("Profile image load failed in Dashboard sidebar");
+              }}
             />
 
             <div className="flex-1 min-w-0">
               <div className="user-name font-medium text-sm truncate">{user?.firstName || 'User'}</div>
               <div className="user-role text-white/70 text-xs">Premium Affiliate</div>
             </div>
-            <button
+            {/* <button
               onClick={handleLogout} // 🔹 Use handleLogout
               className="p-1 rounded hover:bg-white/10 transition-colors"
               title="Logout"
             >
               <i className="fas fa-sign-out-alt text-sm"></i>
-            </button>
+            </button> */}
 
           </div>
         </div>
@@ -282,11 +292,11 @@ const handleLogout = () => {
                 { icon: 'fas fa-users', label: 'Referrals', path: '/dashboard/referral-downline' },
 
                 { icon: 'fas fa-file-invoice-dollar', label: 'Payouts', path: '/dashboard/payout-settings' },
-                { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' }, 
+                { icon: 'fas fa-cog', label: 'Profile', path: '/dashboard/profile' },
                 { icon: 'fas fa-question-circle', label: 'Leaderboard', path: '/dashboard/leaderboard' },
                 // { icon: 'fas fa-comments', label: 'Live Chat', path: '/dashboard/chat' },
                 { icon: 'fas fa-headset', label: 'Support', path: '/dashboard/support' },
-                { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
+                // { icon: 'fas fa-sign-out-alt', label: 'Log Out', isLogout: true }
 
               ].map((item, index) => (
                 item.isLogout ? (
@@ -318,23 +328,31 @@ const handleLogout = () => {
             {/* Mobile user section */}
             <div className="p-4 border-t border-white/10">
               <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-                <img
-                  src={user?.profilePicture ||  "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
+                {/* <img
+                  src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
                   alt={user?.firstName || "User"}
                   className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                /> */}
+                <img
+                  src={user?.profilePicture || "https://via.placeholder.com/40x40/4361ee/ffffff?text=U"}  
+                  alt={user?.firstName || "User"}
+                  className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/40x40/gray/ffffff?text=??";  
+                    console.error("Profile image load failed in Mobile sidebar");
+                  }}
                 />
-
                 <div className="flex-1 min-w-0">
                   <div className="user-name font-medium text-sm truncate">{user?.firstName || 'User'}</div>
                   <div className="user-role text-white/70 text-xs">Premium Affiliate</div>
                 </div>
-                <button
-                  onClick={handleLogout} // 🔹 Use handleLogout
+                {/* <button
+                  onClick={handleLogout}
                   className="p-1 rounded hover:bg-white/10 transition-colors"
                   title="Logout"
                 >
                   <i className="fas fa-sign-out-alt text-sm"></i>
-                </button>
+                </button> */}
 
               </div>
             </div>
@@ -401,7 +419,7 @@ const handleLogout = () => {
               <h3 className="text-lg font-semibold text-white text-center">Access Your Affiliate Account</h3>
             </Link>
 
-            
+
             {/* <Link
               to="/dashboard/community"
               className="bg-green-500 rounded-lg p-8 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-300"

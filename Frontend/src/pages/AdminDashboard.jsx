@@ -39,12 +39,12 @@ export default function AdminDashboard() {
 
 
   useEffect(() => {
-    console.log("[AdminDashboard] Component mounted, setting up sockets...");
-    fetchDashboard();
+    // console.log("[AdminDashboard] Component mounted, setting up sockets...");
+    // fetchDashboard();
 
     axios.get('/admin/purchased-users')
       .then(res => {
-        console.log("[Admin] Purchased users response:", res.data);
+        // console.log("[Admin] Purchased users response:", res.data);
         setActiveUsers((res.data.users || []).map(u => ({
           ...u,
           id: u._id,
@@ -64,27 +64,27 @@ export default function AdminDashboard() {
 
 
 
-    console.log("[AdminDashboard] Joining admin room:", adminRoom);
+    // console.log("[AdminDashboard] Joining admin room:", adminRoom);
     socket.emit('joinRoom', { room: adminRoom, userName: adminName }, (ack) => {
-      console.log("[AdminDashboard] joinRoom ACK:", ack);
+      // console.log("[AdminDashboard] joinRoom ACK:", ack);
     });
 
     socket.emit('addUser', { userName: adminName, id: 'admin' });
 
     socket.on('receiveMessage', (data) => {
-      console.log('[🔍 Admin Socket] receiveMessage received:', data);
+      // console.log('[🔍 Admin Socket] receiveMessage received:', data);
       if (data.room === currentRoom) {
         setChatMessages(prev => [...prev, data]);
       }
     });
 
     socket.on('adminMessage', (data) => {
-      console.log('[Socket Event] adminMessage:', data);
+      // console.log('[Socket Event] adminMessage:', data);
       setChatMessages(prev => [...prev, { ...data, userName: 'Admin Broadcast' }]);
     });
 
     socket.on('activeUsers', (users) => {
-      console.log('[Socket Event] activeUsers:', users);
+      // console.log('[Socket Event] activeUsers:', users);
       setOnlineUsers(users.filter(u => u.userName !== 'Admin').map(u => ({
         ...u,
         id: u.id || u._id
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
     });
 
     return () => {
-      console.log("[AdminDashboard] Cleaning up socket listeners...");
+      // console.log("[AdminDashboard] Cleaning up socket listeners...");
       socket.off('receiveMessage');
       socket.off('adminMessage');
       socket.off('activeUsers');
@@ -101,10 +101,10 @@ export default function AdminDashboard() {
 
 
   const fetchDashboard = async () => {
-    console.log("[AdminDashboard] Fetching dashboard data...");
+    // console.log("[AdminDashboard] Fetching dashboard data...");
     try {
       setLoading({ stats: true, sales: true, affiliates: true, courses: true, contacts: true });
-      console.log("[AdminDashboard] Making API requests...");
+      // console.log("[AdminDashboard] Making API requests...");
       const [statsRes, salesRes, affiliatesRes, coursesRes, contactsRes] = await Promise.all([
         axios.get("/admin/dashboard"),
         axios.get("/admin/sales"),
@@ -167,12 +167,12 @@ export default function AdminDashboard() {
         userName: adminName,
         timestamp: Date.now()
       };
-      console.log("[Admin → Server] Broadcasting message:", payload);
+      // console.log("[Admin → Server] Broadcasting message:", payload);
       socket.emit('adminBroadcast', payload);
       setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: broadcastMessage }]);
       setBroadcastMessage('');
     } else {
-      console.warn("[AdminDashboard] Empty broadcast message, not sent");
+      // console.warn("[AdminDashboard] Empty broadcast message, not sent");
     }
   };
 
@@ -185,23 +185,23 @@ export default function AdminDashboard() {
         userName: adminName,
         timestamp: Date.now()
       };
-      console.log('🔍 [Admin Frontend] Reply emit payload:', payload);  // ← Payload log
-      console.log('🔍 [Admin Frontend] Current socket ID:', socket.id);  // ← Socket status
+      // console.log('🔍 [Admin Frontend] Reply emit payload:', payload);  // ← Payload log
+      // console.log('🔍 [Admin Frontend] Current socket ID:', socket.id);  // ← Socket status
       socket.emit('adminReply', payload, (ack) => {
-        console.log('📤 [Admin Frontend] Server ACK for reply:', ack ? 'Success' : 'No ACK');  // ← ACK log
+        // console.log('📤 [Admin Frontend] Server ACK for reply:', ack ? 'Success' : 'No ACK'); 
       });
       // Local add...
       setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: replyMessage }]);
       setReplyMessage('');
     } else {
-      console.warn('⚠️ [Admin Frontend] Reply invalid:', { replyMessage: !!replyMessage.trim(), selectedUser: !!selectedUser, userId: selectedUser?._id });
+      // console.warn('⚠️ [Admin Frontend] Reply invalid:', { replyMessage: !!replyMessage.trim(), selectedUser: !!selectedUser, userId: selectedUser?._id });
     }
   };
 
   const selectUser = (user) => {
-    console.log('Selecting user:', user);
+    // console.log('Selecting user:', user);
     if (!user._id) {
-      console.error('User ID missing!');
+      // console.error('User ID missing!');
       alert('Invalid user selected!');
       return;
     }
