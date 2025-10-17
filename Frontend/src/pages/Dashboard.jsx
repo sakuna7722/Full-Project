@@ -227,13 +227,13 @@ const Dashboard = () => {
         {/* User section in sidebar */}
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-            {/* <img
+            <img
               src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
               alt={user?.firstName || "User"}
               className="w-8 h-8 rounded-full object-cover border-2 border-white"
-            /> */}
+            />
 
-            <img
+            {/* <img
               src={user?.profilePicture || "https://via.placeholder.com/40x40/4361ee/ffffff?text=U"}  
               alt={user?.firstName || "User"}
               className="w-8 h-8 rounded-full object-cover border-2 border-white"
@@ -241,7 +241,7 @@ const Dashboard = () => {
                 e.target.src = "https://via.placeholder.com/40x40/gray/ffffff?text=??";  
                 console.error("Profile image load failed in Dashboard sidebar");
               }}
-            />
+            /> */}
 
             <div className="flex-1 min-w-0">
               <div className="user-name font-medium text-sm truncate">{user?.firstName || 'User'}</div>
@@ -328,12 +328,13 @@ const Dashboard = () => {
             {/* Mobile user section */}
             <div className="p-4 border-t border-white/10">
               <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
-                {/* <img
+                <img
                   src={user?.profilePicture || "https://res.cloudinary.com/dxwtzb6pe/image/upload/v1757262791/oqwu4pod1xfyehprywc4.webp"}
                   alt={user?.firstName || "User"}
                   className="w-8 h-8 rounded-full object-cover border-2 border-white"
-                /> */}
-                <img
+                />
+
+                {/* <img
                   src={user?.profilePicture || "https://via.placeholder.com/40x40/4361ee/ffffff?text=U"}  
                   alt={user?.firstName || "User"}
                   className="w-8 h-8 rounded-full object-cover border-2 border-white"
@@ -341,7 +342,8 @@ const Dashboard = () => {
                     e.target.src = "https://via.placeholder.com/40x40/gray/ffffff?text=??";  
                     console.error("Profile image load failed in Mobile sidebar");
                   }}
-                />
+                /> */}
+
                 <div className="flex-1 min-w-0">
                   <div className="user-name font-medium text-sm truncate">{user?.firstName || 'User'}</div>
                   <div className="user-role text-white/70 text-xs">Premium Affiliate</div>

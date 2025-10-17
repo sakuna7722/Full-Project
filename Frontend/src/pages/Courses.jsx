@@ -12,20 +12,20 @@ function Courses({ isLoggedIn, setIntendedCourse }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Courses component mounted. isLoggedIn:", isLoggedIn);
-    console.log("Current URL:", window.location.href);
-    console.log("Query Parameters:", window.location.search);
+    // console.log("Courses component mounted. isLoggedIn:", isLoggedIn);
+    // console.log("Current URL:", window.location.href);
+    // console.log("Query Parameters:", window.location.search);
 
     const fetchCourses = async () => {
       try {
-        console.log("Fetching courses from /courses...");
+        // console.log("Fetching courses from /courses...");
         const res = await api.get('/courses');
-        console.log('API Response:', res);
-        console.log('Fetched courses data:', res.data);
+        // console.log('API Response:', res);
+        // console.log('Fetched courses data:', res.data);
         setCourses(res.data);
       } catch (err) {
-        console.error('Error fetching courses:', err);
-        console.error('Error details:', err.response?.data, err.response?.status);
+        // console.error('Error fetching courses:', err);
+        // console.error('Error details:', err.response?.data, err.response?.status);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -35,18 +35,18 @@ function Courses({ isLoggedIn, setIntendedCourse }) {
 
     if (isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('user'));
-      console.log('User from localStorage:', user);
+      // console.log('User from localStorage:', user);
       if (user && user.enrolledCourses) {
-        console.log('Enrolled courses:', user.enrolledCourses);
+        // console.log('Enrolled courses:', user.enrolledCourses);
         setEnrolledCourseSlugs(user.enrolledCourses.map((c) => c.slug));
       } else {
-        console.log('No user or enrolled courses found in localStorage');
+        // console.log('No user or enrolled courses found in localStorage');
       }
     }
   }, [isLoggedIn]);
 
   const handleBuyNow = (courseSlug) => {
-    console.log('Buy Now clicked for:', courseSlug);
+    // console.log('Buy Now clicked for:', courseSlug);
     if (!isLoggedIn) {
       localStorage.setItem('intendedCourse', courseSlug);
       navigate('/auth/signup');

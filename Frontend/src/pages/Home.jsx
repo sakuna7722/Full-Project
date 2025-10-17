@@ -50,22 +50,27 @@ function Home() {
         </div>
 
         {/* Right Side: Image and Feedback */}
-        <div className="relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center">
+        {/* <div className="relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center"> */}
+        {/* Right Side: Image and Feedback */}
+        {/* <div className="hidden md:block relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center"> */}
 
-          {/* Wrapper to control image and floating cards */}
-          <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
+        {/* Right Side: Image and Feedback */}
+        <div className="hidden md:block relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center">
+
+        {/* Wrapper to control image and floating cards */}
+        <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
 
 
-            <img
-              src="/Girl-1.jpg"
-              alt="Freelancer"
-              className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
-            />
+          <img
+            src="/Girl-1.jpg"
+            alt="Freelancer"
+            className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
+          />
 
-            {/* Rotating Chat Bubble */}
+          {/* Rotating Chat Bubble */}
 
-            <div
-              className="
+          <div
+            className="
     absolute 
     bottom-[-30px] sm:bottom-8 
     left-1/2 sm:left-6 
@@ -74,20 +79,20 @@ function Home() {
     flex gap-3 items-start 
     z-20 transition-all duration-500
   "
-            >
-              <div className="text-orange-500 text-2xl">💬</div>
-              <div>
-                <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
-                <p className="text-xs text-gray-600">{currentChat.message}</p>
-              </div>
+          >
+            <div className="text-orange-500 text-2xl">💬</div>
+            <div>
+              <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
+              <p className="text-xs text-gray-600">{currentChat.message}</p>
             </div>
-
-
           </div>
 
+
         </div>
+
       </div>
-    </section>
+    </div>
+    </section >
   );
 }
 

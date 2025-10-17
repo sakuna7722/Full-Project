@@ -26,7 +26,7 @@ function Login({ onAuthSuccess = () => { } }) {
 
     try {
       const response = await axios.post('/auth/login', { email, password, referredBy });
-      console.log('🎉 [Login.jsx] Login success at:', new Date().toISOString(), response.data);
+      // console.log('🎉 [Login.jsx] Login success at:', new Date().toISOString(), response.data);
 
       // ✅ Save token & user
       localStorage.setItem('token', response.data.token);
@@ -35,10 +35,10 @@ function Login({ onAuthSuccess = () => { } }) {
       // ✅ Set default Authorization header
       axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
 
-      console.log('💾 [Login.jsx] Token saved at:', new Date().toISOString(), localStorage.getItem('token'));
+      // console.log('💾 [Login.jsx] Token saved at:', new Date().toISOString(), localStorage.getItem('token'));
 
-      await login(response.data.user, response.data.token); // 👈 Await login to ensure hasEnrolledCourses is set
-      console.log('🔄 [Login.jsx] AuthContext updated with token:', response.data.token);
+      await login(response.data.user, response.data.token); 
+      // console.log('🔄 [Login.jsx] AuthContext updated with token:', response.data.token);
       console.log('✅ [Login.jsx] hasEnrolledCourses:', hasEnrolledCourses);
 
       setError('');
@@ -53,7 +53,7 @@ function Login({ onAuthSuccess = () => { } }) {
         navigate('/dashboard');
       }
     } catch (err) {
-      console.log('❌ [Login.jsx] Error at:', new Date().toISOString(), err.response?.data || err.message);
+      // console.log('❌ [Login.jsx] Error at:', new Date().toISOString(), err.response?.data || err.message);
       setError(err.response?.data?.message || 'Login failed');
     }
   };

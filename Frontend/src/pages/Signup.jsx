@@ -27,7 +27,7 @@ function Signup({ updateAuthState, intendedCourse }) {
 
   useEffect(() => {
     // CHANGE: Added debug log to verify referral code extraction from URL or localStorage
-    console.log('Referral code from URL or localStorage:', refFromUrl);
+    // console.log('Referral code from URL or localStorage:', refFromUrl);
     if (referredBy) {
       localStorage.setItem("referralCode", referredBy);
     }
@@ -87,7 +87,7 @@ function Signup({ updateAuthState, intendedCourse }) {
     }
 
     try {
-      console.log("📤 Submitting signup with referral:", referredBy);
+      // console.log("📤 Submitting signup with referral:", referredBy);
       const response = await axios.post('/auth/signup', {
         firstName,
         lastName,

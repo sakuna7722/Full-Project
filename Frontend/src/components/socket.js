@@ -7,6 +7,6 @@ const socket = io(SOCKET_URL, {
   autoConnect: false,
   withCredentials: true,
 });
-console.log("🔗 Connecting to socket URL:", SOCKET_URL);
+// console.log("🔗 Connecting to socket URL:", SOCKET_URL);
 
 export default socket;

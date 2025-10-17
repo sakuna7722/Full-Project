@@ -9,10 +9,12 @@ function Header() {
   // const appendRef = (path) => (refCode ? `${path}?ref=${refCode}` : path);
   const appendRef = (path) => {
     const generatedPath = refCode ? `${path}?ref=${refCode}` : path;
-    console.log("refCode:", refCode);
-    console.log("Generated path:", generatedPath);
+    // console.log("refCode:", refCode);
+    // console.log("Generated path:", generatedPath);
     return generatedPath;
   };
+
+  
 
   return (
     <header className="bg-white shadow-md py-4 px-4 md:px-10">

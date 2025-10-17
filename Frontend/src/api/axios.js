@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 const instance = axios.create({
   baseURL: 'http://localhost:5001/api',
-  timeout: 15000, // 15 second timeout
+  timeout: 15000, 
   headers: {
     'Content-Type': 'application/json',
   }
@@ -15,11 +15,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    console.log('🔍 [axios.js] Request for:', config.url, 'Token exists:', !!token, 'Full token:', token);
+    // console.log('🔍 [axios.js] Request for:', config.url, 'Token exists:', !!token, 'Full token:', token);
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log('✅ [axios.js] Authorization header set with:', token);
+      // console.log('✅ [axios.js] Authorization header set with:', token);
     } else {
       console.log('❌ No token found in localStorage');
     }
@@ -33,7 +33,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    console.log('✅ [axios.js] Response:', response.status, response.config.url, 'Data:', response.data);
+    // console.log('✅ [axios.js] Response:', response.status, response.config.url, 'Data:', response.data);
     return response;
   },
   (error) => {

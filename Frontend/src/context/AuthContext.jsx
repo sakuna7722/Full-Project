@@ -1,6 +1,7 @@
-//frontend/context/AuthContext.js :
+//frontend/context/AuthContext.jsx :
 import React, { createContext, useState, useEffect } from 'react';
 import instance from '../api/axios';
+
 
 export const AuthContext = createContext();
 
@@ -99,7 +100,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } finally {
-        console.log('✅ [AuthContext.js] Auth check complete at:', new Date().toISOString());
+        console.log('✅ [AuthContext.js] Auth check complete at:', new Date().toISOString());  
         setLoading(false);
       }
     };
