@@ -26,8 +26,6 @@ function Signup({ updateAuthState, intendedCourse }) {
 
 
   useEffect(() => {
-    // CHANGE: Added debug log to verify referral code extraction from URL or localStorage
-    // console.log('Referral code from URL or localStorage:', refFromUrl);
     if (referredBy) {
       localStorage.setItem("referralCode", referredBy);
     }
@@ -96,7 +94,7 @@ function Signup({ updateAuthState, intendedCourse }) {
         mobile: mobile || '',
         state,
         password,
-        referredBy, // ✅ send the code directly
+        referredBy, 
       });
 
 
@@ -109,12 +107,10 @@ function Signup({ updateAuthState, intendedCourse }) {
       if (intended) {
         navigate(intended);
       } else {
-        // CHANGE: Updated navigation from '/api/courses' to '/courses' to point to frontend route
         navigate('/courses');
       }
     } catch (err) {
-      // CHANGE: Added detailed error logging to debug signup failures (e.g., invalid referral code)
-      console.error('Signup error:', err.response?.data || err.message);
+      // console.error('Signup error:', err.response?.data || err.message);
       setError(err.response?.data?.message || err.message || 'Signup failed');
     }
   };

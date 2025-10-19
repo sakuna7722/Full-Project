@@ -40,7 +40,7 @@ function Purchase() {
           setError('Course not found.');
         }
       } catch (err) {
-        console.error('❌ Error fetching course:', err.response?.status, err.response?.data || err.message);
+        // console.error('❌ Error fetching course:', err.response?.status, err.response?.data || err.message);
         if (err.response?.status === 404) {
           setError('Course not found. Please check the course URL or contact support.');
         } else {
@@ -80,7 +80,7 @@ function Purchase() {
         localStorage.getItem("referralCode") ||
         null;
 
-      console.log("🔗 Referral code for purchase:", referralCode);
+      // console.log("🔗 Referral code for purchase:", referralCode);
 
       // ✅ FIX: Convert discount to number before arithmetic
       const discount = course.discount ? parseFloat(course.discount) : 0;
@@ -115,29 +115,29 @@ function Purchase() {
               amount: orderAmount / 100,
               affiliateId: referralCode,
             });
-            console.log("✅ [Purchase.jsx] Verify response data:", {
-              data: verifyRes.data,
-              timestamp: new Date().toISOString(),
-            });
+            // console.log("✅ [Purchase.jsx] Verify response data:", {
+            //   data: verifyRes.data,
+            //   timestamp: new Date().toISOString(),
+            // });
 
             if (verifyRes.data.success) {
-              console.log(
-                "🚀 [Purchase.jsx] Payment successful, navigating to dashboard",
-                {
-                  timestamp: new Date().toISOString(),
-                }
-              );
+              // console.log(
+              //   "🚀 [Purchase.jsx] Payment successful, navigating to dashboard",
+              //   {
+              //     timestamp: new Date().toISOString(),
+              //   }
+              // );
               alert("✅ Payment successful. You are enrolled!");
               navigate("/dashboard");
             } else {
-              console.log("🚫 [Purchase.jsx] Verification failed", {
-                message: verifyRes.data.message || "Unknown reason",
-                timestamp: new Date().toISOString(),
-              });
+              // console.log("🚫 [Purchase.jsx] Verification failed", {
+              //   message: verifyRes.data.message || "Unknown reason",
+              //   timestamp: new Date().toISOString(),
+              // });
               alert("❌ Payment verification failed");
             }
           } catch (err) {
-            console.error("❌ Verification error:", err);
+            // console.error("❌ Verification error:", err);
             alert("Payment verification failed.");
           }
         },
@@ -153,7 +153,7 @@ function Purchase() {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error('❌ Error initiating payment:', err.response?.data || err.message);
+      // console.error('❌ Error initiating payment:', err.response?.data || err.message);
       if (err.response?.data?.message === 'You have already purchased this course.') {
         alert('✅ You have already purchased this course.');
       } else {

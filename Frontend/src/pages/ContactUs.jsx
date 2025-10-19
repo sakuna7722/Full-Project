@@ -1,6 +1,6 @@
 // Frontend/src/pages/ContactUs.jsx
 import React, { useState } from 'react';
-import axios from '../api/axios'; // Ensure axios is configured
+import axios from '../api/axios'; 
 import Footer from '../components/Footer';
 
 function ContactUs() {
@@ -24,11 +24,11 @@ function ContactUs() {
 
     try {
       const response = await axios.post('/contact', formData);
-      console.log('Contact form submitted:', response.data);
+      // console.log('Contact form submitted:', response.data);
       setStatus({ type: 'success', message: 'Message sent successfully!' });
       setFormData({ name: '', email: '', subject: '', message: '' }); // Reset form
     } catch (err) {
-      console.error('Error submitting contact form:', err.response?.data || err.message);
+      // console.error('Error submitting contact form:', err.response?.data || err.message);
       setStatus({ type: 'error', message: err.response?.data?.message || 'Failed to send message' });
     } finally {
       setLoading(false);
