@@ -24,7 +24,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       console.time('fetchProfileData');
-      console.log('🚀 [UserProfile.jsx] Starting fetchData', { timestamp: new Date().toISOString() });
+      // console.log('🚀 [UserProfile.jsx] Starting fetchData', { timestamp: new Date().toISOString() });
       setLoading(true);
       setError(null);
       try {

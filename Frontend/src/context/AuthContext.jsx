@@ -5,6 +5,11 @@ import instance from '../api/axios';
 
 export const AuthContext = createContext();
 
+// New: Wrapped
+if (process.env.NODE_ENV === 'development') {
+  // console.log('🔑 [AuthContext.js] updateAuthState - Token:', token, 'UserData:', userData);
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,12 +42,12 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
 
-    console.log('🔑 [AuthContext.js] updateAuthState - Token:', token, 'UserData:', userData);
+    // console.log('🔑 [AuthContext.js] updateAuthState - Token:', token, 'UserData:', userData);
 
     if (token && userData) {
       try {
         const parsedUser = JSON.parse(userData);
-        console.log('✅ [AuthContext.js] Parsed user:', parsedUser);
+        // console.log('✅ [AuthContext.js] Parsed user:', parsedUser);
 
         setUser(parsedUser);
         setIsLoggedIn(true);
@@ -72,13 +77,13 @@ export const AuthProvider = ({ children }) => {
     const verifyAuth = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('🔑 [AuthContext.js] Verifying token:', token, 'at:', new Date().toISOString());
+        // console.log('🔑 [AuthContext.js] Verifying token:', token, 'at:', new Date().toISOString());
         if (token) {
           const res = await instance.get('/auth/profile', {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
           });
-          console.log('📥 [AuthContext.js] Profile response at:', new Date().toISOString(), res.data);
+          // console.log('📥 [AuthContext.js] Profile response at:', new Date().toISOString(), res.data);
           const userData = res.data;
           localStorage.setItem('user', JSON.stringify(userData));
           setUser(userData);
@@ -110,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
 
   const login = async (userData, token) => {
-    console.log('🔐 [AuthContext.js] Logging in with:', { userData, token });
+    // console.log('🔐 [AuthContext.js] Logging in with:', { userData, token });
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
 

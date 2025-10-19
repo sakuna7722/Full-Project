@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext'; // Path matches your setup
 
 const ProtectedRoute = () => {
   const { isLoggedIn, loading } = useContext(AuthContext); // Added 'loading'
-  console.log('🛡️ ProtectedRoute: loading=', loading, 'isLoggedIn=', isLoggedIn);
+  // console.log('🛡️ ProtectedRoute: loading=', loading, 'isLoggedIn=', isLoggedIn);
 
   // Show a loader while auth is verifying (prevents flash redirects)
   if (loading) {
@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
 
   // If not logged in after loading, redirect to login
   if (!isLoggedIn) {
-    console.log('🚫 Not logged in, redirecting to login');
+    // console.log('🚫 Not logged in, redirecting to login');
     return <Navigate to="/auth/login" replace />;
     
   }

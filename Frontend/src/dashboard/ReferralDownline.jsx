@@ -14,9 +14,9 @@ function ReferralDownline() {
     try {
       setLoading(true);
       setError(null);
-      console.log("🔍 Fetching referral downline...");
+      // console.log("🔍 Fetching referral downline...");
       const res = await api.get("/referral/downline");
-      console.log("✅ Downline response:", res.data);
+      // console.log("✅ Downline response:", res.data);
       if (res.data.success && Array.isArray(res.data.data)) {
         setDownline(res.data.data);
       } else {
@@ -24,7 +24,7 @@ function ReferralDownline() {
         console.warn("⚠️ No valid downline data received:", res.data);
       }
     } catch (err) {
-      console.error("❌ Error fetching downline:", err);
+      // console.error("❌ Error fetching downline:", err);
       const errorMessage =
         err.response?.data?.message ||
         err.message ||

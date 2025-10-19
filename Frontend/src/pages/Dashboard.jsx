@@ -16,17 +16,17 @@ const Dashboard = () => {
   const location = useLocation();
 
   // Log user data on mount
-  console.log('📍 [Dashboard.jsx] Current location:', {
-    pathname: location.pathname,
-    search: location.search,
-    state: location.state,
-    timestamp: new Date().toISOString(),
-  });
+  // console.log('📍 [Dashboard.jsx] Current location:', {
+  //   pathname: location.pathname,
+  //   search: location.search,
+  //   state: location.state,
+  //   timestamp: new Date().toISOString(),
+  // });
 
   // Redirect check
   useEffect(() => {
     if (!user && !loading) {
-      console.log('🚫 [Dashboard.jsx] No user, redirecting to login', { timestamp: new Date().toISOString() });
+      // console.log('🚫 [Dashboard.jsx] No user, redirecting to login', { timestamp: new Date().toISOString() });
       navigate('/auth/login');
       return;
     }
@@ -34,50 +34,50 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     console.time('fetchData');
-    console.log('🚀 [Dashboard.jsx] Starting fetchData', { timestamp: new Date().toISOString() });
+    // console.log('🚀 [Dashboard.jsx] Starting fetchData', { timestamp: new Date().toISOString() });
     setLoading(true);
     setError(null);
     try {
       // Fetch user data if not available
       let userData = user;
       if (!user?.firstName || !user?.email || !user?.affiliateId) {
-        console.log('🔄 [Dashboard.jsx] Fetching user data from /auth/me', { timestamp: new Date().toISOString() });
+        // console.log('🔄 [Dashboard.jsx] Fetching user data from /auth/me', { timestamp: new Date().toISOString() });
         const userRes = await axios.get('/auth/me');
         userData = userRes.data.user;
         setUser(userData);
-        console.log('✅ [Dashboard.jsx] /auth/me response:', { user: userData, timestamp: new Date().toISOString() });
+        // console.log('✅ [Dashboard.jsx] /auth/me response:', { user: userData, timestamp: new Date().toISOString() });
         localStorage.setItem('user', JSON.stringify(userData));
       }
-      console.log('👤 [Dashboard.jsx] User before enrolled-courses fetch:', {
-        userId: userData?._id,
-        email: userData?.email,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log('👤 [Dashboard.jsx] User before enrolled-courses fetch:', {
+      //   userId: userData?._id,
+      //   email: userData?.email,
+      //   timestamp: new Date().toISOString(),
+      // });
 
       const [courseRes, commissionRes] = await Promise.all([
         axios.get('/user/enrolled-courses'),
         axios.get('/referral/metrics'),
       ]);
-      console.log('✅ [Dashboard.jsx] API responses:', {
-        enrolledCourses: courseRes.data,
-        commissionMetrics: commissionRes.data,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log('✅ [Dashboard.jsx] API responses:', {
+      //   enrolledCourses: courseRes.data,
+      //   commissionMetrics: commissionRes.data,
+      //   timestamp: new Date().toISOString(),
+      // });
 
       const enrolledCourses = courseRes.data.enrolledCourses || [];
-      console.log('📚 [Dashboard.jsx] Enrolled courses details:', {
-        count: enrolledCourses.length,
-        courses: enrolledCourses,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log('📚 [Dashboard.jsx] Enrolled courses details:', {
+      //   count: enrolledCourses.length,
+      //   courses: enrolledCourses,
+      //   timestamp: new Date().toISOString(),
+      // });
       setCourses(enrolledCourses);
 
       if (enrolledCourses.length === 0) {
-        console.log('🚫 [Dashboard.jsx] No enrolled courses detected (even after purchase?), redirecting to home', {
-          possibleReasons: 'Purchase may not have enrolled yet, or backend delay/API error',
-          timestamp: new Date().toISOString(),
-        });
-        console.log('🚫 [Dashboard.jsx] No enrolled courses, redirecting to home', { timestamp: new Date().toISOString() });
+        // console.log('🚫 [Dashboard.jsx] No enrolled courses detected (even after purchase?), redirecting to home', {
+        //   possibleReasons: 'Purchase may not have enrolled yet, or backend delay/API error',
+        //   timestamp: new Date().toISOString(),
+        // });
+        // console.log('🚫 [Dashboard.jsx] No enrolled courses, redirecting to home', { timestamp: new Date().toISOString() });
         setHasEnrolledCourses(false);
         navigate('/');
         return;
@@ -93,29 +93,29 @@ const Dashboard = () => {
         setCommissionStats({});
       }
     } catch (err) {
-      console.error('❌ [Dashboard.jsx] fetchData error:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        headers: err.response?.headers,
-        timestamp: new Date().toISOString(),
-      });
+      // console.error('❌ [Dashboard.jsx] fetchData error:', {
+      //   message: err.message,
+      //   response: err.response?.data,
+      //   status: err.response?.status,
+      //   headers: err.response?.headers,
+      //   timestamp: new Date().toISOString(),
+      // });
       setError('Failed to load data. Redirecting to home...');
       setHasEnrolledCourses(false);
       navigate('/');
     } finally {
       setLoading(false);
-      console.timeEnd('fetchData');
+      // console.timeEnd('fetchData');
     }
   };
 
   useEffect(() => {
     let isMounted = true;
     if (user) {
-      console.log('🔁 [Dashboard.jsx] useEffect triggered for fetchData', {
-        userExists: !!user,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log('🔁 [Dashboard.jsx] useEffect triggered for fetchData', {
+      //   userExists: !!user,
+      //   timestamp: new Date().toISOString(),
+      // });
       fetchData().then(() => {
         if (!isMounted) return;
       });
@@ -126,7 +126,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     try {
-      console.log("🚪 Logging out user...");
+      // console.log("🚪 Logging out user...");
 
       // 1️⃣ Clear local storage
       localStorage.removeItem("token");
@@ -143,7 +143,7 @@ const Dashboard = () => {
       // 4️⃣ Redirect to login
       navigate("/auth/login", { replace: true });
     } catch (err) {
-      console.error("❌ Error in logout:", err.message);
+      // console.error("❌ Error in logout:", err.message);
     }
   };
 
@@ -157,7 +157,7 @@ const Dashboard = () => {
     );
 
   if (!hasEnrolledCourses) {
-    console.log('🛑 [Dashboard.jsx] Rendering no courses message (redirect may have failed)', { timestamp: new Date().toISOString() });
+    // console.log('🛑 [Dashboard.jsx] Rendering no courses message (redirect may have failed)', { timestamp: new Date().toISOString() });
     return (
       <div className="flex justify-center items-center h-screen bg-[#f5f7fb] text-[#212529]">
         <div className="text-center bg-white rounded-[15px] p-6 md:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)] mx-4 max-w-md w-full">

@@ -34,7 +34,7 @@ const PayoutSettings = () => {
     try {
       setLoading(true);
       const res = await axios.get("/user/payout-details");
-      console.log("GET /payout-details response:", res.data);
+      // console.log("GET /payout-details response:", res.data);
       setPanNumber(res.data.panNumber || "");
       setAadhaarNumber(res.data.aadhaarNumber || "");
       setAccountNumber(res.data.accountNumber || "");
@@ -51,7 +51,7 @@ const PayoutSettings = () => {
         setAlreadySet(true);
       }
     } catch (err) {
-      console.error("Error fetching payout details:", err.response || err);
+      // console.error("Error fetching payout details:", err.response || err);
       setMessage(
         err.response?.data?.message || "❌ Failed to fetch KYC details."
       );
@@ -62,12 +62,12 @@ const PayoutSettings = () => {
 
   // Submit form
   const updateDetails = async () => {
-    console.log("Sending payload to /account-info:", {
-      panNumber,
-      aadhaarNumber,
-      accountNumber,
-      ifscCode,
-    });
+    // console.log("Sending payload to /account-info:", {
+    //   panNumber,
+    //   aadhaarNumber,
+    //   accountNumber,
+    //   ifscCode,
+    // });
     if (!validatePan(panNumber)) return setMessage("❌ Invalid PAN number.");
     if (!validateAadhaar(aadhaarNumber))
       return setMessage("❌ Aadhaar must be 12 digits.");
@@ -92,12 +92,12 @@ const PayoutSettings = () => {
         accountNumber,
         ifscCode,
       });
-      console.log("POST /account-info response:", res.data);
+      // console.log("POST /account-info response:", res.data);
       setMessage(res.data.message || "✅ KYC details saved successfully!");
       setAlreadySet(true);
       setTimeout(() => navigate("/dashboard"), 2000);
     } catch (err) {
-      console.error("Error saving KYC details:", err.response || err);
+      // console.error("Error saving KYC details:", err.response || err);
       setMessage(
         err.response?.data?.message || "❌ Failed to save KYC details."
       );

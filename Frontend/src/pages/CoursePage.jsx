@@ -17,26 +17,26 @@ function CoursePage() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        console.log(`[CoursePage] Fetching course for slug: ${slug}`);
+        // console.log(`[CoursePage] Fetching course for slug: ${slug}`);
         const token = localStorage.getItem("token");
-        console.log("[CoursePage] Token:", token ? "Token present" : "No token");
+        // console.log("[CoursePage] Token:", token ? "Token present" : "No token");
         const res = await axios.get(`/courses/slug/${slug}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
-        console.log("[CoursePage] Course data received:", {
-          id: res.data._id,
-          name: res.data.name,
-          hasPurchased: res.data.hasPurchased,
-          videos: res.data.videos.map((v) => ({
-            title: v.title,
-            url: v.url ? "Included" : "Hidden",
-            freePreview: v.freePreview,
-          })),
-        });
+        // console.log("[CoursePage] Course data received:", {
+        //   id: res.data._id,
+        //   name: res.data.name,
+        //   hasPurchased: res.data.hasPurchased,
+        //   videos: res.data.videos.map((v) => ({
+        //     title: v.title,
+        //     url: v.url ? "Included" : "Hidden",
+        //     freePreview: v.freePreview,
+        //   })),
+        // });
         setCourse(res.data);
         setError(null);
       } catch (err) {
-        console.error("[CoursePage] Error fetching course:", err.response?.data || err.message);
+        // console.error("[CoursePage] Error fetching course:", err.response?.data || err.message);
         setError("Failed to load course. Please try again later.");
       } finally {
         setLoading(false);
@@ -70,11 +70,11 @@ function CoursePage() {
       </div>
     );
 
-  console.log("[CoursePage] Rendering course:", {
-    name: course.name,
-    hasPurchased: course.hasPurchased,
-    videoCount: course.videos.length,
-  });
+  // console.log("[CoursePage] Rendering course:", {
+  //   name: course.name,
+  //   hasPurchased: course.hasPurchased,
+  //   videoCount: course.videos.length,
+  // });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -115,12 +115,12 @@ function CoursePage() {
         {course.hasPurchased && course.videos && course.videos.length > 0 ? (
           <Accordion type="single" collapsible className="space-y-3">
             {course.videos.map((video, index) => {
-              console.log("[CoursePage] Rendering video:", {
-                title: video.title,
-                url: video.url ? "Included" : "Hidden",
-                freePreview: video.freePreview,
-                hasPurchased: course.hasPurchased,
-              });
+              // console.log("[CoursePage] Rendering video:", {
+              //   title: video.title,
+              //   url: video.url ? "Included" : "Hidden",
+              //   freePreview: video.freePreview,
+              //   hasPurchased: course.hasPurchased,
+              // });
               return (
                 <AccordionItem
                   key={index}
