@@ -14,7 +14,7 @@ function ForgotPassword() {
       setError("");
     }
      catch (error) {
-  console.error("❌ Forgot password error:", error);
+  // console.error("❌ Forgot password error:", error);
   setError(error.response?.data?.message || "Server error");
   setMessage("");
 }
