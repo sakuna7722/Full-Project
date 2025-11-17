@@ -210,21 +210,33 @@ const activeUsers = new Map();
 io.on("connection", (socket) => {
   console.log("🟢 User connected:", socket.id);
 
-  // ✅ User joins a room (admin or private)
-  socket.on("joinRoom", ({ room, userName }) => {
+  // ✅ Single joinRoom handler (admin or user)
+  socket.on("joinRoom", ({ room, userName, userId, isAdmin = false }) => {
     socket.join(room);
     socket.userName = userName;
+    socket.userId = userId;
+    socket.isAdmin = isAdmin;
     socket.room = room;
 
-    // Register user in active list
-    activeUsers.set(socket.id, { id: socket.id, userName });
+    activeUsers.set(socket.id, { id: socket.id, userName, userId, isAdmin });
     io.emit("activeUsers", Array.from(activeUsers.values()));
 
-    console.log(`${userName} joined room: ${room}`);
+    if (isAdmin) {
+      socket.join("general");
+      console.log(`Admin ${userName} joined general room`);
+    } else {
+      io.to("general").emit("user-online", { userId, userName });
+    }
+
+    console.log(
+      `${userName} (${isAdmin ? "Admin" : "User"}) joined room: ${room}`
+    );
   });
 
   // 1️⃣ sendMessage (user → admin)
-  socket.on("sendMessage", async ({ room, userName, message }) => {
+  socket.on("sendMessage", async ({ room, userName, userId, message }) => {
+    if (!room.startsWith("private_")) return;
+
     const msg = {
       user: userName,
       text: message,
@@ -239,17 +251,16 @@ io.on("connection", (socket) => {
       message,
       timestamp: msg.createdAt.getTime(),
       room,
+      senderId: userId, // Sender track ke liye
     });
 
-    // ALSO emit to admin general dashboard if room is private
-    if (room.startsWith("private_")) {
-      io.to("general").emit("receiveMessage", {
-        userName,
-        message,
-        timestamp: msg.createdAt.getTime(),
-        room,
-      });
-    }
+    // Admin ko general room mein bhi notify (preview)
+    io.to("general").emit("new-private-message", {
+      userId,
+      userName,
+      message: message.substring(0, 50) + "...",
+      room,
+    });
   });
 
   // 2️⃣ adminReply (admin → user)
@@ -284,32 +295,24 @@ io.on("connection", (socket) => {
     }
   });
 
-  // 3️⃣ ensure admin joins general room at connection
-  socket.on("joinRoom", ({ room, userName }) => {
-    socket.join(room);
-    socket.userName = userName;
-    socket.room = room;
+  // adminBroadcast handler
+  socket.on("adminBroadcast", async ({ message, adminName }) => {
+    if (!socket.isAdmin) return;
 
-    // If admin, also join 'general' room
-    if (userName === "Admin") {
-      socket.join("general");
-    }
-
-    activeUsers.set(socket.id, { id: socket.id, userName });
-    io.emit("activeUsers", Array.from(activeUsers.values()));
-  });
-
-  // adminBroadcast handler (same)
-  socket.on("adminBroadcast", async (data) => {
-    const { message, userName, room, timestamp } = data;
     const msg = {
-      user: userName,
+      user: adminName || "Admin",
       text: message,
       room: "general",
-      createdAt: new Date(timestamp),
+      createdAt: new Date(),
     };
     await Message.create(msg);
-    io.emit("receiveMessage", { ...msg, userName, message });
+
+    io.emit("receiveBroadcast", {
+      userName: adminName || "Admin",
+      message,
+      timestamp: msg.createdAt.getTime(),
+      isBroadcast: true,
+    });
     console.log(`📢 Broadcast sent: ${message}`);
   });
 

@@ -115,6 +115,8 @@ function AppContent() {
 
           <Route path="/dashboard/chat" element={<ChatComponent />} />
 
+
+
           <Route path="/dashboard/support" element={<Support />} />
           <Route path="/dashboard/profile" element={<UserProfile />} />
           <Route path="/dashboard/payout-settings" element={<PayoutSettings />} />

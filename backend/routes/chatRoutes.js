@@ -22,17 +22,42 @@ const authAdmin = async (req, res, next) => {
 };
 
 // GET messages for a room (admin or normal)
-router.get('/messages', async (req, res) => { 
+// router.get('/messages', async (req, res) => { 
+//   try {
+//     const { room, limit = 50 } = req.query;
+//     if (!room) return res.status(400).json({ message: 'Room is required' });
+
+//     const messages = await Message.find({ room })
+//       .sort({ createdAt: 1 })  // ← timestamp को createdAt में change
+//       .limit(parseInt(limit))
+//       .lean();  // Faster query
+
+//     // Response में original fields map back for frontend
+//     const formattedMessages = messages.map(m => ({
+//       ...m,
+//       userName: m.user,
+//       message: m.text,
+//       timestamp: m.createdAt.getTime()
+//     }));
+
+//     res.json({ success: true, messages: formattedMessages });
+//   } catch (err) {
+//     console.error('Error fetching chat messages:', err);
+//     res.status(500).json({ message: 'Failed to fetch messages' });
+//   }
+// });
+
+// GET messages for a room (admin or normal)
+router.get('/messages', authAdmin, async (req, res) => {  // authAdmin add kiya (admin only)
   try {
     const { room, limit = 50 } = req.query;
     if (!room) return res.status(400).json({ message: 'Room is required' });
 
     const messages = await Message.find({ room })
-      .sort({ createdAt: 1 })  // ← timestamp को createdAt में change
+      .sort({ createdAt: 1 })
       .limit(parseInt(limit))
-      .lean();  // Faster query
+      .lean();
 
-    // Response में original fields map back for frontend
     const formattedMessages = messages.map(m => ({
       ...m,
       userName: m.user,
@@ -45,6 +70,12 @@ router.get('/messages', async (req, res) => {
     console.error('Error fetching chat messages:', err);
     res.status(500).json({ message: 'Failed to fetch messages' });
   }
+});
+
+// Naya route: Active users get (admin ke liye)
+router.get('/active-users', authAdmin, (req, res) => {
+  // Yeh server.js se nahi, yahan se nahi – Socket se handle, lekin agar chahiye to global var use karo
+  res.json({ success: true, users: Array.from(activeUsers.values()) });
 });
 
 module.exports = router;

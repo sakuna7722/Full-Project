@@ -1,153 +1,113 @@
 // frontend/src/components/ChatComponent.jsx
-import React, { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
-import axios from "../api/axios";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { Send, MessageCircle, Users } from "lucide-react";
+import socket from "./socket"; // Socket import
 
-const ChatComponent = () => {
-  const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [text, setText] = useState("");
-  const [user, setUser] = useState("ram"); // user name
-  const messagesEndRef = useRef(null);
+const ChatComponent = ({ selectedUser, adminName, token, onSelectUser, onlineUsers, chatMessages, onReply, onBroadcast, replyMessage, setReplyMessage, broadcastMessage, setBroadcastMessage }) => {
+  const adminRoom = 'general';
 
-  // Get userId from localStorage / token
-  const [userId] = useState(() => {
-    const storedId = localStorage.getItem("userId");
-    if (storedId) return storedId;
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = JSON.parse(atob(token.split(".")[1]));
-        return decoded.id;
-      } catch (e) {
-        console.warn("[Chat] Token decode failed, fallback u1");
-      }
+  const handleReply = () => {
+    if (replyMessage.trim() && selectedUser && selectedUser._id) {
+      const privateRoom = `private_${selectedUser._id}`;
+      socket.emit('adminReply', {
+        room: privateRoom,
+        message: replyMessage,
+        adminName,
+        targetUserId: selectedUser._id
+      });
+      onReply(replyMessage); // Local update
+      setReplyMessage('');
     }
-    return "u1";
-  });
+  };
 
-  const room = `private_${userId}`;
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
-    const newSocket = io("http://localhost:5001", {
-      transports: ["websocket"],
-      reconnection: true,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on("connect", () => {
-      console.log("[✅ Socket Connected]", newSocket.id);
-      newSocket.emit("joinRoom", { room, userName: user });
-      console.log(`[User] Joined room: ${room}`);
-    });
-
-    newSocket.on("receiveMessage", (msg) => {
-      console.log("[🟢 receiveMessage]", msg);
-      // Add only messages for this room
-      if (msg.room === room) {
-        setMessages((prev) => [...prev, msg]);
-      }
-    });
-
-    newSocket.on("disconnect", () =>
-      console.warn("[⚠️ Socket Disconnected]")
-    );
-
-    // Fetch previous messages
-   axios
-  .get(`http://localhost:5001/api/chat/messages?room=${room}&limit=50`)
-  .then((res) => {
-    if (res.data.messages) {
-      const mapped = res.data.messages.map(msg => ({
-        userName: msg.user,    
-        message: msg.text,     
-        timestamp: msg.createdAt,
-        room: msg.room
-      }));
-      setMessages(mapped);
+  const handleBroadcast = () => {
+    if (broadcastMessage.trim()) {
+      socket.emit('adminBroadcast', { message: broadcastMessage, adminName });
+      onBroadcast(broadcastMessage); // Local update
+      setBroadcastMessage('');
     }
-  })
-  .catch((err) =>
-    console.error("Error fetching messages:", err.response?.data || err.message)
-  );
-
-
-    return () => newSocket.disconnect();
-  }, [room, user]);
-
-  const sendMessage = (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
-
-    const messageData = {
-      room,
-      userName: user,
-      message: text,
-      timestamp: Date.now(),
-    };
-
-    setMessages((prev) => [...prev, messageData]);
-
-    socket?.emit("sendMessage", messageData);
-    setText("");
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white shadow-xl rounded-2xl p-6">
-      <h2 className="text-xl font-semibold mb-4 text-center">
-        💬 Chat with Admin
-      </h2>
-
-      <div className="border h-80 overflow-y-auto rounded-lg p-3 mb-4 bg-gray-50">
-        {messages.length === 0 ? (
-          <p className="text-center text-gray-500 mt-10">No messages yet</p>
-        ) : (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`mb-2 ${
-                msg.userName === user ? "text-right" : "text-left"
-              }`}
+    <div className="flex gap-4">
+      {/* Left: Users List */}
+      <div className="w-1/3 bg-gray-50 p-4 rounded border">
+        <h3 className="font-semibold mb-4 flex items-center gap-2">
+          <Users className="h-4 w-4" /> Online Users ({onlineUsers.length})
+        </h3>
+        <div className="space-y-2 max-h-96 overflow-y-auto">
+          {onlineUsers.map((user, i) => (
+            <Button
+              key={i}
+              variant={selectedUser?.id === user.id ? "default" : "outline"}
+              className="w-full justify-start"
+              onClick={() => onSelectUser(user)}
             >
-              <span
-                className={`inline-block px-3 py-2 rounded-xl ${
-                  msg.userName === user
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-800"
-                }`}
-              >
-                <strong>{msg.userName}:</strong> {msg.message}
-              </span>
-              <small className="block text-xs text-gray-500 mt-1">
-                {new Date(msg.timestamp).toLocaleTimeString()}
-              </small>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
+              <MessageCircle className="h-4 w-4 mr-2" />
+              {user.userName}
+            </Button>
+          ))}
+          {onlineUsers.length === 0 && <p className="text-gray-500 text-sm">No online users</p>}
+        </div>
       </div>
 
-      <form onSubmit={sendMessage} className="flex gap-2">
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-1 border rounded-lg px-3 py-2 outline-none focus:ring focus:ring-blue-300"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          Send
-        </button>
-      </form>
+      {/* Right: Chat Window */}
+      <div className="w-2/3 space-y-4">
+        {selectedUser ? (
+          <>
+            <h3 className="font-semibold">Chat with {selectedUser.userName}</h3>
+            <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
+              {chatMessages.map((msg, i) => (
+                <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName || msg.senderId === 'admin' ? "bg-blue-100 ml-auto" : "bg-gray-100"}`}>
+                  <strong>{msg.userName}:</strong> {msg.message}
+                  <small className="block text-xs text-gray-500 mt-1">
+                    {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : ""}
+                  </small>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                value={replyMessage}
+                onChange={(e) => setReplyMessage(e.target.value)}
+                placeholder="Reply to user..."
+                className="flex-1 p-2 border rounded"
+                onKeyPress={(e) => e.key === "Enter" && handleReply()}
+              />
+              <Button onClick={handleReply} disabled={!replyMessage.trim()}>
+                <Send className="h-4 w-4 mr-2" /> Reply
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h3 className="font-semibold">General Broadcast</h3>
+            <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
+              {chatMessages.filter((msg) => msg.isBroadcast).map((msg, i) => (
+                <div key={i} className={`mb-2 p-2 rounded ${msg.userName === adminName ? "bg-blue-100 ml-auto" : "bg-gray-100"}`}>
+                  <strong>{msg.userName}:</strong> {msg.message}
+                  <small className="block text-xs text-gray-500 mt-1">
+                    {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : ""}
+                  </small>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                value={broadcastMessage}
+                onChange={(e) => setBroadcastMessage(e.target.value)}
+                placeholder="Broadcast to all..."
+                className="flex-1 p-2 border rounded"
+                onKeyPress={(e) => e.key === "Enter" && handleBroadcast()}
+              />
+              <Button onClick={handleBroadcast} disabled={!broadcastMessage.trim()}>
+                <Send className="h-4 w-4 mr-2" /> Broadcast
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

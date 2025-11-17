@@ -7,6 +7,7 @@ const Purchase = require('../models/Purchase');
 const Course = require('../models/Course');
 const Contact = require('../models/Contact');
 const Message = require('../models/Message'); 
+const { protect, admin } = require('../middleware/authMiddleware');  
 
 // Middleware to verify JWT and admin status
 const authAdmin = async (req, res, next) => {
@@ -227,24 +228,24 @@ router.get('/contacts', authAdmin, async (req, res) => {
   }
 });
 
-// FIX: GET purchased users for admin chat (add this route)
-router.get('/purchased-users', authAdmin, async (req, res) => {
+// FIX: GET purchased users for admin chat
+router.get('/purchased-users', protect, admin, async (req, res) => {  // authAdmin ko protect, admin se replace
   try {
     console.log('FIX: [Admin] Fetching purchased users for:', req.user.email);  
     const users = await User.find({ isAdmin: false })  // Exclude admins
       .select('firstName lastName email _id affiliateId') 
       .sort({ createdAt: -1 })  
       .lean();  // Faster
-    console.log('FIX: [Admin] Purchased users fetched, count:', users.length);  // ← Success log
-    res.json({ success: true, users });  // Match frontend expect
+    console.log('FIX: [Admin] Purchased users fetched, count:', users.length);
+    res.json({ success: true, users });
   } catch (err) {
     console.error('FIX ERROR: [Admin] Purchased users fetch failed for:', req.user?.email || 'Unknown', err.message);
     res.status(500).json({ message: 'Failed to fetch purchased users' });
   }
 });
 
-// FIX: GET chat messages (sort fix + logs) - Replace existing if present
-router.get('/chat/messages', authAdmin, async (req, res) => {
+// FIX: GET chat messages
+router.get('/chat/messages', protect, admin, async (req, res) => {  // authAdmin ko protect, admin se replace
   try {
     const { room, limit = 50 } = req.query;
     console.log('FIX: [Admin Chat] Fetching messages for room:', room, 'limit:', limit);  
@@ -262,7 +263,7 @@ router.get('/chat/messages', authAdmin, async (req, res) => {
       timestamp: m.createdAt.getTime()
     }));
 
-    console.log('FIX: [Admin Chat] Messages fetched for', room, 'count:', formatted.length);  // ← Success log
+    console.log('FIX: [Admin Chat] Messages fetched for', room, 'count:', formatted.length);
     res.json({ success: true, messages: formatted });
   } catch (err) {
     console.error('FIX ERROR: [Admin Chat] Fetch failed for room:', room, err.message);

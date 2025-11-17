@@ -7,6 +7,7 @@ import { Button } from "../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { RefreshCw, Download, Send, MessageCircle, Users } from "lucide-react";
+import ChatComponent from "../components/ChatComponent";  // Chat component import
 
 import CourseVideos from "../components/CourseVideos";
 import socket from "../components/socket";
@@ -39,12 +40,12 @@ export default function AdminDashboard() {
 
 
   useEffect(() => {
-    // console.log("[AdminDashboard] Component mounted, setting up sockets...");
-    // fetchDashboard();
+    console.log("[AdminDashboard] Component mounted, setting up sockets...");
+    fetchDashboard();
 
     axios.get('/admin/purchased-users')
       .then(res => {
-        // console.log("[Admin] Purchased users response:", res.data);
+        console.log("[Admin] Purchased users response:", res.data);
         setActiveUsers((res.data.users || []).map(u => ({
           ...u,
           id: u._id,
@@ -64,27 +65,27 @@ export default function AdminDashboard() {
 
 
 
-    // console.log("[AdminDashboard] Joining admin room:", adminRoom);
+    console.log("[AdminDashboard] Joining admin room:", adminRoom);
     socket.emit('joinRoom', { room: adminRoom, userName: adminName }, (ack) => {
-      // console.log("[AdminDashboard] joinRoom ACK:", ack);
+      console.log("[AdminDashboard] joinRoom ACK:", ack);
     });
 
     socket.emit('addUser', { userName: adminName, id: 'admin' });
 
     socket.on('receiveMessage', (data) => {
-      // console.log('[🔍 Admin Socket] receiveMessage received:', data);
+      console.log('[🔍 Admin Socket] receiveMessage received:', data);
       if (data.room === currentRoom) {
         setChatMessages(prev => [...prev, data]);
       }
     });
 
     socket.on('adminMessage', (data) => {
-      // console.log('[Socket Event] adminMessage:', data);
+      console.log('[Socket Event] adminMessage:', data);
       setChatMessages(prev => [...prev, { ...data, userName: 'Admin Broadcast' }]);
     });
 
     socket.on('activeUsers', (users) => {
-      // console.log('[Socket Event] activeUsers:', users);
+      console.log('[Socket Event] activeUsers:', users);
       setOnlineUsers(users.filter(u => u.userName !== 'Admin').map(u => ({
         ...u,
         id: u.id || u._id
@@ -92,7 +93,7 @@ export default function AdminDashboard() {
     });
 
     return () => {
-      // console.log("[AdminDashboard] Cleaning up socket listeners...");
+      console.log("[AdminDashboard] Cleaning up socket listeners...");
       socket.off('receiveMessage');
       socket.off('adminMessage');
       socket.off('activeUsers');
@@ -101,10 +102,10 @@ export default function AdminDashboard() {
 
 
   const fetchDashboard = async () => {
-    // console.log("[AdminDashboard] Fetching dashboard data...");
+    console.log("[AdminDashboard] Fetching dashboard data...");
     try {
       setLoading({ stats: true, sales: true, affiliates: true, courses: true, contacts: true });
-      // console.log("[AdminDashboard] Making API requests...");
+      console.log("[AdminDashboard] Making API requests...");
       const [statsRes, salesRes, affiliatesRes, coursesRes, contactsRes] = await Promise.all([
         axios.get("/admin/dashboard"),
         axios.get("/admin/sales"),
@@ -167,12 +168,12 @@ export default function AdminDashboard() {
         userName: adminName,
         timestamp: Date.now()
       };
-      // console.log("[Admin → Server] Broadcasting message:", payload);
+      console.log("[Admin → Server] Broadcasting message:", payload);
       socket.emit('adminBroadcast', payload);
       setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: broadcastMessage }]);
       setBroadcastMessage('');
     } else {
-      // console.warn("[AdminDashboard] Empty broadcast message, not sent");
+      console.warn("[AdminDashboard] Empty broadcast message, not sent");
     }
   };
 
@@ -185,16 +186,16 @@ export default function AdminDashboard() {
         userName: adminName,
         timestamp: Date.now()
       };
-      // console.log('🔍 [Admin Frontend] Reply emit payload:', payload);  // ← Payload log
-      // console.log('🔍 [Admin Frontend] Current socket ID:', socket.id);  // ← Socket status
+      console.log('🔍 [Admin Frontend] Reply emit payload:', payload);  // ← Payload log
+      console.log('🔍 [Admin Frontend] Current socket ID:', socket.id);  // ← Socket status
       socket.emit('adminReply', payload, (ack) => {
-        // console.log('📤 [Admin Frontend] Server ACK for reply:', ack ? 'Success' : 'No ACK'); 
+        console.log('📤 [Admin Frontend] Server ACK for reply:', ack ? 'Success' : 'No ACK'); 
       });
       // Local add...
       setChatMessages(prev => [...prev, { ...payload, userName: adminName, message: replyMessage }]);
       setReplyMessage('');
     } else {
-      // console.warn('⚠️ [Admin Frontend] Reply invalid:', { replyMessage: !!replyMessage.trim(), selectedUser: !!selectedUser, userId: selectedUser?._id });
+      console.warn('⚠️ [Admin Frontend] Reply invalid:', { replyMessage: !!replyMessage.trim(), selectedUser: !!selectedUser, userId: selectedUser?._id });
     }
   };
 
@@ -396,103 +397,23 @@ export default function AdminDashboard() {
         </TabsContent>
 
 
-        {/* ← WhatsApp-like Chat Tab */}
-        <TabsContent value="chat" className="flex gap-4">
-          {/* Left: Online/User List */}
-          <div className="w-1/3 bg-gray-50 p-4 rounded border">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Users className="h-4 w-4" /> Online Users ({onlineUsers.length})
-            </h3>
-            <div className="space-y-2 max-h-96 overflow-y-auto">
-              {onlineUsers.map((user, i) => (
-                <Button
-                  key={i}
-                  variant={selectedUser?.id === user.id ? "default" : "outline"}
-                  className="w-full justify-start"
-                  onClick={() => selectUser(user)}
-                >
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  {user.userName}
-                </Button>
-              ))}
-              {onlineUsers.length === 0 && (
-                <p className="text-gray-500 text-sm">No online users</p>
-              )}
-            </div>
-          </div>
-
-          {/* Right: Chat Window */}
-          <div className="w-2/3 space-y-4">
-            {selectedUser ? (
-              <>
-                <h3 className="font-semibold">Chat with {selectedUser.userName}</h3>
-                <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
-                  {chatMessages.map((msg, i) => (
-                    <div
-                      key={i}
-                      className={`mb-2 p-2 rounded ${msg.userName === adminName ? "bg-blue-100 ml-auto" : "bg-gray-100"
-                        }`}
-                    >
-                      <strong>{msg.userName}:</strong> {msg.message}
-                      <small className="block text-xs text-gray-500 mt-1">
-                        {msg.timestamp
-                          ? new Date(msg.timestamp).toLocaleTimeString()
-                          : ""}
-                      </small>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    value={replyMessage}
-                    onChange={(e) => setReplyMessage(e.target.value)}
-                    placeholder="Reply to user..."
-                    className="flex-1 p-2 border rounded"
-                    onKeyPress={(e) => e.key === "Enter" && handleReply()}
-                  />
-                  <Button onClick={handleReply} disabled={!replyMessage.trim()}>
-                    <Send className="h-4 w-4 mr-2" /> Reply
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h3 className="font-semibold">General Broadcast</h3>
-                <div className="h-64 border rounded overflow-y-auto p-2 bg-white">
-                  {chatMessages
-                    .filter((msg) => msg.room === adminRoom || !msg.room)
-                    .map((msg, i) => (
-                      <div
-                        key={i}
-                        className={`mb-2 p-2 rounded ${msg.userName === adminName ? "bg-blue-100 ml-auto" : "bg-gray-100"
-                          }`}
-                      >
-                        <strong>{msg.userName}:</strong> {msg.message}
-                        <small className="block text-xs text-gray-500 mt-1">
-                          {msg.timestamp
-                            ? new Date(msg.timestamp).toLocaleTimeString()
-                            : ""}
-                        </small>
-                      </div>
-                    ))}
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    value={broadcastMessage}
-                    onChange={(e) => setBroadcastMessage(e.target.value)}
-                    placeholder="Broadcast to all..."
-                    className="flex-1 p-2 border rounded"
-                    onKeyPress={(e) => e.key === "Enter" && handleBroadcast()}
-                  />
-                  <Button onClick={handleBroadcast} disabled={!broadcastMessage.trim()}>
-                    <Send className="h-4 w-4 mr-2" /> Broadcast
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-        </TabsContent>
-
+        
+<TabsContent value="chat" className="flex gap-4">
+  <ChatComponent 
+    selectedUser={selectedUser}
+    adminName={adminName}
+    token={localStorage.getItem('token')}
+    onSelectUser={selectUser}
+    onlineUsers={onlineUsers}
+    chatMessages={chatMessages}
+    onReply={(msg) => setChatMessages(prev => [...prev, { userName: adminName, message: msg, timestamp: Date.now(), senderId: 'admin' }])}
+    onBroadcast={(msg) => setChatMessages(prev => [...prev, { userName: adminName, message: msg, timestamp: Date.now(), isBroadcast: true }])}
+    replyMessage={replyMessage}
+    setReplyMessage={setReplyMessage}
+    broadcastMessage={broadcastMessage}
+    setBroadcastMessage={setBroadcastMessage}
+  />
+</TabsContent>
 
 
       </Tabs>
