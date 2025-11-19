@@ -129,7 +129,7 @@ function Blog() {
                   to={`/blog/${post.id}`}
                   className="inline-block text-purple-700 hover:text-yellow-500 font-medium transition-colors duration-300"
                 >
-                //Rohan Gejage 
+                //Rohan Gejage jnnmewf selg
                   Read More →
                 </Link> */}
               </div>
