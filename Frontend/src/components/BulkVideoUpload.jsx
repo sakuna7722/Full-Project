@@ -13,7 +13,7 @@ function BulkVideoUpload() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/videos/upload-videos', {
+      const response = await fetch('https://full-project-dv97.onrender.com/api/videos/upload-videos', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

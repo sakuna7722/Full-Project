@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 const instance = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: 'https://full-project-dv97.onrender.com/api',
   timeout: 15000, 
   headers: {
     'Content-Type': 'application/json',

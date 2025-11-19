@@ -12,7 +12,7 @@ const CourseDetail = () => {
     const fetchCourse = async () => {
       try {
         // ⚡ Updated URL to match backend
-        const res = await axios.get(`http://localhost:5001/api/courses/slug/${slug}`);
+        const res = await axios.get(`https://full-project-dv97.onrender.com/api/courses/slug/${slug}`);
             console.log("Course Response:", res.data); 
             console.log("Course data:", res.data);
         setCourse(res.data);

@@ -30,7 +30,7 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     // Send email
-    const resetUrl = `http://localhost:5001/reset-password?token=${resetToken}`;
+    const resetUrl = `https://full-project-dv97.onrender.com/reset-password?token=${resetToken}`;
     await transporter.sendMail({
       from: process.env.ETHEREAL_USER,
       to: user.email,

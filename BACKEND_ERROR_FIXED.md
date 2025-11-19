@@ -160,8 +160,8 @@ node simple-server.js
 ```
 🔄 Attempting to connect to MongoDB...
 ✅ MongoDB connected to database: E-COMMERCE
-🚀 Server running at http://localhost:5001
-📡 API endpoints available at http://localhost:5001/api
+🚀 Server running at https://full-project-dv97.onrender.com
+📡 API endpoints available at https://full-project-dv97.onrender.com/api
 🔐 Auth endpoints: /api/auth/login, /api/auth/signup
 💰 Course endpoints: /api/courses
 👥 User endpoints: /api/user
@@ -216,7 +216,7 @@ node simple-server.js
 
 2. **Verify Server Running**:
    - Check console for success messages
-   - Test API endpoint: `http://localhost:5001/api/auth/login`
+   - Test API endpoint: `https://full-project-dv97.onrender.com/api/auth/login`
 
 3. **Test Frontend Integration**:
    - Ensure frontend can connect to backend
