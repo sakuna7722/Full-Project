@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 // Configure email transporter (using a test service like Ethereal for development)
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
