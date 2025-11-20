@@ -58,6 +58,9 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
+
+
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(require("cookie-parser")());
@@ -192,16 +195,24 @@ app.use((err, req, res, next) => {
 
 // ✅ Start server
 // Replace existing app.listen block
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
 
 // ✅ Socket.io Setup for Real-time Chat
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+//     methods: ["GET", "POST"],
+//   },
+// });
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: true,               // ab sab allow
     methods: ["GET", "POST"],
+    credentials: true
   },
 });
 
