@@ -52,16 +52,20 @@ const limiter = rateLimit({
 app.use("/api/", limiter);
 
 // ✅ Middlewares
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
 
+// ✅ FINAL CORS FIX - localhost + Vercel + mobile sab chalega forever
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
-
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(require("cookie-parser")());
 
