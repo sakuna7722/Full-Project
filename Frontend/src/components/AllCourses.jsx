@@ -10,7 +10,7 @@ export default AllCourses
 
 
 // function AllCourses() {
-//   const allCourses = {
+//   const allCourses = {Frontend
 //     "Digital Freelancing Bundles": [
 //       "Freelancing Road to 50K Per Month",
 //       "Freelancing Road to 2 Lakhs Per Month",

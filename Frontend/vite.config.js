@@ -9,6 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'https://full-project-dv97.onrender.com', // Match the PORT from .env
         changeOrigin: true,
+        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // Remove /api prefix
       },
     },
