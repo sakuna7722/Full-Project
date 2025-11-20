@@ -23,7 +23,7 @@ function Home() {
   return (
     <section className="bg-white py-8 px-4 sm:py-16 sm:px-8 md:px-16 relative overflow-visible">
       {/* Optional background pattern */}
-      <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 z-0 bg-repeat bg-[length:100px_100px]"></div>
+      {/* <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 z-0 bg-repeat bg-[length:100px_100px]"></div> */}
 
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto z-10">
         {/* Left Side: Text and CTA */}
