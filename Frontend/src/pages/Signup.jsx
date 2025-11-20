@@ -17,19 +17,36 @@ function Signup({ updateAuthState, intendedCourse }) {
   const [error, setError] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState('');
   const navigate = useNavigate();
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const refFromUrl = searchParams.get('ref') || localStorage.getItem("referralCode") || '';
+  // const [referredBy, setReferredBy] = useState(refFromUrl);
+  // const redirect = new URLSearchParams(location.search).get('redirect');
+  // const intended = redirect || intendedCourse || location.state?.intendedCourse;
+
+
+  // useEffect(() => {
+  //   if (referredBy) {
+  //     localStorage.setItem("referralCode", referredBy);
+  //   }
+  // }, [referredBy]);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const refFromUrl = searchParams.get('ref') || localStorage.getItem("referralCode") || '';
-  const [referredBy, setReferredBy] = useState(refFromUrl);
-  const redirect = new URLSearchParams(location.search).get('redirect');
-  const intended = redirect || intendedCourse || location.state?.intendedCourse;
+  const urlRef = searchParams.get('ref');
 
+  // Fixed & bulletproof referral code handling
+  const decodedRef = urlRef ? decodeURIComponent(urlRef) : '';
+  const finalRef = decodedRef || localStorage.getItem("referralCode") || '';
+
+  const [referredBy, setReferredBy] = useState(finalRef);
 
   useEffect(() => {
-    if (referredBy) {
-      localStorage.setItem("referralCode", referredBy);
+    if (finalRef && finalRef.trim() !== '') {
+      localStorage.setItem("referralCode", finalRef.trim());
     }
-  }, [referredBy]);
+  }, [finalRef]);
+  
 
   const indianStates = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa',
@@ -57,10 +74,10 @@ function Signup({ updateAuthState, intendedCourse }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   if (!firstName || !lastName || !email || !state || !password) {
-  setError('Please fill in all required fields');
-  return;
-}
+    if (!firstName || !lastName || !email || !state || !password) {
+      setError('Please fill in all required fields');
+      return;
+    }
 
 
     if (!validateEmail(email)) {
@@ -73,7 +90,7 @@ function Signup({ updateAuthState, intendedCourse }) {
       return;
     }
 
-    
+
     if (passwordStrength === 'Weak') {
       setError('Password is too weak. Use numbers and special characters.');
       return;
@@ -94,7 +111,7 @@ function Signup({ updateAuthState, intendedCourse }) {
         mobile: mobile || '',
         state,
         password,
-        referredBy, 
+        referredBy,
       });
 
 

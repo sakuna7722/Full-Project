@@ -14,13 +14,16 @@ function Header() {
   //   return generatedPath;
   // };
 
+
+// const appendRef = (path) => {
+//   if (!refCode || refCode.trim() === '') return path;
+//   return `${path}?ref=${refCode.trim()}`;
+// };
   
 const appendRef = (path) => {
   if (!refCode || refCode.trim() === '') return path;
-  return `${path}?ref=${refCode.trim()}`;
+  return `${path}?ref=${encodeURIComponent(refCode.trim())}`;
 };
-  
-
   return (
     <header className="bg-white shadow-md py-4 px-4 md:px-10">
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
