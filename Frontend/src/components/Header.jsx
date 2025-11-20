@@ -7,13 +7,18 @@ function Header() {
   const refCode = localStorage.getItem("referralCode");
 
   // const appendRef = (path) => (refCode ? `${path}?ref=${refCode}` : path);
-  const appendRef = (path) => {
-    const generatedPath = refCode ? `${path}?ref=${refCode}` : path;
-    // console.log("refCode:", refCode);
-    // console.log("Generated path:", generatedPath);
-    return generatedPath;
-  };
+  // const appendRef = (path) => {
+  //   const generatedPath = refCode ? `${path}?ref=${refCode}` : path;
+  // console.log("refCode:", refCode);
+  // console.log("Generated path:", generatedPath);
+  //   return generatedPath;
+  // };
 
+  
+const appendRef = (path) => {
+  if (!refCode || refCode.trim() === '') return path;
+  return `${path}?ref=${refCode.trim()}`;
+};
   
 
   return (
