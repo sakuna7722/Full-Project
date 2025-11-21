@@ -98,7 +98,7 @@ function AppContent() {
             element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
           />
           <Route
-            path="/auth/signup/*"
+            path="/auth/signup/?"
             element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
           />
 
