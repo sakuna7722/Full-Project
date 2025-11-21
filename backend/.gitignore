@@ -41,9 +41,3 @@ public/uploads/
 
 # Frontend/src/pages
 addMissingUser.js
-
-Frontend/src/pages/ProductPro.jsx
-Frontend/src/pages/ProductLite.jsx
-Frontend/src/pages/ProductStandard.jsx
-Frontend/src/pages/ProductSupreme.jsx
-

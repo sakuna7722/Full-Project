@@ -105,21 +105,21 @@ const AffiliateAccount = () => {
   //   }
   // }, [user, authLoading, navigate])
 
-useEffect(() => {
-  if (authLoading) return;
+  useEffect(() => {
+    if (authLoading) return;
 
-  if (user) {
-    const referralCode = user.referralCode || "affiliate123";
-    
-    // YE LINE CHANGE KAR DE – 100% WORKING
-    const liveUrl = "https://full-project-rohan.vercel.app";
-    setReferralLink(`${liveUrl}/auth/signup?ref=${referralCode}`);
-    
-    fetchCommissionStats();
-  } else {
-    navigate('/auth/login');
-  }
-}, [user, authLoading, navigate]);
+    if (user) {
+      const referralCode = user.referralCode || "affiliate123";
+
+      // YE LINE CHANGE KAR DE – 100% WORKING
+      const liveUrl = "https://full-project-rohan-6zgujhkfp-rohan-gejage-s-projects.vercel.app";
+      setReferralLink(`${liveUrl}/auth/signup?ref=${referralCode}`);
+
+      fetchCommissionStats();
+    } else {
+      navigate('/auth/login');
+    }
+  }, [user, authLoading, navigate]);
 
 
   if (authLoading || loading) {
