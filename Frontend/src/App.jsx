@@ -97,6 +97,12 @@ function AppContent() {
             path="/auth/signup"
             element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
           />
+          <Route
+            path="/auth/signup/*"
+            element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
+          />
+
+
           {/* <Route path="/auth/contact-us" element={<PublicLayout><ContactUs /></PublicLayout>} />
           <Route path="/auth/about-us" element={<PublicLayout><AboutUs /></PublicLayout>} /> */}
           <Route path="/teacher" element={<PublicLayout><Teacher /></PublicLayout>} />
@@ -144,7 +150,7 @@ function AppContent() {
           {/* ✅ Individual Course Pages */}
           <Route path="/courses/digital-freelancing" element={<ProductLite />} />
           <Route path="/courses/digital-entrepreneurship" element={<ProductStandard />} />
-          <Route path="/courses/upskilling-courses" element={<ProductPro />} />2
+          <Route path="/courses/upskilling-courses" element={<ProductPro />} />
           <Route path="/courses/leadership-development" element={<ProductSupreme />} />
 
 
