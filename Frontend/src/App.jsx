@@ -98,10 +98,10 @@ function AppContent() {
             element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
           />
           <Route
-            path="/auth/signup/?"
+            path="/auth/signup/*"
             element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
           />
-
+          <Route path="/auth/signup/:pathMatch(.*)?" element={<Signup updateAuthState={updateAuthState} intendedCourse={intendedCourse} />} />
 
           {/* <Route path="/auth/contact-us" element={<PublicLayout><ContactUs /></PublicLayout>} />
           <Route path="/auth/about-us" element={<PublicLayout><AboutUs /></PublicLayout>} /> */}
