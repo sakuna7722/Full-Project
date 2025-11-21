@@ -89,19 +89,37 @@ const AffiliateAccount = () => {
     navigator.clipboard.writeText(referralLink);
     alert("Referral link copied to clipboard!");
   };
-  useEffect(() => {
-    if (authLoading) return;
 
-    if (user) {
-      const referralCode = user.referralCode || "affiliate123";
-      setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
-      fetchCommissionStats();
-    } else {
-      // User null? Redirect to login
-      console.log("No user found, redirecting to login...");
-      navigate('/auth/login');
-    }
-  }, [user, authLoading, navigate])
+
+  // useEffect(() => {
+  //   if (authLoading) return;
+
+  //   if (user) {
+  //     const referralCode = user.referralCode || "affiliate123";
+  //     setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
+  //     fetchCommissionStats();
+  //   } else {
+  //     // User null? Redirect to login
+  //     console.log("No user found, redirecting to login...");
+  //     navigate('/auth/login');
+  //   }
+  // }, [user, authLoading, navigate])
+
+useEffect(() => {
+  if (authLoading) return;
+
+  if (user) {
+    const referralCode = user.referralCode || "affiliate123";
+    
+    // YE LINE CHANGE KAR DE – 100% WORKING
+    const liveUrl = "https://full-project-rohan.vercel.app";
+    setReferralLink(`${liveUrl}/auth/signup?ref=${referralCode}`);
+    
+    fetchCommissionStats();
+  } else {
+    navigate('/auth/login');
+  }
+}, [user, authLoading, navigate]);
 
 
   if (authLoading || loading) {
