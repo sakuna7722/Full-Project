@@ -112,7 +112,7 @@ const AffiliateAccount = () => {
       const referralCode = user.referralCode || "affiliate123";
 
       // YE LINE CHANGE KAR DE – 100% WORKING
-      const liveUrl = "https://full-project-rohan-6zgujhkfp-rohan-gejage-s-projects.vercel.app";
+      const liveUrl = "https://leadsgurukul.com";
       setReferralLink(`${liveUrl}/auth/signup?ref=${referralCode}`);
 
       fetchCommissionStats();
