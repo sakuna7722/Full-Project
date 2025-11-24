@@ -14,14 +14,14 @@ function Testimonials() {
             name: "Rajat Arora",
             rating: 5,
             feedback:
-              "Honestly, I was never into online courses. But one of the best decisions I took was to join NextGenCoders. The course was practical, fun, and easy to go through. The best part was the community and mentors.",
+              "Honestly, I was never into online courses. But one of the best decisions I took was to join leadsgurukul. The course was practical, fun, and easy to go through. The best part was the community and mentors.",
             image: "/girl-8.jpeg",
           },
           {
             name: "Monika Rawat",
             rating: 5,
             feedback:
-              "After completing the bundle, I applied the techniques to reach out to international clients. Today, I’m earning $2,000+ per month through freelancing. Thanks to NextGenCoders for the step-by-step guidance.",
+              "After completing the bundle, I applied the techniques to reach out to international clients. Today, I’m earning $2,000+ per month through freelancing. Thanks to leadsgurukul for the step-by-step guidance.",
             image: "/girl-2.jpeg",
           },
           {
@@ -42,14 +42,14 @@ function Testimonials() {
             name: "Vivek Singh",
             rating: 5,
             feedback:
-              "Before this, I wasn’t earning anything consistently. After applying what I learned, I now have close to $1,500+ monthly from freelancing. NextGenCoders changed my perspective and gave me the skills I needed!",
+              "Before this, I wasn’t earning anything consistently. After applying what I learned, I now have close to $1,500+ monthly from freelancing. leadsgurukul changed my perspective and gave me the skills I needed!",
             image: "/boy-2.jpeg",
           },
           {
             name: "Kritika Arora",
             rating: 5,
             feedback:
-              "The course was amazing—the practical tips blew my mind! I started applying what I learned, and within a month, I landed my first client. I can’t thank NextGenCoders enough for this transformation.",
+              "The course was amazing—the practical tips blew my mind! I started applying what I learned, and within a month, I landed my first client. I can’t thank leadsgurukul enough for this transformation.",
             image: "/girl-5.jpeg",
           },
         ];

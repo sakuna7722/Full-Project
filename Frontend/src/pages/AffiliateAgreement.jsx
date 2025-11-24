@@ -17,7 +17,7 @@ function AffiliateAgreement() {
             </h2>
             <p>
               This Affiliate Agreement (“Agreement”) governs your participation
-              in the <strong>NextGenCoders</strong> affiliate program
+              in the <strong>leadsgurukul</strong> affiliate program
               (“Program”). By registering as an affiliate, you agree to comply
               with all terms and conditions outlined below.
             </p>
@@ -72,7 +72,7 @@ function AffiliateAgreement() {
             </h2>
             <p>
               All trademarks, logos, and marketing materials provided by{" "}
-              <strong>NextGenCoders</strong> remain our property. Affiliates
+              <strong>leadsgurukul</strong> remain our property. Affiliates
               are granted a limited, non-exclusive license to use these materials
               solely for the purpose of promoting our products/services.
             </p>

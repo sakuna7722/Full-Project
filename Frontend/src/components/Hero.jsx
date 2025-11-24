@@ -11,7 +11,7 @@ function Hero() {
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 transition duration-300 hover:text-blue-600 hover:scale-105 inline-block">
           Our Exclusive Packages{" "}
           <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
-            NextGenCoders
+            leadsgurukul
           </span>
         </h1>
         <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto transition duration-300 hover:text-gray-800">

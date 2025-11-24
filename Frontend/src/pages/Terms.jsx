@@ -10,7 +10,7 @@ function Terms() {
           Terms & Conditions
         </h1>
         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-orange-100 px-4 leading-relaxed">
-          Welcome to NextGenCoders! By signing up, you agree to the following terms and conditions:
+          Welcome to leadsgurukul! By signing up, you agree to the following terms and conditions:
         </p>
       </section>
 

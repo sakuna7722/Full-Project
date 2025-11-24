@@ -29,7 +29,7 @@ const appendRef = (path) => {
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
         <div className="text-2xl font-bold text-gray-900">
-          <Link to={appendRef("/")}>NextGenCoders</Link>
+          <Link to={appendRef("/")}>leadsgurukul</Link>
         </div>
 
         {/* Desktop Menu */}

@@ -14,7 +14,7 @@ function RefundPolicy() {
         <div className="backdrop-blur-sm bg-white/80 rounded-3xl shadow-2xl p-10 leading-relaxed text-gray-700 space-y-10 transition-all duration-300 hover:shadow-purple-200">
           {/* Intro */}
           <p className="text-lg">
-            At <span className="font-semibold">NextGenCoders</span>, we’re committed to providing
+            At <span className="font-semibold">leadsgurukul</span>, we’re committed to providing
             high-quality educational resources and services. Your satisfaction matters to us.
             Please read our refund policy carefully before making any purchase.
           </p>

@@ -11,10 +11,10 @@ function Footer() {
         {/* Brand Info */}
         <div>
           <h2 className="text-xl font-bold mb-3 flex items-center gap-2">
-            <span className="text-yellow-400 text-2xl">💡</span> NextGenCoders
+            <span className="text-yellow-400 text-2xl">💡</span> leadsgurukul
           </h2>
           <p className="text-sm text-gray-200 leading-relaxed">
-            Get ahead in your career with NextGenCoders, the one-stop solution for
+            Get ahead in your career with leadsgurukul, the one-stop solution for
             your educational needs. Connect with top industry professionals and
             fuel your passion for success.
           </p>
@@ -123,7 +123,7 @@ function Footer() {
               { name: "Gold Package", to: "/courses" },
               { name: "Platinum Package", to: "/courses" },
               { name: "Diamond Package", to: "/courses" },
-              { name: "NextGenCoders Startup Package", to: "/#" },
+              { name: "leadsgurukul Startup Package", to: "/#" },
             ].map((link, i) => (
               <li key={i}>
                 <Link
@@ -141,7 +141,7 @@ function Footer() {
 
       {/* Bottom Footer */}
       <div className="relative border-t border-purple-500 text-center py-4 text-sm text-gray-300 hover:text-yellow-400 transition-colors duration-300">
-        © 2025 NextGenCoders. All Rights Reserved.
+        © 2025 leadsgurukul. All Rights Reserved.
       </div>
     </footer>
   );

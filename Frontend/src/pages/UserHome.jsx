@@ -103,7 +103,7 @@ function UserHome() {
             Welcome, {user.name}!
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            You’re now a member of NextGenCoders. Access your courses, track your progress, and take your freelancing journey to the next level!
+            You’re now a member of leadsgurukul. Access your courses, track your progress, and take your freelancing journey to the next level!
           </p>
           <button
             onClick={handleLogout}

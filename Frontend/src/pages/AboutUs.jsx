@@ -29,10 +29,10 @@ function AboutUs() {
       <section className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white py-20 text-center">
         <div className="max-w-screen-xl mx-auto px-6">
           <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 drop-shadow-lg">
-            About NextGenCoders
+            About leadsgurukul
           </h2>
           <p className="max-w-3xl mx-auto text-lg sm:text-xl text-orange-100 leading-relaxed">
-            NextGenCoders is India’s leading digital freelancing school, empowering over 3,500,000 freelancers to transform their skills into sustainable income. We’re on a mission to make freelancing accessible, practical, and rewarding for everyone.
+            leadsgurukul is India’s leading digital freelancing school, empowering over 3,500,000 freelancers to transform their skills into sustainable income. We’re on a mission to make freelancing accessible, practical, and rewarding for everyone.
           </p>
         </div>
       </section>
