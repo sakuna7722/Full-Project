@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer className="bg-gradient-to-r from-purple-900 to-purple-600 text-white relative overflow-hidden">
+
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-purple-800 to-purple-600 opacity-40 animate-pulse"></div>
+
+
       {/* gradient animation background */}
       <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-purple-800 to-purple-600 opacity-40 animate-pulse"></div>
 
