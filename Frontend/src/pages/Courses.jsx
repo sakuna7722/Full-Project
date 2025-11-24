@@ -20,6 +20,7 @@ function Courses({ isLoggedIn, setIntendedCourse }) {
       try {
         // console.log("Fetching courses from /courses...");
         const res = await api.get('/courses');
+        
         // console.log('API Response:', res);
         // console.log('Fetched courses data:', res.data);
         setCourses(res.data);

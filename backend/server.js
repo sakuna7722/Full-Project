@@ -355,3 +355,7 @@ process.on("uncaughtException", (err) => {
   console.error("❌ Uncaught Exception:", err);
   gracefulShutdown();
 });
+
+setInterval(() => {
+  fetch("https://full-project-dv97.onrender.com/api/health");
+}, 10 * 60 * 1000); // every 10 minutes

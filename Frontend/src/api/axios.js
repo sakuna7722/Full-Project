@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 const instance = axios.create({
   baseURL: 'https://full-project-dv97.onrender.com/api',
-  timeout: 15000, 
+  timeout: 60000, 
   headers: {
     'Content-Type': 'application/json',
   }
