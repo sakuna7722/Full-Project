@@ -1,6 +1,8 @@
 //Frontend/src/components/Header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../assets/Lead3.png"; // adjust the path according to your folder structure
+
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,9 +30,20 @@ const appendRef = (path) => {
     <header className="bg-white shadow-md py-4 px-4 md:px-10">
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
-        <div className="text-2xl font-bold text-gray-900">
+        {/* <div className="text-2xl font-bold text-gray-900">
           <Link to={appendRef("/")}>leadsgurukul</Link>
-        </div>
+        </div> */}
+
+        <div className="flex items-center">
+  <Link to={appendRef("/")}>
+    <img
+      src={Logo}
+      alt="Lead3"
+      className="h-10 sm:h-12" // height adjust karo apne design ke hisaab se
+    />
+  </Link>
+</div>
+
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
