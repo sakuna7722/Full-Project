@@ -40,10 +40,15 @@ const WhyChooseUs = () => {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
           Why Choose Our Program?
         </h1>
-        <p className="text-lg md:text-xl text-gray-700">
-          A structured, result-driven approach to help you prepare for IAS exams
-          with confidence, clarity, and consistency.
+        <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+          🔥 <strong>1. Premium, Beginner-Friendly Training</strong><br />
+          Our courses are crafted specially for beginners. You don’t need any prior experience—everything is taught step-by-step in an easy and practical way.
+          <br /><br />
+
+          🔥 <strong>2. Earn While You Learn</strong><br />
+          Get your referral link instantly after joining. Start sharing your link and earn commissions from the very same day. The more you share, the more you earn!
         </p>
+
       </motion.div>
 
       {/* Features Grid */}
@@ -72,15 +77,20 @@ const WhyChooseUs = () => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="bg-white rounded-3xl shadow-xl p-10 max-w-4xl text-center mb-20 border border-yellow-100"
+        className="bg-white rounded-3xl shadow-2xl p-12 max-w-4xl text-center mb-20 border border-yellow-200"
       >
-        <p className="text-xl text-gray-700 italic mb-6">
-          “This program changed my approach completely. With guidance, mock
-          tests, and proper planning, I cleared prelims with high confidence.
-          Highly recommended to all aspirants!”
+        <p className="text-2xl leading-relaxed text-gray-800 font-serif italic mb-6">
+          “This platform changed my digital journey completely. The training,
+          strategies, and support helped me build real skills and start earning
+          online with confidence. A must-join program for anyone serious about
+          affiliate marketing!”
         </p>
-        <h4 className="font-bold text-gray-900">— Riya Sharma</h4>
+
+        <h4 className="font-bold text-gray-900 text-xl tracking-wide">
+          — Riya Sharma
+        </h4>
       </motion.div>
+ 
 
       {/* CTA Section */}
       <motion.div

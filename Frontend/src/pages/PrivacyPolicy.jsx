@@ -16,7 +16,7 @@ function PrivacyPolicy() {
               1. Introduction
             </h2>
             <p>
-              At <strong>Your Company Name</strong>, we respect your privacy. This
+              At <strong>Leadsgurukul</strong>, we respect your privacy. This
               Privacy Policy explains how we collect, use, and safeguard your
               personal information when you visit our website or interact with our
               affiliate programs.

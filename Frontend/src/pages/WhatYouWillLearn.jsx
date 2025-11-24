@@ -7,13 +7,13 @@ const WhatYouWillLearn = () => {
   const points = [
     "Keep oneself up to date with the most recent market trends because of the fierce rivalry.",
     "Join us today and unlock exciting opportunities to earn commissions while advancing your professional journey.",
-    "How to optimize your Facebook & Other Social Media profile to hugely increase your visibility and generate LEADS",
-    "How to publish compelling contents to get you the results you want",
-    "How to Find, Connect and Engage with right Target Audience",
+    "How to optimize your Facebook & Other Social Media profile to hugely increase your visibility and generate LEADS.",
     "How to convert your Facebook profile into Lead Generation Machine to get consistent Leads every day, every week and every month.",
-    "How to generate high engaging leads using Instagram",
-    "How to generate highly qualified leads using LinkedIn",
-    "How to use FREE Lead Magnet Strategy to build your own list",
+    "How to publish compelling contents to get you the results you want.",
+    "How to Find, Connect and Engage with right Target Audience.",
+    "How to generate high engaging leads using Instagram.",
+    "How to generate highly qualified leads using LinkedIn.",
+    "How to use FREE Lead Magnet Strategy to build your own list.",
   ];
 
   return (
