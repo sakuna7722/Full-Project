@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 const chatData = [
   { name: "Rohan Mehra", message: "Hey, I have a quick project need a visiting card design by this weekend" },
   { name: "Priya Singh", message: "Can you send me the latest mockups?" },
@@ -29,10 +29,10 @@ function Home() {
         {/* Left Side: Text and CTA */}
         <div className="z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-            Think Freelance
+            Build Your Skills
             <br />
             <span className="relative inline-block mt-2">
-              Think{' '}
+              Grow With{' '}
               <span className="relative inline-block font-extrabold text-gray-900">
                 <span className="relative z-10">leadsgurukul</span>
                 <span className="absolute left-0 bottom-0 w-full h-1 bg-orange-500 transform -skew-x-12 z-0"></span>
@@ -41,12 +41,15 @@ function Home() {
           </h1>
 
           <p className="mt-6 text-gray-600 text-lg sm:text-xl max-w-md">
-            Join India’s Top Digital Freelance School with 3,50,000+ freelancers who’ve transformed their skills into income.
+            Join India’s learners who’ve transformed their skills into income through expert-guided training.
           </p>
 
-          <button className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg flex items-center gap-2 transition-all duration-300">
-            Start Learning Today <span className="text-xl">↗</span>
-          </button>
+          <Link to="/auth/signup">
+            <button className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg flex items-center gap-2 transition-all duration-300">
+              Start Learning Today <span className="text-xl">↗</span>
+            </button>
+          </Link>
+
         </div>
 
         {/* Right Side: Image and Feedback */}
@@ -57,20 +60,20 @@ function Home() {
         {/* Right Side: Image and Feedback */}
         <div className="hidden md:block relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center">
 
-        {/* Wrapper to control image and floating cards */}
-        <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
+          {/* Wrapper to control image and floating cards */}
+          <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
 
 
-          <img
-            src="/Girl-1.jpg"
-            alt="Freelancer"
-            className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
-          />
+            <img
+              src="/Girl-1.jpg"
+              alt="Freelancer"
+              className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
+            />
 
-          {/* Rotating Chat Bubble */}
+            {/* Rotating Chat Bubble */}
 
-          <div
-            className="
+            <div
+              className="
     absolute 
     bottom-[-30px] sm:bottom-8 
     left-1/2 sm:left-6 
@@ -79,19 +82,19 @@ function Home() {
     flex gap-3 items-start 
     z-20 transition-all duration-500
   "
-          >
-            <div className="text-orange-500 text-2xl">💬</div>
-            <div>
-              <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
-              <p className="text-xs text-gray-600">{currentChat.message}</p>
+            >
+              <div className="text-orange-500 text-2xl">💬</div>
+              <div>
+                <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
+                <p className="text-xs text-gray-600">{currentChat.message}</p>
+              </div>
             </div>
+
+
           </div>
 
-
         </div>
-
       </div>
-    </div>
     </section >
   );
 }
