@@ -132,7 +132,7 @@ function PrivacyPolicy() {
                 href="mailto:support@yourwebsite.com"
                 className="text-purple-600 underline"
               >
-                support@yourwebsite.com
+                support@leadsgurukul.com
               </a>
               .
             </p>

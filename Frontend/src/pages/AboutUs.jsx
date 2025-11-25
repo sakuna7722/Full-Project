@@ -32,7 +32,7 @@ function AboutUs() {
             About leadsgurukul
           </h2>
           <p className="max-w-3xl mx-auto text-lg sm:text-xl text-orange-100 leading-relaxed">
-            leadsgurukul is India’s leading digital freelancing school, empowering over 3,500,000 freelancers to transform their skills into sustainable income. We’re on a mission to make freelancing accessible, practical, and rewarding for everyone.
+           Join India’s learners who’ve transformed their skills into income through expert-guided training.
           </p>
         </div>
       </section>

@@ -57,7 +57,7 @@ function RefundPolicy() {
                 href="mailto:support@leadsguru.com"
                 className="text-purple-700 font-medium hover:underline"
               >
-                support@leadsguru.com
+                support@leadsgurukul.com
               </a>
               . Provide your order details, and our team will review your request and respond
               within 6–7 business days.

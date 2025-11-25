@@ -16,10 +16,7 @@ function AffiliateAgreement() {
               1. Introduction
             </h2>
             <p>
-              This Affiliate Agreement (“Agreement”) governs your participation
-              in the <strong>leadsgurukul</strong> affiliate program
-              (“Program”). By registering as an affiliate, you agree to comply
-              with all terms and conditions outlined below.
+             This Affiliate Agreement (‘Agreement’) governs your participation in the <><strong>LeadsGurukul</strong></> Affiliate Program (‘Program’). By registering as an affiliate, you agree to comply with all terms and conditions set forth in this Agreement.
             </p>
           </section>
 
