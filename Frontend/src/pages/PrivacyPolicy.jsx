@@ -10,16 +10,16 @@ function PrivacyPolicy() {
         </h1>
 
         <div className="bg-white rounded-2xl shadow-lg p-8 leading-relaxed space-y-8">
+
           {/* Introduction */}
           <section>
             <h2 className="text-2xl font-semibold mb-3 text-purple-600">
               1. Introduction
             </h2>
             <p>
-              At <strong>Leadsgurukul</strong>, we respect your privacy. This
-              Privacy Policy explains how we collect, use, and safeguard your
-              personal information when you visit our website or interact with our
-              affiliate programs.
+              At <strong>Leadsgurukul</strong>, we are committed to protecting your privacy. 
+              This Privacy Policy explains how we collect, use, and safeguard your personal 
+              information when you purchase and use our online course.
             </p>
           </section>
 
@@ -29,18 +29,10 @@ function PrivacyPolicy() {
               2. Information We Collect
             </h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>
-                Personal details (name, email address, phone number) when you sign
-                up or contact us.
-              </li>
-              <li>
-                Affiliate account data (referral IDs, commission history, and
-                payouts).
-              </li>
-              <li>
-                Technical information (IP address, browser type, device details)
-                via cookies and analytics tools.
-              </li>
+              <li>Personal details such as your name, email address, and phone number.</li>
+              <li>Payment information (handled securely by our payment gateway).</li>
+              <li>Course access details and your account activity.</li>
+              <li>Technical information such as IP address, device info, and browser type.</li>
             </ul>
           </section>
 
@@ -50,10 +42,11 @@ function PrivacyPolicy() {
               3. How We Use Your Information
             </h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>To operate and improve our affiliate marketing services.</li>
-              <li>To track referrals, commissions, and payments accurately.</li>
-              <li>To communicate important updates, promotions, or support.</li>
-              <li>To comply with legal and regulatory requirements.</li>
+              <li>To create and manage your account.</li>
+              <li>To provide you access to the course you purchased.</li>
+              <li>To improve our training content and website performance.</li>
+              <li>To send important updates related to your course.</li>
+              <li>To comply with legal and safety requirements.</li>
             </ul>
           </section>
 
@@ -63,10 +56,9 @@ function PrivacyPolicy() {
               4. Cookies & Tracking
             </h2>
             <p>
-              We use cookies, pixels, and similar technologies to track referrals,
-              improve site performance, and deliver relevant advertising. You may
-              adjust your browser settings to block cookies, but this could affect
-              site functionality.
+              We use cookies to enhance your experience, improve website performance, 
+              and track usage analytics. You may disable cookies through your browser settings, 
+              but certain website features may not work properly.
             </p>
           </section>
 
@@ -76,11 +68,9 @@ function PrivacyPolicy() {
               5. Data Sharing & Third Parties
             </h2>
             <p>
-              We do not sell your personal data. However, we may share information
-              with trusted third-party service providers (such as payment
-              processors, analytics platforms, and hosting providers) to operate
-              our services. We also share anonymized affiliate data with partners
-              to calculate commissions and verify referrals.
+              We do not sell your personal information. We may share necessary data 
+              with trusted third-party providers such as payment gateways, hosting providers, 
+              and analytics tools solely to operate our platform safely and efficiently.
             </p>
           </section>
 
@@ -90,9 +80,8 @@ function PrivacyPolicy() {
               6. Security of Your Data
             </h2>
             <p>
-              We implement industry-standard security measures to protect your
-              personal information. However, no online system can be guaranteed
-              100% secure.
+              We use industry-standard security measures to protect your personal data. 
+              However, no online service can guarantee 100% security.
             </p>
           </section>
 
@@ -102,9 +91,9 @@ function PrivacyPolicy() {
               7. Your Rights & Choices
             </h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Request access to or correction of your personal data.</li>
-              <li>Opt out of marketing communications at any time.</li>
-              <li>Request deletion of your account or affiliate data.</li>
+              <li>Request access or correction to your personal information.</li>
+              <li>Opt out of non-essential communications.</li>
+              <li>Request deletion of your account or data (subject to verification).</li>
             </ul>
           </section>
 
@@ -114,9 +103,8 @@ function PrivacyPolicy() {
               8. Changes to This Policy
             </h2>
             <p>
-              We may update this Privacy Policy from time to time to reflect
-              changes in our practices. Updates will be posted on this page with
-              the “last updated” date.
+              We may update this Privacy Policy from time to time. Updated versions 
+              will be posted on this page with the latest revision date.
             </p>
           </section>
 
@@ -126,10 +114,9 @@ function PrivacyPolicy() {
               9. Contact Us
             </h2>
             <p>
-              If you have any questions or concerns about this Privacy Policy,
-              please contact us at:{" "}
+              If you have any questions regarding this Privacy Policy, feel free to contact us at:{" "}
               <a
-                href="mailto:support@yourwebsite.com"
+                href="mailto:support@leadsgurukul.com"
                 className="text-purple-600 underline"
               >
                 support@leadsgurukul.com
@@ -137,9 +124,10 @@ function PrivacyPolicy() {
               .
             </p>
           </section>
+
         </div>
       </div>
-       <Footer />
+      <Footer />
     </div>
   );
 }

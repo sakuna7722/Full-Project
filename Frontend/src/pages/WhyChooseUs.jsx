@@ -40,14 +40,14 @@ const WhyChooseUs = () => {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
           Why Choose Our Program?
         </h1>
-        <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+        {/* <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
           🔥 <strong>1. Premium, Beginner-Friendly Training</strong><br />
           Our courses are crafted specially for beginners. You don’t need any prior experience—everything is taught step-by-step in an easy and practical way.
           <br /><br />
 
           🔥 <strong>2. Earn While You Learn</strong><br />
           Get your referral link instantly after joining. Start sharing your link and earn commissions from the very same day. The more you share, the more you earn!
-        </p>
+        </p> */}
 
       </motion.div>
 
