@@ -81,14 +81,24 @@ function AppContent() {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
-          <Route
+          {/* <Route
             path="/"
             element={
               <PublicLayout>
                 <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
               </PublicLayout>
             }
-          />
+          /> */}
+
+          <Route
+  path="/"
+  element={
+    <PublicLayout>
+      <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
+    </PublicLayout>
+  }
+/>
+
           <Route
             path="/auth/login"
             element={<Login updateAuthState={updateAuthState} intendedCourse={intendedCourse} />}
@@ -109,6 +119,10 @@ function AppContent() {
           <Route path="/work-with-us" element={<PublicLayout><WorkWithUs /></PublicLayout>} />
           {/* <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} /> */}
           <Route path="/courses" element={<PublicLayout><Courses isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} /></PublicLayout>} />
+          
+
+
+
           {/* <Route path="/courses/:slug" element={<PublicLayout><CoursePage /></PublicLayout>} /> */}
           <Route path="/courses/:slug" element={<CoursePage />} />
 

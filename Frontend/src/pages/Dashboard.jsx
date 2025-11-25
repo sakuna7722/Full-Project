@@ -399,7 +399,7 @@ const Dashboard = () => {
 
         <div className="p-4">
           <div className="bg-blue-600 text-white text-center py-4 text-3xl font-bold rounded-lg mb-8">
-            Welcome to LeadsArk 3.0
+            Welcome to Leadsgurukul
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
