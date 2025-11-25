@@ -95,7 +95,7 @@ function Purchase() {
       const { id: order_id, amount: orderAmount, key } = orderRes.data;
 
       const options = {
-        key: key || process.env.RAZORPAY_KEY_ID,
+        key: key,
         amount: orderAmount,
         currency: "INR",
         name: "Course Purchase",
