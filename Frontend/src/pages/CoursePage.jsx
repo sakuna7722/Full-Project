@@ -14,6 +14,15 @@ function CoursePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+ useEffect(() => {
+  if (user === undefined) return;  // wait for AuthContext to load
+
+  if (!user) {
+    navigate("/auth/login");
+  }
+}, [user]);
+
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {

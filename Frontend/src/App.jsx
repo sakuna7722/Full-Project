@@ -109,7 +109,9 @@ function AppContent() {
           <Route path="/work-with-us" element={<PublicLayout><WorkWithUs /></PublicLayout>} />
           {/* <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} /> */}
           <Route path="/courses" element={<PublicLayout><Courses isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} /></PublicLayout>} />
-          <Route path="/courses/:slug" element={<PublicLayout><CoursePage /></PublicLayout>} />
+          {/* <Route path="/courses/:slug" element={<PublicLayout><CoursePage /></PublicLayout>} /> */}
+          <Route path="/courses/:slug" element={<CoursePage />} />
+
           <Route path="/course-access" element={<CourseAccess />} />
 
           <Route path="/api/purchase/:courseSlug" element={<Purchase />} />
