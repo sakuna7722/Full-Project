@@ -47,6 +47,7 @@ function Footer() {
               { name: "FAQ’s", to: "/faq" },
               { name: "Privacy Policy", to: "/privacy-policy" },
               { name: "Terms & Conditions", to: "/terms#" },
+              { name: "Cancellation Policy", to: "/cancellation-policy" },
               // { name: "End User Agreement", to: "/affiliate-agreement" },
             ].map((link, i) => (
               <li key={i}>
