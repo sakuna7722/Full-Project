@@ -61,10 +61,10 @@ function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-gray-200">
             {[
-              { name: "FAQ’s", to: "/faq" },
-              { name: "Privacy Policy", to: "/privacy-policy" },
-              { name: "Terms & Conditions", to: "/terms#" },
-              { name: "End User Agreement", to: "/affiliate-agreement" },
+              { name: "FAQ’s", to: "/auth/faq" },
+              { name: "Privacy Policy", to: "/auth/privacy-policy" },
+              { name: "Terms & Conditions", to: "/auth/terms#" },
+              { name: "End User Agreement", to: "/auth/affiliate-agreement" },
               // { name: "Disclaimer", to: "/disclaimer" },
               // { name: "Membership", to: "/membership" },
             ].map((link, i) => (
@@ -92,10 +92,10 @@ function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-gray-200">
             {[
-              { name: "Blog", to: "/blog" },
+              { name: "Blog", to: "/auth/blog" },
               { name: "About Us", to: "/auth/about-us" },
               { name: "Contact Us", to: "/auth/contact-us" },
-              { name: "Refund Policy", to: "/refund-policy" },
+              { name: "Refund Policy", to: "/auth/refund-policy" },
               // { name: "Sitemap", to: "/sitemap" },
             ].map((link, i) => (
               <li key={i}>
@@ -122,12 +122,12 @@ function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-gray-200">
             {[
-              { name: "Lite", to: "/courses" },
-              { name: "Standard", to: "/courses" },
-              { name: "Pro", to: "/courses" },
-              { name: "Supreme", to: "/courses" },
+              { name: "Leadsgurukul Lite", to: "/courses" },
+              { name: "Leadsgurukul Standard", to: "/courses" },
+              { name: "Leadsgurukul Pro", to: "/courses" },
+              { name: "Leadsgurukul Supreme", to: "/courses" },
               // { name: "Diamond Package", to: "/courses" },
-              { name: "leadsgurukul ", to: "/#" },
+              { name: "Leadsgurukul ", to: "/#" },
             ].map((link, i) => (
               <li key={i}>
                 <Link
@@ -145,7 +145,7 @@ function Footer() {
 
       {/* Bottom Footer */}
       <div className="relative border-t border-purple-500 text-center py-4 text-sm text-gray-300 hover:text-yellow-400 transition-colors duration-300">
-        © 2025 leadsgurukul. All Rights Reserved.
+        © 2025 Leadsgurukul. All Rights Reserved.
       </div>
     </footer>
   );

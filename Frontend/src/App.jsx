@@ -176,12 +176,12 @@ function AppContent() {
 
 
           {/* Footer  */}
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/affiliate-agreement" element={<AffiliateAgreement />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/terms" element={<Terms />} />
+          <Route path="/auth/blog" element={<Blog />} />
+          <Route path="/auth/refund-policy" element={<RefundPolicy />} />
+          <Route path="/auth/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/auth/affiliate-agreement" element={<AffiliateAgreement />} />
+          <Route path="/auth/faq" element={<FAQ />} />
+          <Route path="/auth/terms" element={<Terms />} />
           <Route path="/auth/about-us" element={<AboutUs />} />
           <Route path="/auth/contact-us" element={<ContactUs />} />
 

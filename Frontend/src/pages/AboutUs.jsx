@@ -29,7 +29,7 @@ function AboutUs() {
       <section className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white py-20 text-center">
         <div className="max-w-screen-xl mx-auto px-6">
           <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 drop-shadow-lg">
-            About leadsgurukul
+            About Leadsgurukul
           </h2>
           <p className="max-w-3xl mx-auto text-lg sm:text-xl text-orange-100 leading-relaxed">
            Join India’s learners who’ve transformed their skills into income through expert-guided training.

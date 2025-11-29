@@ -12,7 +12,7 @@ function Support() {
               Please send email to LeadsGurukul Support Team from Your Registered Email Address and always mention your USER ID in the email.
             </p>
             <p className="text-gray-600 mb-4">
-              LeadsGurukul Support Team Email Address: <a href="mailto:Support@LeadsGurukul.com" className="text-blue-600 hover:underline">Support@LeadsGurukul.com</a>
+              LeadsGurukul Support Team Email Address: <a href="mailto:Support@leadsgurukul.com" className="text-blue-600 hover:underline">Support@leadsgurukul.com</a>
             </p>  
             <p className="text-gray-600 font-semibold">
               NOTE: Do not forget to mention your User ID in email to get the faster solution.

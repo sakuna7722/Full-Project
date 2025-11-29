@@ -73,11 +73,12 @@ function Testimonials() {
   }
 
   return (
-    <section className="bg-gradient-to-b from-slate-50 via-white to-slate-100 py-16">
+    <section className="bg-gradient-to-b from-slate-50 via-white to-slate-100 py-16 font-sans">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-600">
           What Our Freelancers Say
         </h2>
+
         <p className="text-lg text-slate-600 mb-12 max-w-2xl mx-auto">
           Real stories. Real results. From freelancers who turned learning into income.
         </p>
@@ -87,7 +88,7 @@ function Testimonials() {
             <motion.div
               key={index}
               className="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-orange-400 
-                         hover:shadow-2xl hover:border-pink-500 transform hover:-translate-y-2 transition-all duration-300 group"
+                     hover:shadow-2xl hover:border-pink-500 transform hover:-translate-y-2 transition-all duration-300 group"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
@@ -97,24 +98,28 @@ function Testimonials() {
                   src={testimonial.image}
                   alt={`Profile picture of ${testimonial.name}`}
                   className="w-16 h-16 rounded-full object-cover border-2 border-orange-500 mr-4 
-                             group-hover:scale-110 transition-transform duration-300"
+                         group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => (e.target.src = '/image/default-user.png')}
                 />
+
                 <div className="text-left">
                   <h3 className="text-lg font-semibold text-slate-800 group-hover:text-orange-600 transition-colors">
                     {testimonial.name}
                   </h3>
+
                   <div className="text-amber-400 text-base">
                     {"★".repeat(testimonial.rating)}
                   </div>
                 </div>
               </div>
-              <p className="text-slate-600 text-sm mb-4 leading-relaxed italic 
-                            group-hover:text-slate-800 group-hover:scale-[1.02] transition-all duration-300">
+
+              {/* 🚫 italic removed here */}
+              <p className="text-slate-600 text-sm mb-4 leading-relaxed group-hover:text-slate-800 group-hover:scale-[1.02] transition-all duration-300">
                 "{testimonial.feedback}"
               </p>
+
               <button className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-lg shadow-sm 
-                                 border border-gray-200 hover:bg-orange-50 hover:border-orange-400 transition-colors">
+                             border border-gray-200 hover:bg-orange-50 hover:border-orange-400 transition-colors">
                 <img
                   src="/meta.jpg"
                   alt="Verified"
@@ -129,6 +134,7 @@ function Testimonials() {
         </div>
       </div>
     </section>
+
   );
 }
 

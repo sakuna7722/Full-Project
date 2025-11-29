@@ -69,7 +69,7 @@ function AffiliateAgreement() {
             </h2>
             <p>
               All trademarks, logos, and marketing materials provided by{" "}
-              <strong>leadsgurukul</strong> remain our property. Affiliates
+              <strong>Leadsgurukul</strong> remain our property. Affiliates
               are granted a limited, non-exclusive license to use these materials
               solely for the purpose of promoting our products/services.
             </p>
