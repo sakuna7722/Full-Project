@@ -34,7 +34,7 @@ function Home() {
             <span className="relative inline-block mt-2">
               Grow With{' '}
               <span className="relative inline-block font-extrabold text-gray-900">
-                <span className="relative z-10">leadsgurukul</span>
+                <span className="relative z-10">Leadsgurukul</span>
                 <span className="absolute left-0 bottom-0 w-full h-1 bg-orange-500 transform -skew-x-12 z-0"></span>
               </span>
             </span>
