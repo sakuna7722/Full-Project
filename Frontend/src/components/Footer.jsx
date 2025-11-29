@@ -15,10 +15,11 @@ function Footer() {
         {/* Brand Info */}
         <div>
           <h2 className="text-xl font-bold mb-3 flex items-center gap-2">
-            <span className="text-yellow-400 text-2xl">💡</span> leadsgurukul
+            <span className="text-yellow-400 text-2xl">💡</span> Leadsgurukul
+    
           </h2>
           <p className="text-sm text-gray-200 leading-relaxed">
-            Get ahead in your career with leadsgurukul, the one-stop solution for
+            Get ahead in your career with Leadsgurukul, the one-stop solution for
             your educational needs. Connect with top industry professionals and
             fuel your passion for success.
           </p>
