@@ -26,6 +26,7 @@ function Purchase() {
     const ref = searchParams.get("ref");
     if (ref) {
       localStorage.setItem("ref", ref); // ✅ Store referral ID
+      localStorage.setItem("referralCode", ref);
     }
   }, [location.search]);
 
@@ -99,7 +100,7 @@ function Purchase() {
         currency: "INR",
         name: "Leadsgurukul",
         image: "https://leadsgurukul.com/lead2.png",
-        description: `${course.name} - ₹${Math.round(amount).toLocaleString('en-IN')}`,
+        description: course.name,
         order_id,
         handler: async function (response) {
           try {
@@ -137,7 +138,7 @@ function Purchase() {
               alert("❌ Payment verification failed");
             }
           } catch (err) {
-            // console.error("❌ Verification error:", err);
+            console.error("❌ Verification error:", err);
             alert("Payment verification failed.");
           }
         },
