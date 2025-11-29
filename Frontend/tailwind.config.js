@@ -1,24 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-      extend: {
+    extend: {
       fontFamily: {
-        sans: ['Open Sans', 'sans-serif'], 
+        sans: ["Poppins", "sans-serif"],
       },
+
       keyframes: {
         scroll: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
       animation: {
-        scroll: 'scroll 10s linear infinite',
+        scroll: "scroll 10s linear infinite",
       },
     },
   },
   plugins: [],
-}
+};

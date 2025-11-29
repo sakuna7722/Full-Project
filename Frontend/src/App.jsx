@@ -91,13 +91,13 @@ function AppContent() {
           /> */}
 
           <Route
-  path="/"
-  element={
-    <PublicLayout>
-      <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
-    </PublicLayout>
-  }
-/>
+            path="/"
+            element={
+              <PublicLayout>
+                <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
+              </PublicLayout>
+            }
+          />
 
           <Route
             path="/auth/login"
@@ -119,7 +119,7 @@ function AppContent() {
           <Route path="/work-with-us" element={<PublicLayout><WorkWithUs /></PublicLayout>} />
           {/* <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} /> */}
           <Route path="/courses" element={<PublicLayout><Courses isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} /></PublicLayout>} />
-          
+
 
 
 
@@ -157,10 +157,15 @@ function AppContent() {
 
           {/* courses */}
 
-          <Route path="/api/courses/lite" element={<ProductLite />} />
-          <Route path="/api/courses/standard" element={<ProductStandard />} />
+          {/* <Route path="/api/courses/lite" element={<ProductLite />} /> */}
+          {/* <Route path="/api/courses/standard" element={<ProductStandard />} /> */}
           <Route path="/api/courses/pro" element={<ProductPro />} />
           <Route path="/api/courses/supreme" element={<ProductSupreme />} />
+
+          <Route path="/api/courses/leadsgurukul-lite" element={<ProductLite />} />
+          <Route path="/api/courses/leadsgurukul-standard" element={<ProductStandard />} />
+          <Route path="/api/courses/leadsgurukul-pro" element={<ProductPro />} />
+          <Route path="/api/courses/leadsgurukul-supreme" element={<ProductSupreme />} />
 
 
           {/* ✅ Individual Course Pages */}
