@@ -55,7 +55,7 @@ function Testimonials() {
         ];
         setTestimonials(data);
         setLoading(false);
-      } catch {
+      } catch (error) {
         setError('Failed to load testimonials');
         setLoading(false);
       }
@@ -86,7 +86,8 @@ function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              className="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-orange-400 hover:shadow-2xl hover:border-pink-500 transform hover:-translate-y-2 transition-all duration-300 group"
+              className="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-orange-400 
+                         hover:shadow-2xl hover:border-pink-500 transform hover:-translate-y-2 transition-all duration-300 group"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
@@ -94,8 +95,9 @@ function Testimonials() {
               <div className="flex items-center mb-4">
                 <img
                   src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-orange-500 mr-4 group-hover:scale-110 transition-transform duration-300"
+                  alt={`Profile picture of ${testimonial.name}`}
+                  className="w-16 h-16 rounded-full object-cover border-2 border-orange-500 mr-4 
+                             group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => (e.target.src = '/image/default-user.png')}
                 />
                 <div className="text-left">
@@ -107,13 +109,17 @@ function Testimonials() {
                   </div>
                 </div>
               </div>
-
-              <p className="text-slate-600 text-sm mb-4 leading-relaxed italic group-hover:text-slate-800 group-hover:scale-[1.02] transition-all duration-300">
+              <p className="text-slate-600 text-sm mb-4 leading-relaxed italic 
+                            group-hover:text-slate-800 group-hover:scale-[1.02] transition-all duration-300">
                 "{testimonial.feedback}"
               </p>
-
-              <button className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-lg shadow-sm border border-gray-200 hover:bg-orange-50 hover:border-orange-400 transition-colors">
-                <img src="/meta.jpg" alt="Verified" className="w-5 h-5 object-cover rounded-full" />
+              <button className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-lg shadow-sm 
+                                 border border-gray-200 hover:bg-orange-50 hover:border-orange-400 transition-colors">
+                <img
+                  src="/meta.jpg"
+                  alt="Verified"
+                  className="w-5 h-5 object-cover rounded-full"
+                />
                 <span className="text-gray-900 font-medium group-hover:text-orange-600 transition-colors">
                   Verified
                 </span>

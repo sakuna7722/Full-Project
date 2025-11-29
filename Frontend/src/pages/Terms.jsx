@@ -10,32 +10,17 @@ function Terms() {
           Terms & Conditions
         </h1>
         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-orange-100 px-4 leading-relaxed">
-          Please read these Terms carefully before using leadsgurukul. By signing up, you agree to the terms below.
+          Welcome to leadsgurukul! By signing up, you agree to the following terms and conditions:
         </p>
       </section>
 
       {/* Terms Content */}
       <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-10 sm:p-14 -mt-10 mb-16 relative z-10">
         <ul className="list-disc list-inside space-y-4 text-gray-700 text-left text-lg leading-relaxed">
-          
-          <li>You must provide accurate information while creating your account. Fake or misleading details may result in account termination.</li>
-
-          <li>You are responsible for keeping your account login details confidential. Any activity done using your account will be considered your responsibility.</li>
-
-          <li>All purchases made on our platform are final. No refund will be provided after successful enrollment in a course.</li>
-
-          <li>You agree not to misuse the platform or engage in activities such as spamming, hacking, fake referrals, or system manipulation.</li>
-
-          <li>We reserve the right to update, modify, or discontinue any course, feature, or service at any time without prior notice.</li>
-
-          <li>Any commission or referral reward earned through fraudulent activity will be cancelled, and the account may be suspended.</li>
-
-          <li>By accessing our platform, you agree not to copy, share, or distribute paid course content. Doing so is strictly prohibited and may lead to legal action.</li>
-
-          <li>Your use of our website must comply with all applicable laws and regulations.</li>
-
-          <li>We may update these Terms & Conditions from time to time. Continued use of the platform means you agree to the updated terms.</li>
-          
+          {/* <li>You must be at least 18 years old to use our services.</li> */}
+          <li>You are responsible for maintaining the confidentiality of your account and password.</li>
+          <li>We reserve the right to modify or terminate services at any time without prior notice.</li>
+          <li>You agree not to use our platform for any illegal or unauthorized purposes.</li>
         </ul>
 
         {/* Back Link */}

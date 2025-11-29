@@ -1,7 +1,7 @@
 //Frontend/src/components/Header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/Lead3.png"; // adjust the path according to your folder structure
+import Logo from "../assets/lead2.png"; // adjust the path according to your folder structure
 
 
 function Header() {
@@ -38,7 +38,7 @@ const appendRef = (path) => {
   <Link to={appendRef("/")}>
     <img
       src={Logo}
-      alt="Lead3"
+      alt="lead2"
       className="h-10 sm:h-12" // height adjust karo apne design ke hisaab se
     />
   </Link>

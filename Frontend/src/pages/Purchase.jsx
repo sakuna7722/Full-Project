@@ -26,7 +26,6 @@ function Purchase() {
     const ref = searchParams.get("ref");
     if (ref) {
       localStorage.setItem("ref", ref); // ✅ Store referral ID
-      localStorage.setItem("referralCode", ref); // ✅ Also store as referralCode for consistency
     }
   }, [location.search]);
 
@@ -98,8 +97,9 @@ function Purchase() {
         key: key,
         amount: orderAmount,
         currency: "INR",
-        name: "Course Purchase",
-        description: course.name,
+        name: "Leadsgurukul",
+        image: "https://leadsgurukul.com/lead2.png",
+        description: `${course.name} - ₹${Math.round(amount).toLocaleString('en-IN')}`,
         order_id,
         handler: async function (response) {
           try {
@@ -142,8 +142,9 @@ function Purchase() {
           }
         },
         prefill: {
-          name: 'User Name',
-          email: 'user@example.com',
+          name: JSON.parse(localStorage.getItem("user"))?.name || "",
+          email: JSON.parse(localStorage.getItem("user"))?.email || "",
+
         },
         theme: {
           color: '#4f46e5',

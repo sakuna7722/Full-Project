@@ -11,6 +11,7 @@ function ProductPro() {
     const fetchCourse = async () => {
       try {
         const res = await api.get("/courses");
+        // Assuming "Marketing Mastery" is the first course or filter by slug/name
         const selectedCourse =
           res.data.find((c) => c.slug === "pro") || res.data[0];
         setCourse(selectedCourse);
@@ -27,23 +28,18 @@ function ProductPro() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-indigo-50 to-blue-100 py-16 border-b">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 px-6">
-
           {/* Left Content */}
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
               {course ? course.name : "Loading..."}
             </h1>
-
-            {/* SAFE CONTENT */}
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master advanced digital marketing skills including SEO, Social Media
-              Strategy, Content Creation, Funnel Building, and Paid Advertising
-              fundamentals. Learn professional marketing skills to promote
-              products ethically, grow your brand, and build high-converting
-              online campaigns without any earning guarantees or shortcuts.
+              Learn the core concepts & strategies of affiliate marketing, from niche and product selection to working like a professional. Get hands-on training with top platforms like ClickBank, and WarriorPlus.Master advanced sales strategies including pitching affiliate offers, handling objections, and closing deals with confidence using professional sales scripts.
             </p>
-
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -71,7 +67,7 @@ function ProductPro() {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "30+ Modules" },
+            { icon: "/coursesImg/course_icon.png", label: "30 Course" },
             { icon: "/coursesImg/hours_icon.png", label: "150+ Hours" },
             { icon: "/coursesImg/students_icon.png", label: "15K+ Students" },
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
@@ -87,6 +83,7 @@ function ProductPro() {
         </div>
       </section>
 
+
       {/* What You Will Learn */}
       <section className="px-6 py-20 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -99,68 +96,66 @@ function ProductPro() {
 
           <div className="grid md:grid-cols-2 gap-10">
             {[
-              // 1
+
               {
-                title: "Digital Marketing Mastery",
+                title: "Marketing Training",
                 points: [
-                  "Search Engine Optimization (SEO)",
-                  "Keyword Research & Content Planning",
-                  "Instagram, Facebook & YouTube Strategy",
-                  "High-Converting Funnel Building",
-                  "Marketing Analytics Basics",
-                  "Understanding Consumer Behavior",
+                  "Affiliate Marketing – Concept & Strategy",
+                  "Niche & Product Selection",
+                  "How to work Like a Pro",
+                  "Different Platforms – ClickBank, JVZoo, WarriorPlus",
+                  "Finding Killer Products",
+                  "Marketing & Promotions",
+
                 ],
               },
-
-              // 2
               {
-                title: "Paid Ads Training",
+                title: "Sales Training",
                 points: [
-                  "Introduction to Meta Ads Manager",
-                  "Setting Up Your First Facebook Ad",
-                  "Audience Targeting & Optimization",
-                  "Google Ads Fundamentals",
-                  "Ad Copywriting Basics",
-                  "A/B Testing Strategies",
+                  "Advance Sales Strategy",
+                  "How to Pitch Affiliate Offers",
+                  "Objection Handling",
+                  "Sales Closing Strategies",
+                  "Professional Sales Scripts",
+                  "Advanced Strategy of Leads Generation",
                 ],
               },
-
-              // 3
               {
-                title: "Brand Building",
+                title: "CPA Marketing",
                 points: [
-                  "Brand Positioning & Messaging",
-                  "Niche Clarity Framework",
-                  "Crafting a Powerful Brand Story",
-                  "Creating a Professional Brand Kit",
-                  "Authority Building on Social Media",
-                  "Reputation & Trust Management",
+                  "Basics of CPA Marketing",
+                  "CPA Offers from IMC Platform",
+                  "Finding Ad Copies",
+                  "Keyword Research",
+                  "Bing Ads Creation & Optimization",
+                  "DFY Landing Page / Funnel",
+
                 ],
               },
-
-              // 4
               {
-                title: "Content Creation Mastery",
+                title: "Personal Branding",
                 points: [
-                  "Content Strategy & Planning",
-                  "Short Form Content Creation",
-                  "Video Editing Basics",
-                  "Canva Designing for Social Media",
-                  "Copywriting for Reels & Posts",
-                  "Thumbnail & Banner Designing",
+                  "How to Build Your Personal Brand Presence",
+                  "How to Niche Clarity & Brand Story",
+                  "How to Brand Positioning & Kit",
+                  "How to Content Strategy",
+                  "How to Copywriting Basics",
+                  "Content Creation for Personal Branding",
+
+
                 ],
               },
-
-              // 5
               {
-                title: "Lead Generation (Ethical)",
+                title: "Personal Branding",
                 points: [
-                  "Organic Lead Generation Techniques",
-                  "Email Marketing Basics",
-                  "Simple Lead Funnel Setup",
-                  "Using CRM Tools",
-                  "Audience Engagement Techniques",
-                  "Professional Client Communication",
+                  "Build Your Personal Brand Presence",
+                  "Niche Clarity & Brand Story",
+                  "Brand Positioning & Kit",
+                  "Content Strategy",
+                  "Bing Ads Coupons for Campaigns",
+                  "How to get Bing Ads Coupons for Initial Campaigning",
+                  "Bing Ads Coupons for Campaigns",
+                  "How to get Bing Ads Coupons for Initial Campaigning",
                 ],
               },
             ].map((section, idx) => (
@@ -194,12 +189,11 @@ function ProductPro() {
           <h2 className="text-4xl font-extrabold text-gray-900 mb-12">
             Who Is This Course For?
           </h2>
-
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              "Students who want to start a digital career",
-              "Working professionals who want to upskill",
-              "Entrepreneurs who want to grow their business online",
+              "Students who want to build a digital career",
+              "Working professionals aiming for side-income",
+              "Entrepreneurs scaling their business with digital marketing",
             ].map((item, idx) => (
               <div
                 key={idx}
@@ -212,9 +206,11 @@ function ProductPro() {
         </div>
       </section>
 
+
+
       <Footer />
     </>
   );
 }
 
-export default ProductPro;
+export default ProductPro

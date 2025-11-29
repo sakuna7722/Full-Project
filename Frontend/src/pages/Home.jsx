@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 const chatData = [
-  { name: "Rohan Mehra", message: "Hey, I need a visiting card design by this weekend!" },
+  { name: "Rohan Mehra", message: "Hey, I have a quick project need a visiting card design by this weekend" },
   { name: "Priya Singh", message: "Can you send me the latest mockups?" },
-  { name: "Ankit Verma", message: "I need the website draft by tomorrow." },
-  { name: "Simran Kaur", message: "Let's finalize the logo today." },
+  { name: "Ankit Verma", message: "I need the website draft by tomorrow" },
+  { name: "Simran Kaur", message: "Let's finalize the logo today" },
   { name: "Amit Sharma", message: "Can you check the payment details?" },
 ];
 
@@ -15,29 +14,28 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setChatIndex((prev) => (prev + 1) % chatData.length);
-    }, 1500);
+    }, 1200);
+
     return () => clearInterval(interval);
   }, []);
 
   const currentChat = chatData[chatIndex];
-
   return (
-    <section className="bg-white py-10 px-6 sm:py-16 relative overflow-hidden">
+    <section className="bg-white py-8 px-4 sm:py-16 sm:px-8 md:px-16 relative overflow-visible">
+      {/* Optional background pattern */}
+      <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 z-0 bg-repeat bg-[length:100px_100px]"></div>
 
-      {/* Light Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10 bg-repeat bg-[length:120px_120px]"></div>
-
-      <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10">
-
-        {/* -------- LEFT SIDE -------- */}
-        <div>
+      <div className="relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto z-10">
+        {/* Left Side: Text and CTA */}
+        <div className="z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-            Build Your Skills <br />
-            <span className="relative">
-              Grow With{" "}
-              <span className="relative font-extrabold text-gray-900">
-                leadsgurukul
-                <span className="absolute left-0 bottom-0 w-full h-1 bg-orange-500 -skew-x-12"></span>
+            Build Your Skills
+            <br />
+            <span className="relative inline-block mt-2">
+              Grow With{' '}
+              <span className="relative inline-block font-extrabold text-gray-900">
+                <span className="relative z-10">leadsgurukul</span>
+                <span className="absolute left-0 bottom-0 w-full h-1 bg-orange-500 transform -skew-x-12 z-0"></span>
               </span>
             </span>
           </h1>
@@ -47,25 +45,44 @@ function Home() {
           </p>
 
           <Link to="/auth/signup">
-            <button className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-lg flex items-center gap-2 shadow transition">
+            <button className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg flex items-center gap-2 transition-all duration-300">
               Start Learning Today <span className="text-xl">↗</span>
             </button>
           </Link>
+
         </div>
 
-        {/* -------- RIGHT SIDE -------- */}
-        <div className="flex justify-center relative">
+        {/* Right Side: Image and Feedback */}
+        {/* <div className="relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center"> */}
+        {/* Right Side: Image and Feedback */}
+        {/* <div className="hidden md:block relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center"> */}
 
-          {/* Main Image */}
-          <div className="relative w-full max-w-[420px]">
+        {/* Right Side: Image and Feedback */}
+        <div className="hidden md:block relative w-full min-h-[300px] sm:min-h-[400px] z-10 flex justify-center items-center">
+
+          {/* Wrapper to control image and floating cards */}
+          <div className="relative w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] group">
+
+
             <img
               src="/Girl-1.jpg"
               alt="Freelancer"
-              className="rounded-xl shadow-xl w-full object-contain"
+              className="w-full h-auto max-h-[550px] object-contain rounded-xl shadow-xl mx-auto"
             />
 
-            {/* Floating Chat Bubble */}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white p-4 rounded-xl shadow-lg w-64 flex gap-3 items-start z-20 transition-all duration-500">
+            {/* Rotating Chat Bubble */}
+
+            <div
+              className="
+    absolute 
+    bottom-[-30px] sm:bottom-8 
+    left-1/2 sm:left-6 
+    -translate-x-1/2 sm:translate-x-0
+    bg-white p-4 rounded-xl shadow-lg w-64 
+    flex gap-3 items-start 
+    z-20 transition-all duration-500
+  "
+            >
               <div className="text-orange-500 text-2xl">💬</div>
               <div>
                 <p className="font-semibold text-sm text-gray-800">{currentChat.name}</p>
@@ -73,10 +90,12 @@ function Home() {
               </div>
             </div>
 
+
           </div>
+
         </div>
       </div>
-    </section>
+    </section >
   );
 }
 

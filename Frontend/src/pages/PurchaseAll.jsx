@@ -36,8 +36,9 @@ function PurchaseAll() {
         key,
         amount,
         currency: 'INR',
-        name: 'All Courses Access',
-        description: 'Unlock all premium courses',
+        name: "Leadsgurukul",
+        description: "All Courses Access - Leadsgurukul",
+
         order_id,
         handler: async function (response) {
           try {

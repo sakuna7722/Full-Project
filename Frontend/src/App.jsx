@@ -53,7 +53,6 @@ import FAQ from './pages/FAQ';
 import UserProfile from './components/UserProfile';
 import Support from './pages/Support';
 import ChatComponent from './components/ChatComponent';
-import CancellationPolicy from "./pages/CancellationPolicy";
 
 function PublicLayout({ children }) {
   return (
@@ -92,13 +91,13 @@ function AppContent() {
           /> */}
 
           <Route
-            path="/"
-            element={
-              <PublicLayout>
-                <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
-              </PublicLayout>
-            }
-          />
+  path="/"
+  element={
+    <PublicLayout>
+      <Home isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} />
+    </PublicLayout>
+  }
+/>
 
           <Route
             path="/auth/login"
@@ -120,7 +119,7 @@ function AppContent() {
           <Route path="/work-with-us" element={<PublicLayout><WorkWithUs /></PublicLayout>} />
           {/* <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} /> */}
           <Route path="/courses" element={<PublicLayout><Courses isLoggedIn={isLoggedIn} setIntendedCourse={setIntendedCourse} /></PublicLayout>} />
-
+          
 
 
 
@@ -180,11 +179,6 @@ function AppContent() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/auth/about-us" element={<AboutUs />} />
           <Route path="/auth/contact-us" element={<ContactUs />} />
-
-
-
-          <Route path="/cancellation-policy" element={<CancellationPolicy />} />
-
 
         </Routes>
       </div>

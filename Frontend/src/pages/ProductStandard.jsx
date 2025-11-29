@@ -4,6 +4,8 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
+
+
 function ProductStandard() {
   const [course, setCourse] = useState(null);
 
@@ -21,7 +23,6 @@ function ProductStandard() {
 
     fetchCourse();
   }, []);
-
   return (
     <>
       {/* Hero Section */}
@@ -33,11 +34,13 @@ function ProductStandard() {
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Master digital marketing, content creation, social media growth,
-              email automation, and essential online business skills in one
-              power-packed program.
+              This program gives you all-in-one digital marketing mastery — from organic lead generation and advanced group promotion to lead magnet offers and product review strategies.
+              You also get 8 bonus courses covering social media content creation, YouTube SEO, email automation, affiliate marketing success, Facebook growth, and chatbot marketing.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -61,13 +64,13 @@ function ProductStandard() {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Stats Section */}
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "15 Courses" },
-            { icon: "/coursesImg/hours_icon.png", label: "80+ Hours" },
-            { icon: "/coursesImg/students_icon.png", label: "10K+ Students" },
+            { icon: "/coursesImg/course_icon.png", label: "15 Course" },
+            { icon: "/coursesImg/hours_icon.png", label: "100+ Hours" },
+            { icon: "/coursesImg/students_icon.png", label: "15K+ Students" },
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
           ].map((stat, i) => (
             <div
@@ -81,7 +84,7 @@ function ProductStandard() {
         </div>
       </section>
 
-      {/* Learning Sections */}
+      {/* What You Will Learn */}
       <section className="px-6 py-20 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
@@ -91,64 +94,70 @@ function ProductStandard() {
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full"></div>
           </div>
 
-          {/* Only 20 Points */}
           <div className="grid md:grid-cols-2 gap-10">
+            {[
+              {
+                title: "Everything in LeadsArk Lite",
+                points: [
+                  "More Advanced Strategy of Organic Lead Generation",
+                  "Advanced Group Promotion strategy",
+                  "Product Review Strategy",
+                  "Lead Magnet Offer Strategy",
+                  "Social Media Content Creation ",
+                ],
+              },
+              {
+                title: "8 Bonus Courses",
+                points: [
 
-            {/* Section 1 */}
-            <div className="bg-gray-50 rounded-2xl p-8 shadow hover:shadow-lg transition">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                Digital Marketing Foundation
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "Digital Marketing Basics",
-                  "Content Marketing Strategy",
-                  "Organic Lead Generation",
-                  "SEO Fundamentals",
-                  "Facebook Group Promotion",
-                  "Brand Creation Essentials",
-                  "Landing Page Basics",
-                  "WhatsApp Marketing Essentials",
-                  "Audience Targeting Basics",
-                  "Google My Business Optimization",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start text-gray-700">
-                    <span className="text-blue-600 mr-3 mt-1">✔</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Section 2 */}
-            <div className="bg-gray-50 rounded-2xl p-8 shadow hover:shadow-lg transition">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                Bonus Skill Courses
-              </h3>
-              <ul className="space-y-3">
-                {[
                   "YouTube SEO",
-                  "Email Marketing Automation",
-                  "Instagram Growth Strategy",
-                  "Reels Editing Basics",
-                  "Canva Graphic Design",
-                  "Affiliate Marketing Basics",
-                  "YouTube Quick Start",
-                  "Copywriting Essentials",
-                  "Social Media Content Planning",
-                  "Basic Video Editing Workflow",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start text-gray-700">
-                    <span className="text-blue-600 mr-3 mt-1">✔</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  "Email Marketing Automation ",
+                  "Internet Marketing for Complete Beginners ",
+                  " YouTube Quick Start",
+                  " Affiliate Marketing Success",
 
+
+                ],
+              },
+
+
+              {
+                title: "Instagram Marketing",
+                points: [
+                  "Organic Lead Generation",
+                  "Instagram Hacks",
+                  "Content Creation Mastery",
+                  "Advanced Engagement Techniques",
+                  " Facebook Group Domination",
+                ],
+              },
+            ].map((section, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-2xl p-8 shadow hover:shadow-lg transition"
+              >
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  {section.title}
+                </h3>
+                <ul className="space-y-3">
+                  {section.points.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start text-gray-700 leading-relaxed"
+                    >
+                      <span className="text-blue-600 mr-3 mt-1">✔</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Who Is This For */}
+
+      {/* Who is this for */}
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-50 to-blue-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-12">
@@ -156,9 +165,9 @@ function ProductStandard() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              "Students building digital skills",
-              "Working professionals exploring online career options",
-              "Entrepreneurs growing their online presence",
+              "Students who want to build a digital career",
+              "Working professionals aiming for side-income",
+              "Entrepreneurs scaling their business with digital marketing",
             ].map((item, idx) => (
               <div
                 key={idx}
@@ -178,7 +187,7 @@ function ProductStandard() {
             {[
               "✅ Lifetime Access",
               "✅ Certificate of Completion",
-              "✅ 7 Days Refund Policy",
+              "✅ Money Back Guarantee",
             ].map((badge, idx) => (
               <div
                 key={idx}
@@ -190,7 +199,7 @@ function ProductStandard() {
           </div>
         </div>
       </section>
-
+      {/* ✅ Footer */}
       <Footer />
     </>
   );

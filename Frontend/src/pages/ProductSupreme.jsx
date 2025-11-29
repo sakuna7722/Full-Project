@@ -26,21 +26,22 @@ function ProductSupreme() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-indigo-50 to-blue-100 py-16 border-b">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 px-6">
-          
           {/* Left Content */}
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              This program is designed to teach you high-value digital skills such as 
-              AI usage, content creation, branding, social media growth, and 
-              digital marketing strategy. You will also learn automation tools, 
-              professional communication, and modern online business systems 
-              used by top creators and marketers worldwide.
+              Learn the basic concepts of affiliate marketing and understand the unique advantages of LeadsArk.
+              Discover why most people fail in affiliate marketing and how you can avoid those mistakes.
+              Master the art of presenting LeadsArk to prospects in a way that builds trust and drives conversions.
+              Use organic lead generation techniques to attract the right audience.
+              Apply Instagram hacks for quality leads and create content that builds authority and engagement.
             </p>
-
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -61,7 +62,6 @@ function ProductSupreme() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -69,8 +69,8 @@ function ProductSupreme() {
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "20+ Skill Modules" },
-            { icon: "/coursesImg/hours_icon.png", label: "150+ Hours" },
+            { icon: "/coursesImg/course_icon.png", label: "50+ Courses" },
+            { icon: "/coursesImg/hours_icon.png", label: "250+ Hours" },
             { icon: "/coursesImg/students_icon.png", label: "15K+ Students" }, 
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
           ].map((stat, i) => (
@@ -85,10 +85,10 @@ function ProductSupreme() {
         </div>
       </section>
 
+
       {/* What You Will Learn */}
       <section className="px-6 py-20 bg-white">
         <div className="max-w-6xl mx-auto">
-          
           <div className="text-center mb-14">
             <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
               What You Will Learn
@@ -97,84 +97,109 @@ function ProductSupreme() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-10">
-
             {[
+
+{
+                  title: "ChatGPT Fundamentals",
+                  points: [
+                    "Understanding ChatGPT, OpenAI & Generative AI",
+                    "How Large Language Models Work",
+                    "ChatGPT Interface & Advanced Features",
+                    "Free vs Pro Version Explained",
+                    "Prompt Writing Basics with Examples",
+                  ],
+                },
+                {
+                  title: "Prompt Engineering Mastery",
+                  points: [
+                    "What is Prompt Engineering & Why It Matters",
+                    "Crafting Perfect Prompts for Any Goal",
+                    "Advanced Prompt Frameworks (CUP, ROLE, CHAIN)",
+                    "ChatGPT for Copywriting, Marketing & Research",
+                    "Building Reusable Prompt Templates",
+                  ],
+                },
+                {
+                  title: "AI Tools & Automation",
+                  points: [
+                    "Integrating ChatGPT with Google Sheets, Docs, and Notion",
+                    "Using Zapier & Make (Integromat) for Automation",
+                    "AI Image Creation with DALL·E & Midjourney",
+                    "Using ChatGPT for Email, Social Media & CRM Automation",
+                    "Creating AI Workflows for Daily Productivity",
+                  ],
+                },
+                {
+                  title: "Monetizing ChatGPT Skills",
+                  points: [
+                    "Freelancing with ChatGPT – Fiverr, Upwork & Agencies",
+                    "Creating & Selling Digital Products using AI",
+                    "Building a Personal Brand using ChatGPT & Canva",
+                    "How to Build Chatbots & AI Services",
+                    "Bonus: AI Business & Passive Income Ideas",
+                  ],
+                },
               {
-                title: "AI & ChatGPT Mastery",
+                title: "Instagram Marketing Strategy",
                 points: [
-                  "Understanding AI, LLMs & ChatGPT",
-                  "Prompt Writing & Frameworks",
-                  "AI for Marketing & Research",
-                  "Creating AI-Based Content",
-                  "Building AI Workflows for Productivity",
+                  "Introduction of Instagram Marketing",
+                  "3 Most Important Things in Instagram",
+                  "Business Accounts and Highlights",
+                  "Personal Branding with Feed",
+                  "Instagram Stories Guide",
+                  "Instagram Hashtags & Caption",
+                  "How to Grow with Reels",
+                  "Hacks to Jump Start from the Scratch in Instagram",
                 ],
               },
               {
-                title: "Digital Marketing Essentials",
+                title: " Affiliate Marketing Strategy ",
                 points: [
-                  "SEO Basics & Keyword Research",
-                  "Social Media Growth Strategies",
-                  "Funnels & Customer Journey",
-                  "Brand Positioning & Messaging",
-                  "Analytics & Tracking",
+                  "Basic Concept of Affiliate Marketing",
+                  "Advantages of LeadsArk and Why",
+                  "Why People Fail in Affiliate Marketing",
+                  "How to Present LeadsArk to the prospects",
+                  "Organic Lead Generation",
+                  "Instagram hacks to attract Quality Leads",
+                  "Content Creatio",
                 ],
               },
               {
-                title: "Content Creation Mastery",
+                title: "Instagram Marketing",
                 points: [
-                  "Reels & Short Video Creation",
-                  "YouTube Basics & Optimization",
-                  "Canva Designing for Creators",
-                  "Thumbnail & Banner Design",
-                  "Content Planning System",
+                  "Organic Lead Generation",
+                  "Instagram Hacks",
+                  "Content Creation Mastery",
+                  "Advanced Engagement Techniques",
                 ],
               },
               {
-                title: "Instagram Growth System",
+                title: "Affiliate Marketing Training",
                 points: [
-                  "Business Account Setup",
-                  "Content Framework for Growth",
-                  "Reels Strategy & Hooks",
-                  "Engagement Boost Techniques",
-                  "Personal Branding on Instagram",
+                  "Affiliate Marketing – Concept & Strategy",
+                  "Niche & Product Selection",
+                  "How to work Like a Pro",
+                  "Different Platforms – ClickBank, JVZoo, WarriorPlus",
+                  "Finding Killer Products",
+                  "Marketing & Promotions",
+                  "Advanced Strategy of Leads Generation",
                 ],
               },
               {
-                title: "Automation & Tools",
+                title: "Advance Sales Strategy",
                 points: [
-                  "Email Tools (Mailchimp / Sender)",
-                  "Google Sheets + AI Automation",
-                  "Notion for Planning & Productivity",
-                  "Using Zapier/Make for Automation",
-                  "Simple CRM Systems",
+                  "How to Pitch Affiliate Offers",
+                  "Objection Handling",
+                  "Sales Closing Strategies",
+                  "Professional Sales Scripts",
                 ],
               },
               {
-                title: "Professional Development",
+                title: "Continuous Upgrade and New Course Addition",
                 points: [
-                  "Client Communication Skills",
-                  "Building Your Online Portfolio",
-                  "Personal Brand Building",
-                  "Presentation Skills",
-                  "Content-Based Networking",
-                ],
-              },
-              {
-                title: "Creator Growth Skills",
-                points: [
-                  "Topic Selection & Niche Clarity",
-                  "Storytelling for Social Media",
-                  "Audience-Building Framework",
-                  "Community Building Secrets",
-                  "Long-Term Growth Strategy",
-                ],
-              },
-              {
-                title: "Continuous Updates",
-                points: [
-                  "New Module Releases",
-                  "Updated Strategies Regularly",
-                  "Live Session Recordings Included",
+                  "Weekly Live Training",
+                  "(Recordings of all the Important Sessions will be uploaded in the Course)",
+
                 ],
               },
             ].map((section, idx) => (
@@ -198,7 +223,6 @@ function ProductSupreme() {
                 </ul>
               </div>
             ))}
-
           </div>
         </div>
       </section>
@@ -211,9 +235,9 @@ function ProductSupreme() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              "Students wanting to build digital skills",
-              "Working professionals looking to upgrade",
-              "Creators & entrepreneurs growing online",
+              "Students who want to build a digital career",
+              "Working professionals aiming for side-income",
+              "Entrepreneurs scaling their business with digital marketing",
             ].map((item, idx) => (
               <div
                 key={idx}

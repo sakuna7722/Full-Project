@@ -24,21 +24,22 @@ function ProductLite() {
 
   return (
     <>
+
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-indigo-50 to-blue-100 py-16 border-b">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10 px-6">
-          
           {/* Left Content */}
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
               {course ? course.name : "Loading..."}
             </h1>
             <p className="text-lg text-gray-700 mb-6 max-w-2xl">
-              Organic Audience Building: Learn SEO, content creation, and community building to grow your brand online. 
-              Social Media Marketing: Build a strong online presence through content strategy, reels, ads, and audience engagement.
+              Organic Lead Generation: The best way to build long-term trust, using SEO, content marketing, and community building to attract high-quality leads.Social Media Marketing: Through consistent posting, reels, ads, and engagement, you increase visibility and create a direct connection with your audience.
             </p>
-
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {/* <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold shadow-lg hover:from-orange-600 hover:to-pink-600 transition">
+                Enroll Now
+              </button> */}
               <Link
                 to="/courses"
                 className="px-8 py-4 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition"
@@ -62,11 +63,12 @@ function ProductLite() {
         </div>
       </section>
 
+
       {/* Stats Section */}
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
-            { icon: "/coursesImg/course_icon.png", label: "3 Courses" },
+            { icon: "/coursesImg/course_icon.png", label: "3 Course" },
             { icon: "/coursesImg/hours_icon.png", label: "50+ Hours" },
             { icon: "/coursesImg/students_icon.png", label: "15K+ Students" },
             { icon: "/coursesImg/certificate_icon.png", label: "Certificate" },
@@ -81,6 +83,7 @@ function ProductLite() {
           ))}
         </div>
       </section>
+
 
       {/* What You Will Learn */}
       <section className="px-6 py-20 bg-white">
@@ -97,8 +100,8 @@ function ProductLite() {
               {
                 title: "",
                 points: [
-                  "Organic Audience Building",
-                  "Social Media Marketing",
+                  "Organic Lead Generation",
+                  "Social Media marketing",
                   "Personal Branding",
                 ],
               },
@@ -133,12 +136,11 @@ function ProductLite() {
           <h2 className="text-4xl font-extrabold text-gray-900 mb-12">
             Who Is This Course For?
           </h2>
-
           <div className="grid md:grid-cols-3 gap-8">
             {[
               "Students who want to build a digital career",
-              "Working professionals aiming for career growth",
-              "Entrepreneurs looking to enhance their online presence",
+              "Working professionals aiming for side-income",
+              "Entrepreneurs scaling their business with digital marketing",
             ].map((item, idx) => (
               <div
                 key={idx}
@@ -150,7 +152,6 @@ function ProductLite() {
           </div>
         </div>
       </section>
-
       {/* Trust Badges */}
       <section className="px-6 py-16 bg-white border-t">
         <div className="max-w-5xl mx-auto text-center">
@@ -158,7 +159,7 @@ function ProductLite() {
             {[
               "✅ Lifetime Access",
               "✅ Certificate of Completion",
-              "✅ Skill-Based Learning Support",
+              "✅ Money Back Guarantee",
             ].map((badge, idx) => (
               <div
                 key={idx}
@@ -170,6 +171,7 @@ function ProductLite() {
           </div>
         </div>
       </section>
+
 
       <Footer />
     </>
