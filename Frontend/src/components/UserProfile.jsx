@@ -11,6 +11,15 @@ const UserProfile = () => {
   const [error, setError] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
+  const [successMsg, setSuccessMsg] = useState('');
+
+  // Password change form state
+  const [changePasswordForm, setChangePasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [passwordError, setPasswordError] = useState('');
 
   // Redirect to login if no user
   useEffect(() => {
@@ -101,6 +110,55 @@ const UserProfile = () => {
     }
   };
 
+  // Password input change handler
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setChangePasswordForm(prev => ({ ...prev, [name]: value }));
+    if (passwordError) setPasswordError('');
+  };
+
+  // Password change submit handler
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    const { currentPassword, newPassword, confirmPassword } = changePasswordForm;
+
+    // Client-side validation
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match');
+      return;
+    }
+    if (newPassword.length < 8) {
+      setPasswordError('New password must be at least 8 characters');
+      return;
+    }
+    if (!currentPassword) {
+      setPasswordError('Current password is required');
+      return;
+    }
+
+    setLoading(true);
+    setPasswordError('');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.put('/user/change-password', changePasswordForm, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data.success) {
+        setChangePasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setSuccessMsg('Password changed successfully! Please log in again.'); // ← Green success message
+        setTimeout(() => { setSuccessMsg(''); navigate('/auth/login'); }, 2000); // ← Clear message after 2s, then redirect
+        console.log('✅ [UserProfile.jsx] Password changed successfully');
+      }
+    } catch (err) {
+      console.error('❌ [UserProfile.jsx] Password change error:', err);
+      setPasswordError(err.response?.data?.message || 'Failed to change password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -171,11 +229,10 @@ const UserProfile = () => {
                 <h2 className="text-xl font-semibold text-gray-900 mt-4">{user?.firstName} {user?.lastName}</h2>
                 <p className="text-gray-600 text-sm">{user?.email}</p>
                 {commissionStats && (
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mt-2 ${
-                    commissionStats.status === 'active' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mt-2 ${commissionStats.status === 'active'
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-yellow-100 text-yellow-800'
+                    }`}>
                     {commissionStats.status === 'active' ? 'Active' : 'Pending'}
                   </span>
                 )}
@@ -185,11 +242,10 @@ const UserProfile = () => {
               <nav className="space-y-2">
                 <button
                   onClick={() => setActiveTab('profile')}
-                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
-                    activeTab === 'profile'
-                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${activeTab === 'profile'
+                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                    : 'text-gray-600 hover:bg-gray-50'
+                    }`}
                 >
                   <div className="flex items-center">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,11 +256,10 @@ const UserProfile = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab('commission')}
-                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
-                    activeTab === 'commission'
-                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${activeTab === 'commission'
+                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                    : 'text-gray-600 hover:bg-gray-50'
+                    }`}
                 >
                   <div className="flex items-center">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,11 +270,10 @@ const UserProfile = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab('security')}
-                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
-                    activeTab === 'security'
-                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${activeTab === 'security'
+                    ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                    : 'text-gray-600 hover:bg-gray-50'
+                    }`}
                 >
                   <div className="flex items-center">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +319,7 @@ const UserProfile = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Image Actions */}
                   <div className="mt-8 pt-6 border-t border-gray-200">
                     <div className="flex flex-wrap gap-4">
@@ -300,7 +354,7 @@ const UserProfile = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-blue-600 text-sm font-medium">Total Commissions</p>
-                          <p className="text-3xl font-bold text-gray-900 mt-2">${commissionStats.totalCommissions || 0}</p>
+                          <p className="text-3xl font-bold text-gray-900 mt-2">${commissionStats.allTimeEarnings || 0}</p> {/* ← Yeh change: allTimeEarnings */}
                         </div>
                         <div className="bg-blue-500 p-3 rounded-lg">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -309,12 +363,12 @@ const UserProfile = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-green-600 text-sm font-medium">Pending Commissions</p>
-                          <p className="text-3xl font-bold text-gray-900 mt-2">${commissionStats.pendingCommissions || 0}</p>
+                          <p className="text-3xl font-bold text-gray-900 mt-2">${commissionStats.accountBalance || 0}</p> {/* ← Yeh change: accountBalance */}
                         </div>
                         <div className="bg-green-500 p-3 rounded-lg">
                           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -332,19 +386,73 @@ const UserProfile = () => {
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-6">Security Settings</h3>
                   <div className="space-y-6">
+
                     <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Change Password</h4>
                       <p className="text-gray-600 mb-4">Update your password to keep your account secure</p>
-                      <button className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors duration-200">
-                        Change Password
-                      </button>
+
+                      {/* Password Form */}
+                      <form onSubmit={handleChangePassword} className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Current Password *</label>
+                          <input
+                            type="password"
+                            name="currentPassword"
+                            value={changePasswordForm.currentPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="Enter your current password"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">New Password *</label>
+                          <input
+                            type="password"
+                            name="newPassword"
+                            value={changePasswordForm.newPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="Enter new password (min 8 chars)"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password *</label>
+                          <input
+                            type="password"
+                            name="confirmPassword"
+                            value={changePasswordForm.confirmPassword}
+                            onChange={handlePasswordChange}
+                            placeholder="Confirm new password"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                          />
+                        </div>
+
+                        {/* Password Error Message */}
+                        {passwordError && (
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p className="text-sm text-red-700">{passwordError}</p>
+                          </div>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="w-full px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+                        >
+                          {loading ? 'Changing Password...' : 'Change Password'}
+                        </button>
+                      </form>
                     </div>
-                    
+
+                    {/* 2FA Section (placeholder) */}
                     <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Two-Factor Authentication</h4>
                       <p className="text-gray-600 mb-4">Add an extra layer of security to your account</p>
                       <button className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors duration-200">
-                        Enable 2FA
+                        Enable 2FA (Coming Soon)
                       </button>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 // backend/routes/user.js
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs"); 
 const {
   protect,
   checkEnrolledCourses,
@@ -234,6 +235,50 @@ router.get(
     }
   }
 );
+
+// ✅ PUT /api/user/change-password — Change user password securely
+router.put("/change-password", protect, async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const userId = req.user.id; // protect middleware se mil raha hai
+
+    // Validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'New passwords do not match' });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 8 characters' });
+    }
+
+    // User find karo (full user with password)
+    const user = await User.findById(userId).select('+password'); // +password to include hashed password
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Current password verify karo
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Current password is incorrect' });
+    }
+
+    // New password hash karo aur update
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    // Log success (optional)
+    console.log('✅ [user.js] Password changed for user:', { userId, timestamp: new Date().toISOString() });
+
+    res.json({ success: true, message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('❌ [user.js] Change Password Error:', { message: error.message, timestamp: new Date().toISOString() });
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
 
 // ✅ GET /api/user/profile — get current logged in user info
 router.get("/profile", protect, checkEnrolledCourses, async (req, res) => {
