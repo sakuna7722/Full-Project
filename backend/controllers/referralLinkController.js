@@ -1,3 +1,4 @@
+// backend/controllers/referralLinkController.js
 const User = require("../models/User");
 const Referral = require("../models/Referral");
 
