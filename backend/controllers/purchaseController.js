@@ -7,8 +7,8 @@ const User = require("../models/User");
 const Referral = require("../models/Referral");
 const Commission = require("../models/Commission");
 const mongoose = require("mongoose");
-const cloudinary = require('../config/cloudinary');
-const fs = require('fs');
+const cloudinary = require("../config/cloudinary");
+const fs = require("fs");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -112,7 +112,10 @@ exports.verifyPayment = async (req, res) => {
       reason: "No valid referrer found",
     };
 
-    if (referredByUser && referredByUser._id.toString() !== user._id.toString()) {
+    if (
+      referredByUser &&
+      referredByUser._id.toString() !== user._id.toString()
+    ) {
       const COMMISSION_RATE = course.affiliateCommission || 60;
       commission = Math.trunc((course.price * COMMISSION_RATE) / 100);
       const discountedPrice = course.price * (1 - (course.discount || 0) / 100);
@@ -153,13 +156,26 @@ exports.verifyPayment = async (req, res) => {
     await newPurchase.save();
     console.log(`✅ Purchase record saved with ₹${commission} commission`);
 
-    // Step 7: Enroll user and set hasPurchased
-    if (!user.enrolledCourses.some((c) => c.courseId.toString() === courseId)) {
-      user.enrolledCourses.push({ courseId: courseId, courseName: course.name, progress: 0 });
-      user.hasPurchased = true;
-      await user.save();
-      console.log(`📚 User enrolled in course: ${course.name}`);
+    // Step 7: Enroll user and set hasPurchased rohan
+    // Check if already enrolled in this course
+    const isAlreadyEnrolled = user.enrolledCourses.some(
+      (c) => c.courseId.toString() === courseId
+    );
+    if (!isAlreadyEnrolled) {
+      user.enrolledCourses.push({
+        courseId: courseId,
+        courseName: course.name,
+        progress: 0,
+      });
     }
+    // Set hasPurchased true only on first purchase (if not already set)
+    if (!user.hasPurchased) {
+      user.hasPurchased = true;
+    }
+    await user.save();
+    console.log(
+      `📚 User enrolled/updated for course: ${course.name}, hasPurchased: ${user.hasPurchased}`
+    );
 
     // Step 8: Process referral and commission
     if (referredByUser && commission > 0) {
@@ -171,7 +187,8 @@ exports.verifyPayment = async (req, res) => {
 
       if (!existingReferral) {
         // Update affiliate earnings
-        referredByUser.affiliateEarnings = (referredByUser.affiliateEarnings || 0) + commission;
+        referredByUser.affiliateEarnings =
+          (referredByUser.affiliateEarnings || 0) + commission;
         if (!referredByUser.referralHistory) {
           referredByUser.referralHistory = [];
         }
@@ -210,7 +227,9 @@ exports.verifyPayment = async (req, res) => {
    - Referral Record Created: ${referral._id}
    - Commission Record Created: ${newCommission._id}`);
       } else {
-        console.log(`⚠️ Duplicate referral prevented for ${referredByUser.email}`);
+        console.log(
+          `⚠️ Duplicate referral prevented for ${referredByUser.email}`
+        );
       }
     } else if (referredByUser && commission === 0) {
       console.log(`⚠️ Commission is 0, skipping referral processing`);
@@ -252,7 +271,9 @@ exports.getCourseBySlug = async (req, res) => {
 // POST /api/purchase
 exports.handlePurchase = async (req, res) => {
   try {
-    res.status(200).json({ success: true, message: "Purchase handled successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Purchase handled successfully" });
   } catch (error) {
     console.error("Error in handlePurchase:", error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -263,29 +284,42 @@ exports.updateCourseThumbnail = async (req, res) => {
   try {
     const { courseId } = req.params;
     const course = await Course.findById(courseId);
-    if (!course) return res.status(404).json({ success: false, message: "Course not found" });
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "Course not found" });
 
     let thumbnailUrl = course.thumbnail;
     if (req.file) {
-      console.log('📂 Thumbnail file received:', req.file);
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'courses' });
-      console.log('🌐 Cloudinary Thumbnail URL:', uploadResult.secure_url);
+      console.log("📂 Thumbnail file received:", req.file);
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: "courses",
+      });
+      console.log("🌐 Cloudinary Thumbnail URL:", uploadResult.secure_url);
 
-      if (thumbnailUrl && thumbnailUrl.startsWith('public/')) {
-        const oldPath = path.join(__dirname, '..', thumbnailUrl);
+      if (thumbnailUrl && thumbnailUrl.startsWith("public/")) {
+        const oldPath = path.join(__dirname, "..", thumbnailUrl);
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
 
       thumbnailUrl = uploadResult.secure_url;
       fs.unlinkSync(req.file.path);
-      console.log('🗑️ Removed local thumbnail file:', req.file.path);
+      console.log("🗑️ Removed local thumbnail file:", req.file.path);
     }
 
     course.thumbnail = thumbnailUrl;
     await course.save();
-    res.json({ success: true, message: "Thumbnail updated successfully", thumbnail: course.thumbnail });
+    res.json({
+      success: true,
+      message: "Thumbnail updated successfully",
+      thumbnail: course.thumbnail,
+    });
   } catch (error) {
-    console.error('❌ Thumbnail upload error:', error.message);
-    res.status(500).json({ success: false, message: "Failed to update thumbnail", error: error.message });
+    console.error("❌ Thumbnail upload error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update thumbnail",
+      error: error.message,
+    });
   }
 };
