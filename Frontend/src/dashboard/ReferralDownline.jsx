@@ -172,8 +172,11 @@ function ReferralDownline() {
                     <td className="px-3 sm:px-4 py-3 hidden sm:table-cell text-gray-600">
                       {user.email || "N/A"}
                     </td>
-                    <td className="px-3 sm:px-4 py-3">
-                      <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                   <td className="px-3 sm:px-4 py-3">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${user.course?.name
+                          ? "bg-blue-100 text-blue-800" // Blue for actual plan
+                          : "bg-yellow-100 text-yellow-800" // Yellow for No Plan
+                        }`}>
                         {user.course?.name || "No Plan"}
                       </span>
                     </td>

@@ -134,7 +134,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-
+    hasPurchased: {
+      type: Boolean,
+      default: false,
+    },
     activatedAt: {
       type: Date,
       default: Date.now,
