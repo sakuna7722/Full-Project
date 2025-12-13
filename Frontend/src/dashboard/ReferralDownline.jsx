@@ -172,21 +172,20 @@ function ReferralDownline() {
                     <td className="px-3 sm:px-4 py-3 hidden sm:table-cell text-gray-600">
                       {user.email || "N/A"}
                     </td>
-                   <td className="px-3 sm:px-4 py-3">
+                    <td className="px-3 sm:px-4 py-3">
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${user.course?.name
-                          ? "bg-blue-100 text-blue-800" // Blue for actual plan
-                          : "bg-yellow-100 text-yellow-800" // Yellow for No Plan
+                        ? "bg-blue-100 text-blue-800" // Blue for actual plan
+                        : "bg-yellow-100 text-yellow-800" // Yellow for No Plan
                         }`}>
                         {user.course?.name || "No Plan"}
                       </span>
                     </td>
                     <td className="px-3 sm:px-4 py-3">
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          user.status === "Active"
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${user.status === "Active"
                             ? "bg-green-100 text-green-800"
                             : "bg-yellow-100 text-yellow-800"
-                        }`}
+                          }`}
                       >
                         {user.status || "Pending"}
                       </span>
@@ -194,10 +193,10 @@ function ReferralDownline() {
                     <td className="px-3 sm:px-4 py-3 text-gray-600 hidden md:table-cell">
                       {user.createdAt
                         ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
                         : "N/A"}
                     </td>
                     <td className="px-3 sm:px-4 py-3 text-gray-600 hidden md:table-cell">

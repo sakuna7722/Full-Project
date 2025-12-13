@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
+
 const {
   createOrder,
   verifyPayment,
-  getCourseBySlug, handlePurchase,
+  getCourseBySlug,
+  handlePurchase,
+  getEnrollmentStatus, 
 } = require("../controllers/purchaseController");
+
 const {
   validateReferralCode,
 } = require("../controllers/referralController");
@@ -16,6 +20,7 @@ const purchaseController = require("../controllers/purchaseController");
 const { upload } = require("../server");
 
 // Routes
+router.get("/enrollment/status/:courseId", protect, getEnrollmentStatus);
 router.post("/create-order", protect, referrerCaptureMiddleware, createOrder);
 router.post("/verify", protect, referrerCaptureMiddleware, validateReferralCode, referralMiddleware, verifyPayment);
 router.get("/course/:slug", getCourseBySlug);

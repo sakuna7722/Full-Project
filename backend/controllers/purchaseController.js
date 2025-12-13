@@ -8,7 +8,7 @@ const Referral = require("../models/Referral");
 const Commission = require("../models/Commission");
 const mongoose = require("mongoose");
 const cloudinary = require("../config/cloudinary");
-const fs = require("fs");
+const fs = require("fs");  
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -246,6 +246,47 @@ exports.verifyPayment = async (req, res) => {
       success: false,
       message: "Payment verification failed",
       error: error.message,
+    });
+  }
+};
+
+// ADD YE FUNCTION purchaseController.js mein (verifyPayment ke neeche)
+
+// GET /api/enrollment/status/:courseId
+exports.getEnrollmentStatus = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const courseId = req.params.courseId;
+
+    // Check if purchase record exists with status "completed"
+    const purchase = await Purchase.findOne({
+      user: userId,
+      course: courseId,
+      status: "completed"
+    });
+
+    if (purchase) {
+      return res.json({
+        success: true,
+        isEnrolled: true,
+        status: "Active", 
+        message: "Course is active"
+      });
+    } else {
+      return res.json({
+        success: true,
+        isEnrolled: false,
+        status: "Pending",
+        message: "Course not purchased yet"
+      });
+    }
+
+  } catch (error) {
+    console.error("Enrollment status check error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message
     });
   }
 };
