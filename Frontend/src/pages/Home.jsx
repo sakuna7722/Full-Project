@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+
 const chatData = [
   { name: "Rohan Mehra", message: "Hey, I have a quick project need a visiting card design by this weekend" },
   { name: "Priya Singh", message: "Can you send me the latest mockups?" },
@@ -11,6 +13,27 @@ const chatData = [
 function Home() {
   const [chatIndex, setChatIndex] = useState(0);
 
+  // ✅ Hooks MUST be inside component
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔥 Referral + Mobile Back FIX
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const ref = params.get("ref");
+
+    if (ref) {
+      if (!localStorage.getItem("referralCode")) {
+        localStorage.setItem("referralCode", ref);
+      }
+
+      window.history.replaceState(null, "", "/");
+      navigate("/auth/signup", { replace: true });
+    }
+
+  }, [location.search, navigate]);
+
+  // Chat animation
   useEffect(() => {
     const interval = setInterval(() => {
       setChatIndex((prev) => (prev + 1) % chatData.length);

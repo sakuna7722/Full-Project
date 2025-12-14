@@ -4,49 +4,26 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from '../api/axios';
 
 function Signup({ updateAuthState, intendedCourse }) {
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [state, setState] = useState('');
   const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState('');
-  const navigate = useNavigate();
-  // const location = useLocation();
-  // const searchParams = new URLSearchParams(location.search);
-  // const refFromUrl = searchParams.get('ref') || localStorage.getItem("referralCode") || '';
-  // const [referredBy, setReferredBy] = useState(refFromUrl);
-  // const redirect = new URLSearchParams(location.search).get('redirect');
-  // const intended = redirect || intendedCourse || location.state?.intendedCourse;
 
 
-  // useEffect(() => {
-  //   if (referredBy) {
-  //     localStorage.setItem("referralCode", referredBy);
-  //   }
-  // }, [referredBy]);
 
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const urlRef = searchParams.get('ref');
+  const [referredBy, setReferredBy] = useState(
+    localStorage.getItem("referralCode") || ""
+  );
 
-  // Fixed & bulletproof referral code handling
-  const decodedRef = urlRef ? decodeURIComponent(urlRef) : '';
-  const finalRef = decodedRef || localStorage.getItem("referralCode") || '';
-
-  const [referredBy, setReferredBy] = useState(finalRef);
-
-  useEffect(() => {
-    if (finalRef && finalRef.trim() !== '') {
-      localStorage.setItem("referralCode", finalRef.trim());
-    }
-  }, [finalRef]);
-  
 
   const indianStates = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa',
@@ -124,7 +101,7 @@ function Signup({ updateAuthState, intendedCourse }) {
       if (intended) {
         navigate(intended);
       } else {
-        navigate('/courses');
+        navigate('/courses', { replace: true });
       }
     } catch (err) {
       // console.error('Signup error:', err.response?.data || err.message);
@@ -171,9 +148,24 @@ function Signup({ updateAuthState, intendedCourse }) {
 
           <input type="text" value={referredBy} onChange={(e) => setReferredBy(e.target.value)} placeholder="Referral Code (Optional)" className="input" />
 
-          <div className="flex gap-2">
-            <input type="checkbox" checked={agreeTerms} onChange={() => setAgreeTerms(!agreeTerms)} />
-            <label>I agree to the <Link to="/terms" className="text-blue-500 underline">Terms</Link></label>
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="agree-terms"
+              checked={agreeTerms}
+              onChange={() => setAgreeTerms(!agreeTerms)}
+              className="w-6 h-6 rounded border-gray-400 text-blue-600 focus:ring-blue-500 cursor-pointer"
+            />
+            <label htmlFor="agree-terms" className="cursor-pointer select-none text-gray-700">
+              I agree to the{' '}
+              <Link
+                to="/terms"
+                className="text-blue-500 underline hover:text-blue-700"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Terms
+              </Link>
+            </label>
           </div>
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}

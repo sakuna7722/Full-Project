@@ -1,6 +1,4 @@
-//frontend/src/pages/Login.jsx :
-
-import { useState, useContext } from 'react'; // Add useContext
+import { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
@@ -14,8 +12,8 @@ function Login({ onAuthSuccess = () => { } }) {
   const { login, hasEnrolledCourses } = useContext(AuthContext);
 
   const searchParams = new URLSearchParams(location.search);
-  const redirect = searchParams.get('redirect'); 
-  const referredBy = searchParams.get('ref'); 
+  const redirect = searchParams.get('redirect');
+  // const referredBy = searchParams.get('ref'); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +23,7 @@ function Login({ onAuthSuccess = () => { } }) {
     }
 
     try {
-      const response = await axios.post('/auth/login', { email, password, referredBy });
+      const response = await axios.post('/auth/login', { email, password });
       // console.log('🎉 [Login.jsx] Login success at:', new Date().toISOString(), response.data);
 
       // ✅ Save token & user
@@ -37,20 +35,21 @@ function Login({ onAuthSuccess = () => { } }) {
 
       // console.log('💾 [Login.jsx] Token saved at:', new Date().toISOString(), localStorage.getItem('token'));
 
-      await login(response.data.user, response.data.token); 
+      await login(response.data.user, response.data.token);
       // console.log('🔄 [Login.jsx] AuthContext updated with token:', response.data.token);
       console.log('✅ [Login.jsx] hasEnrolledCourses:', hasEnrolledCourses);
 
       setError('');
       onAuthSuccess();
-      
+
       // Navigate after state update
       if (redirect) {
-        navigate(redirect); 
+        navigate(redirect, { replace: true });
       } else if (response.data.user.isAdmin) {
         navigate('/admin-dashboard');
       } else {
-        navigate('/dashboard');
+        navigate('/dashboard', { replace: true });
+
       }
     } catch (err) {
       // console.log('❌ [Login.jsx] Error at:', new Date().toISOString(), err.response?.data || err.message);
@@ -59,55 +58,55 @@ function Login({ onAuthSuccess = () => { } }) {
   };
 
   return (
-   <div 
-  className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-12"
-  style={{ backgroundImage: "url('/Login/Login.jpeg')" }}
->
-  <div className="w-full max-w-md bg-white/90 p-8 rounded-lg shadow-md backdrop-blur-sm">
-    <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">Log In</h2>
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-          className="input"
-        />
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-12"
+      style={{ backgroundImage: "url('/Login/Login.jpeg')" }}
+    >
+      <div className="w-full max-w-md bg-white/90 p-8 rounded-lg shadow-md backdrop-blur-sm">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">Log In</h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="input"
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="input"
+            />
+          </div>
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          <button
+            type="submit"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-md text-lg font-semibold"
+          >
+            Log In
+          </button>
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Don’t have an account?{' '}
+            <Link to="/auth/signup" className="text-orange-500 font-semibold">
+              Sign Up
+            </Link>
+          </p>
+          <Link
+            to="/forgot-password"
+            className="text-sm text-orange-500 font-semibold mt-2 block hover:underline"
+          >
+            Forgot Password?
+          </Link>
+        </form>
       </div>
-      <div>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-          className="input"
-        />
-      </div>
-      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      <button
-        type="submit"
-        className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-md text-lg font-semibold"
-      >
-        Log In
-      </button>
-      <p className="text-center text-sm text-gray-600 mt-4">
-        Don’t have an account?{' '}
-        <Link to="/auth/signup" className="text-orange-500 font-semibold">
-          Sign Up
-        </Link>
-      </p>
-      <Link
-        to="/forgot-password"
-        className="text-sm text-orange-500 font-semibold mt-2 block hover:underline"
-      >
-        Forgot Password?
-      </Link>
-    </form>
-  </div>
-</div>
+    </div>
 
   );
 }
