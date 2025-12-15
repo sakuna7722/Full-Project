@@ -142,7 +142,7 @@ exports.getReferralAnalytics = async (req, res) => {
     const referralCode = user.referralCode;
 
     const referralLinks = {
-      signup: `${baseUrl}/signup?ref=${referralCode}&utm_source=referral&utm_medium=link&utm_campaign=signup`,
+      signup: `${baseUrl}/auth/signup?ref=${referralCode}&utm_source=referral&utm_medium=link&utm_campaign=signup`,
       courses: `${baseUrl}/courses?ref=${referralCode}&utm_source=referral&utm_medium=link&utm_campaign=courses`,
       direct: `${baseUrl}?ref=${referralCode}&utm_source=referral&utm_medium=direct&utm_campaign=homepage`,
     };

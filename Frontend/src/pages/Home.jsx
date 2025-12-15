@@ -23,14 +23,17 @@ function Home() {
     const ref = params.get("ref");
 
     if (ref) {
-      if (!localStorage.getItem("referralCode")) {
-        localStorage.setItem("referralCode", ref);
-      }
+      // Ref code save kar do (har baar latest wala)
+      localStorage.setItem("referralCode", ref);
 
-      window.history.replaceState(null, "", "/");
-      navigate("/auth/signup", { replace: true });
+      // URL clean kar do (?ref= hata do)
+      window.history.replaceState({}, document.title, "/");
+
+      // Signup pe redirect karo (history mein entry add hogi → back se home pe aayega)
+      navigate(`/auth/signup?ref=${ref}`);
+      // Agar chahta hai URL mein ?ref= na dikhe to ye line use kar:
+      // navigate("/auth/signup");
     }
-
   }, [location.search, navigate]);
 
   // Chat animation

@@ -113,7 +113,7 @@ const AffiliateAccount = () => {
 
       // YE LINE CHANGE KAR DE – 100% WORKING
       const liveUrl = "https://leadsgurukul.com";
-      setReferralLink(`${liveUrl}/auth/signup?ref=${referralCode}`);
+      setReferralLink(`${liveUrl}/?ref=${referralCode}`);
 
       fetchCommissionStats();
     } else {
