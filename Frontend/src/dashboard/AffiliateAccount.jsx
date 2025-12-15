@@ -82,15 +82,13 @@ const AffiliateAccount = () => {
 
 
   const copyToClipboard = () => {
-    if (!referralLink) { // 👈 NEW: Check if link available
+    if (!referralLink) { 
       alert("No referral link available! Please wait for data to load.");
       return;
     }
     navigator.clipboard.writeText(referralLink);
     alert("Referral link copied to clipboard!");
   };
-
-
   // useEffect(() => {
   //   if (authLoading) return;
 
@@ -111,7 +109,6 @@ const AffiliateAccount = () => {
     if (user) {
       const referralCode = user.referralCode || "affiliate123";
 
-      // YE LINE CHANGE KAR DE – 100% WORKING
       const liveUrl = "https://leadsgurukul.com";
       setReferralLink(`${liveUrl}/?ref=${referralCode}`);
 
@@ -172,7 +169,6 @@ const AffiliateAccount = () => {
               {error}
             </div>
           </Card>
-
 
         )}
 
@@ -307,7 +303,6 @@ const AffiliateAccount = () => {
 
           </div>
         </Card>
-
 
 
       </div>

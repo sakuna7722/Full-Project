@@ -62,6 +62,24 @@ function Login({ onAuthSuccess = () => { } }) {
       className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-12"
       style={{ backgroundImage: "url('/Login/Login.jpeg')" }}
     >
+
+      <Link
+        to="/"
+        className="absolute top-6 left-6 z-50
+             flex items-center gap-1.5
+             bg-white
+             text-gray-700
+             font-medium
+             px-4 py-2
+             rounded-lg
+             shadow-sm
+             hover:shadow-md
+             transition-all duration-200"
+      >
+        <span className="text-xl leading-none">‹</span>
+        <span className="text-sm">Home</span>
+      </Link>
+
       <div className="w-full max-w-md bg-white/90 p-8 rounded-lg shadow-md backdrop-blur-sm">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">Log In</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
