@@ -66,8 +66,8 @@ const AffiliateAccount = () => {
       if (res.data && res.data.success) {
         setCommissionStats(res.data);
         // Generate referral link with user's referral code
-        const referralCode = user.referralCode || "affiliate123";
-        setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
+        // const referralCode = user.referralCode || "affiliate123";
+        // setReferralLink(`${window.location.origin}/auth/signup?ref=${referralCode}`);
       } else {
         setError("Commission data is unavailable.");
         setCommissionStats({});
